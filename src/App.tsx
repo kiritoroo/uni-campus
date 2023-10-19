@@ -1,8 +1,13 @@
-import React from 'react'
+import { DraftBuildingStore } from "@Components/CampusBuilding/draft/DraftBuildingStore"
+import { Fragment } from "react"
 
 const App = () => {
+  console.warn("Re: Render")
+
   return (
-    <div>App</div>
+    <Fragment>
+      <DraftBuildingStore />
+    </Fragment>
   )
 }
 
