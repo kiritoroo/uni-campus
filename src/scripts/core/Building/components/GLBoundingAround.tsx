@@ -1,5 +1,5 @@
 import gsap, { Expo } from "gsap";
-import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
+import { forwardRef, memo, useImperativeHandle, useMemo, useRef } from "react";
 import * as THREE from "three";
 
 export type TGLBoundingAroundRef = {
@@ -13,8 +13,8 @@ interface IGlBoundingArroundProps {
   geometry: THREE.BufferGeometry;
 }
 
-export const GLBoundingAround = forwardRef<TGLBoundingAroundRef, IGlBoundingArroundProps>(
-  ({ geometry, position }, ref) => {
+export const GLBoundingAround = memo(
+  forwardRef<TGLBoundingAroundRef, IGlBoundingArroundProps>(({ geometry, position }, ref) => {
     const boundingArroundRef = useRef<THREE.Mesh | any>(null);
     const animateTimeline = useMemo(() => {
       return gsap.timeline();
@@ -26,11 +26,13 @@ export const GLBoundingAround = forwardRef<TGLBoundingAroundRef, IGlBoundingArro
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0,
+        visible: false,
       }),
     );
 
     const handleOnPointerEnterBuilding = () => {
       animateTimeline.clear();
+      material.current.visible = true;
       boundingArroundRef.current &&
         animateTimeline
           .to(
@@ -48,6 +50,15 @@ export const GLBoundingAround = forwardRef<TGLBoundingAroundRef, IGlBoundingArro
               x: 1,
               y: 1,
               z: 1,
+              ease: Expo.easeInOut,
+              duration: 0.3,
+            },
+            "<",
+          )
+          .to(
+            (boundingArroundRef.current as THREE.Mesh).position,
+            {
+              y: (boundingArroundRef.current as THREE.Object3D).position.y + 0.5,
               ease: Expo.easeInOut,
               duration: 0.3,
             },
@@ -80,6 +91,18 @@ export const GLBoundingAround = forwardRef<TGLBoundingAroundRef, IGlBoundingArro
             },
             "<",
           )
+          .to(
+            (boundingArroundRef.current as THREE.Mesh).position,
+            {
+              y: (boundingArroundRef.current as THREE.Object3D).position.y - 0.5,
+              ease: Expo.easeInOut,
+              duration: 0.3,
+              onComplete: () => {
+                material.current.visible = false;
+              },
+            },
+            "<",
+          )
           .play();
     };
 
@@ -100,5 +123,5 @@ export const GLBoundingAround = forwardRef<TGLBoundingAroundRef, IGlBoundingArro
         scale={[0.8, 1, 0.8]}
       />
     );
-  },
+  }),
 );

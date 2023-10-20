@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
+import { forwardRef, memo, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import * as THREE from "three";
 import gsap, { Expo } from "gsap";
 
@@ -14,8 +14,8 @@ interface IGLBoundingEffectProps {
   position: THREE.Vector3;
 }
 
-export const GLBoundingEffect = forwardRef<TGLBoundingEffectRef, IGLBoundingEffectProps>(
-  ({ geometry, position }, ref) => {
+export const GLBoundingEffect = memo(
+  forwardRef<TGLBoundingEffectRef, IGLBoundingEffectProps>(({ geometry, position }, ref) => {
     const boundingEffectRef = useRef<THREE.Mesh | any>(null);
     const animateTimeline = useMemo(() => {
       return gsap.timeline();
@@ -133,5 +133,5 @@ export const GLBoundingEffect = forwardRef<TGLBoundingEffectRef, IGLBoundingEffe
         scale={[1, 0, 1]}
       />
     );
-  },
+  }),
 );

@@ -1,7 +1,7 @@
 import { TCambusBuildingData } from "@Types/db.type";
 import { TGLTFReference } from "@Types/three.type";
 import { ThreeEvent, useFrame, useLoader } from "@react-three/fiber";
-import { RefObject, useRef } from "react";
+import { RefObject, memo, useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLBoundingEffect, TGLBoundingEffectRef } from "./GLBoundingEffect";
 import * as THREE from "three";
@@ -18,7 +18,7 @@ interface GLBuildingProps {
   buildingData: TCambusBuildingData;
 }
 
-export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
+export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const buildingUUID = useBuildingStoreInContext().use.building_uuid();
@@ -230,4 +230,4 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
       )}
     </group>
   );
-};
+});

@@ -3,10 +3,11 @@ import { GLBuilding } from "@Scripts/core/Building/components/GLBuilding";
 import { BuildingStoreProvider } from "@Scripts/core/Building/contexts/BuildingStoreContext";
 import { BuildingStoreProxyProvider } from "@Scripts/core/Building/contexts/buildingStoreProxyContext";
 import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInContext";
-import { useFrame } from "@react-three/fiber";
 import { minOfArray } from "@Utils/math.utils";
 import { useSnapshot } from "valtio";
 import { useEffect } from "react";
+import { GLGroundLayer } from "@Scripts/core/GLGroundLayer";
+import { GLGrassLayer } from "@Scripts/core/GLGrassLayer";
 
 export const GLCampus = () => {
   const campusStoreProxy = useCampusStoreProxyInContext();
@@ -31,6 +32,8 @@ export const GLCampus = () => {
 
   return (
     <group>
+      <GLGroundLayer />
+      <GLGrassLayer />
       {campus_buildings_data.map((building_data) => (
         <BuildingStoreProvider key={building_data.name}>
           <BuildingStoreProxyProvider>

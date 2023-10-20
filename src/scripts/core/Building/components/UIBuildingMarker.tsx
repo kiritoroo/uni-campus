@@ -6,10 +6,9 @@ import * as THREE from "three";
 import { Icons } from "@Scripts/ui/Icons";
 import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { randomRand } from "@Utils/math.utils";
-import gsap, { Expo } from "gsap";
 
 interface UIBuildingMarkerProps {
   position: THREE.Vector3;
@@ -17,7 +16,7 @@ interface UIBuildingMarkerProps {
   uses: string;
 }
 
-export const UIBuildingMarker = ({ position, label, uses }: UIBuildingMarkerProps) => {
+export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarkerProps) => {
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const snapCampusStoreProxy = useSnapshot(campusStoreProxy);
@@ -82,7 +81,7 @@ export const UIBuildingMarker = ({ position, label, uses }: UIBuildingMarkerProp
         {
           type: "spring",
           mass: 0.5,
-          stiffness: 100,
+          stiffness: randomRand(50, 100),
           damping: 5,
           onComplete: () => {
             controls.set("state-idle");
@@ -171,4 +170,4 @@ export const UIBuildingMarker = ({ position, label, uses }: UIBuildingMarkerProp
       </Html>
     </group>
   );
-};
+});

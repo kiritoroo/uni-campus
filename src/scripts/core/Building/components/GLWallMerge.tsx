@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
+import { forwardRef, memo, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
@@ -15,8 +15,8 @@ interface IGLWallMergeProps {
   position: THREE.Vector3;
 }
 
-export const GLWallMerge = forwardRef<TGLWallMergeRef, IGLWallMergeProps>(
-  ({ geometry, position }, ref) => {
+export const GLWallMerge = memo(
+  forwardRef<TGLWallMergeRef, IGLWallMergeProps>(({ geometry, position }, ref) => {
     const campusStoreProxy = useCampusStoreProxyInContext();
     const buildingStoreProxy = useBuildingStoreProxyInContext();
     const snapCampusStoreProxy = useSnapshot(campusStoreProxy);
@@ -83,5 +83,5 @@ export const GLWallMerge = forwardRef<TGLWallMergeRef, IGLWallMergeProps>(
         material={material.current}
       />
     );
-  },
+  }),
 );
