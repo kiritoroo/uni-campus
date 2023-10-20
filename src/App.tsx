@@ -1,12 +1,16 @@
+import { CampusScene } from "@Scripts/webgl/scene/CampusScene";
 import { Fragment } from "react";
-import { DraftBuildingStore } from "./core/Building/draft/DraftBuildingStore";
 
 const App = () => {
   console.warn("Re: Render");
 
   return (
     <Fragment>
-      <DraftBuildingStore />
+      <main className="font-dinpro bg-[#F9F4FA] font-normal antialiased">
+        <div className="relative h-screen w-screen">
+          <CampusScene />
+        </div>
+      </main>
     </Fragment>
   );
 };
