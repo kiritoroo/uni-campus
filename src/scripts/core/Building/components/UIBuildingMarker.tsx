@@ -25,15 +25,15 @@ export const UIBuildingMarker = ({ position, label, uses }: UIBuildingMarkerProp
   const buildingUUID = useBuildingStoreInContext().use.building_uuid();
 
   const [htmlRefForce, setHtmlRefForce] = useState<HTMLDivElement | null>(null);
+  const [, animate] = useAnimate();
   const controls = useAnimationControls();
   const variants: Variants = {
     "state-hide": {
-      y: "0",
       scale: 0,
       transition: { type: "spring", mass: 0.5, stiffness: randomRand(50, 100), damping: 10 },
     },
     "state-idle": {
-      y: "0",
+      y: 0,
       scale: 1,
       transition: { type: "spring", mass: 0.5, stiffness: 100, damping: 10 },
     },
@@ -44,7 +44,7 @@ export const UIBuildingMarker = ({ position, label, uses }: UIBuildingMarkerProp
     },
     "state-picked": {
       y: "-15px",
-      scale: 1.15,
+      scale: [0.8, 1.2],
       transition: { type: "spring", mass: 0.5, stiffness: 100, damping: 5 },
     },
   };
@@ -76,22 +76,41 @@ export const UIBuildingMarker = ({ position, label, uses }: UIBuildingMarkerProp
     // Controls cannot first animate because ref is undefined
     // Force solution & animate with gsap
     if (htmlRefForce) {
-      gsap
-        .to(htmlRefForce, {
-          scale: 1,
-          duration: 0.4 + randomRand(0, 0.2),
-          ease: Expo.easeInOut,
-          onStart: () => {
+      animate(
+        htmlRefForce,
+        { scale: 1 },
+        {
+          type: "spring",
+          mass: 0.5,
+          stiffness: 100,
+          damping: 5,
+          onComplete: () => {
             controls.set("state-idle");
           },
-        })
-        .play();
+        },
+      );
+      // gsap
+      //   .to(htmlRefForce, {
+      //     scale: 1,
+      //     duration: 0.4 + randomRand(0, 0.2),
+      //     ease: Expo.easeInOut,
+      //     onStart: () => {
+      //       controls.set("state-idle");
+      //     },
+      //   })
+      //   .play();
     }
   }, [htmlRefForce]);
 
   return (
     <group position={position}>
-      <Html distanceFactor={200} position={[0, 0, 0]} center className="pointer-events-none">
+      <Html
+        distanceFactor={200}
+        position={[0, 0, 0]}
+        // occlude="raycast"
+        center
+        className="pointer-events-none"
+      >
         <motion.div
           ref={(el) => {
             if (el) {
@@ -109,7 +128,7 @@ export const UIBuildingMarker = ({ position, label, uses }: UIBuildingMarkerProp
         >
           <div
             className={cn(
-              "relative z-[2] w-max max-w-[400px] rounded-[5px] bg-[#404A57] px-4 py-2 text-[#FFFFFF]",
+              "relative z-[2] w-max max-w-[400px] rounded-[10px] bg-[#404A57] px-5 py-3 text-[#FFFFFF]",
               {
                 "bg-[#365AAB] transition-colors duration-300":
                   snapBuildingStoreProxy.isPointerEnter || snapBuildingStoreProxy.isPicked,
@@ -124,7 +143,7 @@ export const UIBuildingMarker = ({ position, label, uses }: UIBuildingMarkerProp
               </div>
             </div>
 
-            <h2 className="text-[16px] font-medium">{label}</h2>
+            <h2 className="text-[16px] font-medium uppercase">{label}</h2>
             {(snapBuildingStoreProxy.isPointerEnter || snapBuildingStoreProxy.isPicked) && (
               <motion.p
                 initial={{ opacity: 0 }}

@@ -5,11 +5,14 @@ import { BuildingStoreProxyProvider } from "@Scripts/core/Building/contexts/buil
 import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInContext";
 import { useFrame } from "@react-three/fiber";
 import { minOfArray } from "@Utils/math.utils";
+import { useSnapshot } from "valtio";
+import { useEffect } from "react";
 
 export const GLCampus = () => {
   const campusStoreProxy = useCampusStoreProxyInContext();
+  const snapCampusStoreProxy = useSnapshot(campusStoreProxy);
 
-  useFrame(() => {
+  useEffect(() => {
     if (campusStoreProxy.buildingsPointerEnter.length > 0) {
       const nearestBuilding = minOfArray(
         campusStoreProxy.buildingsPointerEnter,
@@ -24,7 +27,7 @@ export const GLCampus = () => {
     ) {
       campusStoreProxy.buildingPointerEnterNearest = null;
     }
-  });
+  }, [snapCampusStoreProxy.buildingsPointerEnter]);
 
   return (
     <group>

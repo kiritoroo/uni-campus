@@ -128,7 +128,7 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
     document.body.style.cursor = "pointer";
   };
 
-  const handleOnPointerDownBuilding = () => {
+  const handleOnPointerClickBuilding = () => {
     if (buildingStoreProxy.isPointerEnter) {
       campusStoreProxy.buildingPicked = {
         buidlingUUID: buildingUUID,
@@ -204,7 +204,7 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
           onPointerEnter={handleOnPointerEnterBuilding}
           onPointerLeave={handleOnPointerLeaveBuilding}
           onPointerMove={handleOnPointerMoveBuilding}
-          onPointerDown={handleOnPointerDownBuilding}
+          onClick={handleOnPointerClickBuilding}
         />
       )}
       {objBoundingFxProperty && (
