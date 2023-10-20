@@ -7,6 +7,7 @@ export interface IBuildingStore {
 
 export interface IBuildingStoreProxy {
   isPointerEnter: boolean;
+  isPicked: boolean;
 }
 
 export type IBuildingStoreContext = StoreApi<IBuildingStore>;

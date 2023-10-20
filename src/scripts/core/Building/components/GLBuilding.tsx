@@ -12,25 +12,25 @@ import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyIn
 import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
 import { useSoundFx } from "@Global/hooks/useSoundFx";
+import { GLWallMerge, TGLWallMergeRef } from "./GLWallMerge";
 
 interface GLBuildingProps {
   buildingData: TCambusBuildingData;
 }
 
 export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
-  const gltf: TGLTFReference = useLoader(GLTFLoader, buildingData.model_url);
-  const model = gltf.scenes[0];
-
-  const playSoundFx = useSoundFx();
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const buildingUUID = useBuildingStoreInContext().use.building_uuid();
+  const playSoundFx = useSoundFx();
 
-  const objWallProperty: {
-    ref: RefObject<THREE.Mesh | any | null>;
+  const gltf: TGLTFReference = useLoader(GLTFLoader, buildingData.model_url);
+  const model = gltf.scenes[0];
+
+  const objWallMergeProperty: {
+    ref: RefObject<TGLWallMergeRef>;
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
-    material: THREE.Material;
   } | null = (() => {
     const obj = model.getObjectByName("wall-merge");
     if (!obj || !(obj instanceof THREE.Mesh)) return null;
@@ -39,10 +39,6 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
       ref: useRef(null),
       geometry: obj.geometry,
       position: obj.position,
-      material: new THREE.MeshStandardMaterial({
-        color: new THREE.Color(0xffffff),
-        side: THREE.DoubleSide,
-      }),
     };
   })();
 
@@ -107,21 +103,9 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
     };
   })();
 
-  const handleOnpointerEnterBuildingIsNearest = () => {
-    buildingStoreProxy.isPointerEnter = true;
-    playSoundFx.mouseover1();
-    objBoundingFxProperty?.ref.current?.onPointerEnterBuilding();
-    objBoundingArroundProperty?.ref.current?.onPointerEnterBuilding();
-  };
-
-  const handleOnpointerLeaveBuildingIsNearest = () => {
-    buildingStoreProxy.isPointerEnter = false;
-    objBoundingFxProperty?.ref.current?.onPointerLeaveBuilding();
-    objBoundingArroundProperty?.ref.current?.onPointerLeaveBuilding();
-  };
-
   const handleOnPointerEnterBuilding = _.throttle(
     (e: ThreeEvent<PointerEvent>) => {
+      if (campusStoreProxy.buildingPicked) return;
       document.body.style.cursor = "pointer";
       campusStoreProxy.buildingsPointerEnter.push({
         buildingUUID: buildingUUID,
@@ -133,6 +117,7 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
   );
 
   const handleOnPointerLeaveBuilding = () => {
+    if (campusStoreProxy.buildingPicked) return;
     document.body.style.cursor = "auto";
     campusStoreProxy.buildingsPointerEnter = campusStoreProxy.buildingsPointerEnter.filter(
       (data) => data.buildingUUID !== buildingUUID,
@@ -143,29 +128,71 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
     document.body.style.cursor = "pointer";
   };
 
+  const handleOnPointerDownBuilding = () => {
+    if (buildingStoreProxy.isPointerEnter) {
+      campusStoreProxy.buildingPicked = {
+        buidlingUUID: buildingUUID,
+      };
+    }
+  };
+
+  const handleOnPointerEnterBuildingIsNearest = () => {
+    buildingStoreProxy.isPointerEnter = true;
+    playSoundFx.mouseover1();
+    objBoundingFxProperty?.ref.current?.onPointerEnterBuilding();
+    objBoundingArroundProperty?.ref.current?.onPointerEnterBuilding();
+  };
+
+  const handleOnPointerLeaveBuildingIsNearest = () => {
+    buildingStoreProxy.isPointerEnter = false;
+    objBoundingFxProperty?.ref.current?.onPointerLeaveBuilding();
+    objBoundingArroundProperty?.ref.current?.onPointerLeaveBuilding();
+  };
+
+  const handleOnBuidingPicking = () => {
+    buildingStoreProxy.isPicked = true;
+    playSoundFx.mouseover1();
+  };
+
+  const handleOnBuidingUnPicking = () => {
+    buildingStoreProxy.isPicked = false;
+  };
+
   useFrame(() => {
     if (
       campusStoreProxy.buildingPointerEnterNearest?.buildingUUID === buildingUUID &&
       !buildingStoreProxy.isPointerEnter
     ) {
-      handleOnpointerEnterBuildingIsNearest();
+      handleOnPointerEnterBuildingIsNearest();
     } else if (
       (campusStoreProxy.buildingPointerEnterNearest === null ||
         campusStoreProxy.buildingPointerEnterNearest?.buildingUUID !== buildingUUID) &&
       buildingStoreProxy.isPointerEnter
     ) {
-      handleOnpointerLeaveBuildingIsNearest();
+      handleOnPointerLeaveBuildingIsNearest();
+    }
+
+    if (
+      campusStoreProxy.buildingPicked?.buidlingUUID === buildingUUID &&
+      !buildingStoreProxy.isPicked
+    ) {
+      handleOnBuidingPicking();
+    } else if (
+      (campusStoreProxy.buildingPicked === null ||
+        campusStoreProxy.buildingPicked?.buidlingUUID !== buildingUUID) &&
+      buildingStoreProxy.isPicked
+    ) {
+      handleOnBuidingUnPicking();
     }
   });
 
   return (
     <group>
-      {objWallProperty && (
-        <mesh
-          ref={objWallProperty?.ref}
-          geometry={objWallProperty?.geometry}
-          position={objWallProperty?.position}
-          material={objWallProperty?.material}
+      {objWallMergeProperty && (
+        <GLWallMerge
+          ref={objWallMergeProperty?.ref}
+          geometry={objWallMergeProperty?.geometry}
+          position={objWallMergeProperty?.position}
         />
       )}
       {objBoundingBoxProperty && (
@@ -177,6 +204,7 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
           onPointerEnter={handleOnPointerEnterBuilding}
           onPointerLeave={handleOnPointerLeaveBuilding}
           onPointerMove={handleOnPointerMoveBuilding}
+          onPointerDown={handleOnPointerDownBuilding}
         />
       )}
       {objBoundingFxProperty && (

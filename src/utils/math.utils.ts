@@ -19,3 +19,10 @@ export const minOfArray = <T>(arr: T[], compareProperty: (item: T) => number): T
     return propertyValue < compareProperty(min) ? item : min;
   }, arr[0]);
 };
+
+export const randomRand = (min: number, max: number): number => {
+  if (min >= max) {
+    throw new Error("Min must be less than Max");
+  }
+  return Math.random() * (max - min) + min;
+};

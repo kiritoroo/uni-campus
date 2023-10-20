@@ -18,7 +18,10 @@ export const GLCampus = () => {
       campusStoreProxy.buildingPointerEnterNearest = {
         buildingUUID: nearestBuilding.buildingUUID,
       };
-    } else {
+    } else if (
+      campusStoreProxy.buildingsPointerEnter.length === 0 &&
+      campusStoreProxy.buildingPointerEnterNearest !== null
+    ) {
       campusStoreProxy.buildingPointerEnterNearest = null;
     }
   });
