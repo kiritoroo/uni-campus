@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { BuildingStoreProvider } from "../contexts/BuildingStoreContext";
 import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 
-const Child = ({ id }: { id: number }) => {
+const Child = () => {
   const buildingStore = useBuildingStoreInContext();
   const buildingId = buildingStore.use.building_uuid();
-  const setBuildingId = buildingStore.use.set_building_uuid();
+  // const setBuildingId = buildingStore.use.set_building_uuid();
 
   useEffect(() => {
     // setBuildingId(`test-building-id: ${id}`)
@@ -20,7 +20,7 @@ const Parent = () => {
   return (
     <BuildingStoreProvider>
       <div>TestBuildingStore {id}</div>
-      <Child id={id} />
+      <Child />
     </BuildingStoreProvider>
   );
 };

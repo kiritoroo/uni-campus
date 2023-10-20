@@ -2,7 +2,6 @@ import { useFrame } from "@react-three/fiber";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import * as THREE from "three";
 import gsap, { Expo } from "gsap";
-import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 
 export type TGLBoundingEffectRef = {
   object: THREE.Mesh;
@@ -17,7 +16,6 @@ interface IGLBoundingEffectProps {
 
 export const GLBoundingEffect = forwardRef<TGLBoundingEffectRef, IGLBoundingEffectProps>(
   ({ geometry, position }, ref) => {
-    const buildingStoreProxy = useBuildingStoreProxyInContext();
     const boundingEffectRef = useRef<THREE.Mesh | any>(null);
     const animateTimeline = useMemo(() => {
       return gsap.timeline();

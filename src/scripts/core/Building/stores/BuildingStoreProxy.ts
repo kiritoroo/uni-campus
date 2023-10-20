@@ -3,6 +3,6 @@ import { IBuildingStoreProxy } from "../types";
 
 export const BuildingStoreProxy = () => {
   return proxy<IBuildingStoreProxy>({
-    isHover: false,
+    isPointerEnter: false,
   });
 };

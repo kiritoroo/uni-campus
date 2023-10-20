@@ -1,11 +1,10 @@
 import { TCambusBuilding } from "@Types/db.type";
 import { TGLTFReference } from "@Types/three.type";
 import { ThreeEvent, useFrame, useLoader } from "@react-three/fiber";
-import { RefObject, useEffect, useRef } from "react";
+import { RefObject, useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLBoundingEffect, TGLBoundingEffectRef } from "./GLBoundingEffect";
 import * as THREE from "three";
-import { useSnapshot } from "valtio";
 import { GLBoundingAround, TGLBoundingAroundRef } from "./GLBoundingAround";
 import { UIBuildingMarker } from "./UIBuildingMarker";
 import _ from "lodash";

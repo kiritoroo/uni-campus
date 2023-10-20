@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 export interface ICampusStoreProxy {
   buildingsPointerEnter: {
     buildingUUID: string;
