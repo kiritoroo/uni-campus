@@ -1,4 +1,4 @@
-import { TCambusBuilding } from "@Types/db.type";
+import { TCambusBuildingData } from "@Types/db.type";
 import { TGLTFReference } from "@Types/three.type";
 import { ThreeEvent, useFrame, useLoader } from "@react-three/fiber";
 import { RefObject, useRef } from "react";
@@ -11,15 +11,17 @@ import _ from "lodash";
 import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
+import { useSoundFx } from "@Global/hooks/useSoundFx";
 
 interface GLBuildingProps {
-  buildingData: TCambusBuilding;
+  buildingData: TCambusBuildingData;
 }
 
 export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
   const gltf: TGLTFReference = useLoader(GLTFLoader, buildingData.model_url);
   const model = gltf.scenes[0];
 
+  const playSoundFx = useSoundFx();
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const buildingUUID = useBuildingStoreInContext().use.building_uuid();
@@ -107,6 +109,7 @@ export const GLBuilding = ({ buildingData }: GLBuildingProps) => {
 
   const handleOnpointerEnterBuildingIsNearest = () => {
     buildingStoreProxy.isPointerEnter = true;
+    playSoundFx.mouseover1();
     objBoundingFxProperty?.ref.current?.onPointerEnterBuilding();
     objBoundingArroundProperty?.ref.current?.onPointerEnterBuilding();
   };
