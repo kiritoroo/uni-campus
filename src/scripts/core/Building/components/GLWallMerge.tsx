@@ -57,8 +57,11 @@ export const GLWallMerge = memo(
         // .to(
         //   material.current,
         //   {
-        //     opacity: 0.5,
+        //     opacity: 0,
         //     ease: Expo.easeInOut,
+        //     onComplete: () => {
+        //       (wallMergeRef.current as THREE.Mesh).visible = false;
+        //     },
         //   },
         //   "<",
         // )

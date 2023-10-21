@@ -134,7 +134,6 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
         lookAtTarget.current.multiplyScalar(1);
 
         lookAtTarget.current.copy(positionTarget.current).add(directionTarget.current);
-        campusCamera.lookAt(lookAtTarget.current);
         campusCamera.matrix.lookAt(
           campusCamera.position,
           lookAtTarget.current,

@@ -1,4 +1,4 @@
-import { useFrame, useLoader } from "@react-three/fiber";
+import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { GLTFLoader, Line2 } from "three-stdlib";
 import * as THREE from "three";
 import { RefObject, memo, useRef } from "react";
@@ -10,14 +10,17 @@ import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInCont
 import { useSnapshot } from "valtio";
 
 export const GLBoundingCurve = memo(() => {
-  const SCALE_OFFSET = useRef<number>(1.5);
+  const SCALE_FOLLOW_OFFSET = useRef<number>(1.5);
+  const SCALE_LOOK_AT_OFFSET = useRef<number>(0.9);
+
   const campusStoreProxy = useCampusStoreProxyInContext();
   const { buildingPicked } = useSnapshot(campusStoreProxy);
-
   const campusCamera = useCampusStoreInContext().use.campusCamera();
 
   const gltf: TGLTFReference = useLoader(GLTFLoader, assets.models.CAMPUS_BOUNDING_CURVE_PATH);
   const model = gltf.scenes[0];
+
+  const { controls } = useThree();
 
   const positionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const binormalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
@@ -64,10 +67,10 @@ export const GLBoundingCurve = memo(() => {
     if (!objBoundingCurveProperty || !campusCamera) return;
 
     const time = Date.now();
-    const looptime = 30 * 1000;
+    const looptime = 50 * 1000;
     const t = (time % looptime) / looptime;
     objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(t, positionTarget.current);
-    positionTarget.current.multiplyScalar(SCALE_OFFSET.current);
+    positionTarget.current.multiplyScalar(SCALE_FOLLOW_OFFSET.current);
 
     const segments = objBoundingCurveProperty.tubeGeometry.tangents.length;
     const pickt = t * segments;
@@ -85,10 +88,23 @@ export const GLBoundingCurve = memo(() => {
     objBoundingCurveProperty.tubeGeometry.parameters.path.getTangentAt(t, directionTarget.current);
 
     normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
-    positionTarget.current.add(normalTarget.current.clone().multiplyScalar(SCALE_OFFSET.current));
+    positionTarget.current.add(
+      normalTarget.current.clone().multiplyScalar(SCALE_FOLLOW_OFFSET.current),
+    );
 
     campusCamera.position.lerp(positionTarget.current, 0.1);
-    campusCamera.lookAt(0, 0, 0);
+
+    objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(
+      (t + 50 / objBoundingCurveProperty.tubeGeometry.parameters.path.getLength()) % 1,
+      lookAtTarget.current,
+    );
+    lookAtTarget.current.multiplyScalar(SCALE_LOOK_AT_OFFSET.current);
+
+    if (controls) {
+      (controls as any).target.lerp(lookAtTarget.current, 0.1);
+      campusCamera.lookAt((controls as any).target);
+      (controls as any).update();
+    }
   };
 
   useFrame(() => {
@@ -108,7 +124,12 @@ export const GLBoundingCurve = memo(() => {
         />
       )}
       {objBoundingCurveProperty && (
-        <mesh scale={SCALE_OFFSET.current} geometry={objBoundingCurveProperty.tubeGeometry}>
+        <mesh scale={SCALE_FOLLOW_OFFSET.current} geometry={objBoundingCurveProperty.tubeGeometry}>
+          <meshBasicMaterial color="#54d184" />
+        </mesh>
+      )}
+      {objBoundingCurveProperty && (
+        <mesh scale={SCALE_LOOK_AT_OFFSET.current} geometry={objBoundingCurveProperty.tubeGeometry}>
           <meshBasicMaterial color="#54d184" />
         </mesh>
       )}
