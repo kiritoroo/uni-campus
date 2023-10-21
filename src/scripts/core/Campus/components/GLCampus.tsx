@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { GLGroundLayer } from "@Scripts/core/Campus/components/GLGroundLayer";
 import { GLGrassLayer } from "@Scripts/core/Campus/components/GLGrassLayer";
 import { GLBoundingCurve } from "./GLBoundingCurve";
-import { GlCampusCamera } from "./GlCampusCamera";
+import { GLCampusCamera } from "./GLCampusCamera";
 
 export const GLCampus = () => {
   const campusStoreProxy = useCampusStoreProxyInContext();
@@ -37,7 +37,7 @@ export const GLCampus = () => {
       <GLGroundLayer />
       <GLGrassLayer />
       <GLBoundingCurve />
-      <GlCampusCamera />
+      <GLCampusCamera />
       {campus_buildings_data.map((building_data) => (
         <BuildingStoreProvider key={building_data.name}>
           <BuildingStoreProxyProvider>

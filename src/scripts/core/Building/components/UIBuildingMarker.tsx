@@ -30,6 +30,9 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
     "state-hide": {
       scale: 0,
       transition: { type: "spring", mass: 0.5, stiffness: randomRand(50, 100), damping: 10 },
+      transitionEnd: {
+        display: "none",
+      },
     },
     "state-idle": {
       y: 0,
@@ -43,8 +46,11 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
     },
     "state-picked": {
       y: "-15px",
-      scale: [0.8, 1.2],
-      transition: { type: "spring", mass: 0.5, stiffness: 100, damping: 5 },
+      scale: 0,
+      transition: { delay: 0.5, type: "spring", mass: 0.5, stiffness: 100, damping: 5 },
+      transitionEnd: {
+        display: "none",
+      },
     },
   });
 
@@ -73,6 +79,7 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
           stiffness: randomRand(50, 100),
           damping: randomRand(5, 10),
           delay: randomRand(0.0, 0.2),
+          onPlay: () => {},
           onComplete: () => {
             controls.set("state-idle");
           },
@@ -107,7 +114,9 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
             }
           }}
           variants={variants.current}
-          initial={"state-hide"}
+          initial={{
+            scale: 0,
+          }}
           animate={controls}
           style={{
             originX: "50%",

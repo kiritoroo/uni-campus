@@ -25,11 +25,14 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
+  const setBuildingObject = useBuildingStoreInContext().use.setBuildingObject();
   const playSoundFx = useSoundFx();
 
   const gltf: TGLTFReference = useLoader(GLTFLoader, buildingData.model_url);
   const model = gltf.scenes[0];
   const { camera } = useThree();
+
+  const buildngRef = useRef<THREE.Group | any>(null);
 
   const objWallMergeProperty: {
     ref: RefObject<TGLWallMergeRef>;
@@ -191,11 +194,14 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   });
 
   useEffect(() => {
+    if (buildngRef.current) {
+      setBuildingObject(buildngRef.current);
+    }
     // objFocusCurveProperty && scene.add(objFocusCurveProperty.line);
   }, []);
 
   return (
-    <group>
+    <group ref={buildngRef}>
       {objWallMergeProperty && (
         <GLWallMerge
           ref={objWallMergeProperty?.ref}

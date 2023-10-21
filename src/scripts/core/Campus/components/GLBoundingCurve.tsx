@@ -6,8 +6,13 @@ import { TGLTFReference } from "@Types/three.type";
 import { assets } from "@Assets/assets";
 import { Line } from "@react-three/drei";
 import { useCampusStoreInContext } from "../hooks/useCampusStoreInContext";
+import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInContext";
+import { useSnapshot } from "valtio";
 
 export const GLBoundingCurve = memo(() => {
+  const campusStoreProxy = useCampusStoreProxyInContext();
+  const { buildingPicked } = useSnapshot(campusStoreProxy);
+
   const campusCamera = useCampusStoreInContext().use.campusCamera();
 
   const gltf: TGLTFReference = useLoader(GLTFLoader, assets.models.CAMPUS_BOUNDING_CURVE_PATH);
@@ -61,7 +66,7 @@ export const GLBoundingCurve = memo(() => {
     const looptime = 30 * 1000;
     const t = (time % looptime) / looptime;
     objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(t, positionTarget.current);
-    positionTarget.current.multiplyScalar(1);
+    positionTarget.current.multiplyScalar(1.5);
 
     const segments = objBoundingCurveProperty.tubeGeometry.tangents.length;
     const pickt = t * segments;
@@ -86,7 +91,9 @@ export const GLBoundingCurve = memo(() => {
   };
 
   useFrame(() => {
-    handleUpdateCameraFollowCurve();
+    if (buildingPicked === null) {
+      handleUpdateCameraFollowCurve();
+    }
   });
 
   return (

@@ -1,25 +1,43 @@
 import { useCampusStoreInContext } from "@Scripts/core/Campus/hooks/useCampusStoreInContext";
-import { randomRand } from "@Utils/math.utils";
+import { clamp, randomRand } from "@Utils/math.utils";
 import { Line } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { RefObject, memo, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
+import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
+import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
+import { useSnapshot } from "valtio";
+import gsap, { Expo, Power4, Linear, Quart, Power2 } from "gsap";
 
 interface GLFocusCurveProps {
   focusPosition: THREE.Vector3;
 }
 
 export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
+  const buildingObject = useBuildingStoreInContext().use.buildingObject();
+  const buildingStoreProxy = useBuildingStoreProxyInContext();
+  const { isPicked } = useSnapshot(buildingStoreProxy);
+
   const campusCamera = useCampusStoreInContext().use.campusCamera();
-  const { scene } = useThree();
+  const { scene, controls } = useThree();
+
+  const progress = useRef({
+    v: 0,
+  });
+  const positionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const binormalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const directionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const normalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const lookAtTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const centerTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const boxTarget = useRef<THREE.Box3>(new THREE.Box3());
 
   const objFocusCurveProperty = useMemo<{
     curve: THREE.CubicBezierCurve3;
     points: THREE.Vector3[];
   }>(() => {
     const curve = new THREE.CubicBezierCurve3();
-    curve.v0.copy(focusPosition);
-
+    curve.v3.copy(focusPosition);
     const points = curve.getPoints(200);
 
     return {
@@ -37,27 +55,113 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
     );
   }, []);
 
-  const curveV1Offset = useMemo<THREE.Vector3>(() => {
-    return new THREE.Vector3(randomRand(-50, 50), 0, randomRand(-50, 50));
+  const curveVOffset = useMemo<THREE.Vector3>(() => {
+    return new THREE.Vector3(randomRand(-100, 100), 0, randomRand(-100, 100));
   }, []);
 
   const handleUpdateCurveFollowCamera = () => {
-    if (!campusCamera) return;
+    if (!campusCamera || isPicked) return;
     const cameraPosition = campusCamera.position.clone();
-    objFocusCurveProperty.curve.v1 = new THREE.Vector3(
-      (focusPosition.x + campusCamera.position.x) / 2 + curveV1Offset.x,
-      focusPosition.y,
-      (focusPosition.z + campusCamera.position.z) / 2 + curveV1Offset.y,
-    );
-    (objFocusCurveProperty.curve.v2 = new THREE.Vector3(
+    objFocusCurveProperty.curve.v0.copy(cameraPosition);
+    (objFocusCurveProperty.curve.v1 = new THREE.Vector3(
       (focusPosition.x + campusCamera.position.x) / 2,
       campusCamera.position.y,
       (focusPosition.z + campusCamera.position.z) / 2,
     )),
-      objFocusCurveProperty.curve.v3.copy(cameraPosition);
+      (objFocusCurveProperty.curve.v2 = new THREE.Vector3(
+        (focusPosition.x + campusCamera.position.x) / 2 + curveVOffset.x,
+        focusPosition.y,
+        (focusPosition.z + campusCamera.position.z) / 2 + curveVOffset.y,
+      ));
     objFocusCurveProperty.curve.updateArcLengths();
     objFocusCurveProperty.points = objFocusCurveProperty.curve.getPoints(200);
     objLine.geometry.setFromPoints(objFocusCurveProperty.points);
+  };
+
+  const handleUpdateCameraFollowCurve = () => {
+    if (!campusCamera) return;
+    const tubeGeometry = new THREE.TubeGeometry(objFocusCurveProperty.curve, 200, 1, 15, false);
+
+    scene.add(
+      new THREE.Mesh(
+        tubeGeometry,
+        new THREE.MeshBasicMaterial({
+          color: "#54d184",
+        }),
+      ),
+    );
+
+    gsap.to(progress.current, {
+      v: 0.8,
+      duration: 1.5,
+      ease: Power2.easeInOut,
+      onStart: () => {
+        // campusCamera.lookAt(focusPosition);
+      },
+      onUpdate: () => {
+        tubeGeometry.parameters.path.getPointAt(
+          clamp(progress.current.v, 0, 1),
+          positionTarget.current,
+        );
+        positionTarget.current.multiplyScalar(1);
+
+        const segments = tubeGeometry.tangents.length;
+        const pickt = clamp(progress.current.v, 0, 1) * segments;
+        const pick = Math.floor(pickt);
+        const pickNext = (pick + 1) % segments;
+
+        binormalTarget.current.subVectors(
+          tubeGeometry.binormals[pickNext],
+          tubeGeometry.binormals[pick],
+        );
+        binormalTarget.current.multiplyScalar(pickt - pick).add(tubeGeometry.binormals[pick]);
+
+        tubeGeometry.parameters.path.getTangentAt(
+          clamp(progress.current.v, 0, 1),
+          directionTarget.current,
+        );
+
+        normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
+        positionTarget.current.add(normalTarget.current.clone().multiplyScalar(1));
+
+        campusCamera.position.lerp(positionTarget.current, 0.5);
+
+        tubeGeometry.parameters.path.getPointAt(
+          (clamp(progress.current.v, 0, 1) + 2 / tubeGeometry.parameters.path.getLength()) % 1,
+          lookAtTarget.current,
+        );
+        lookAtTarget.current.multiplyScalar(1);
+
+        lookAtTarget.current.copy(positionTarget.current).add(directionTarget.current);
+        campusCamera.lookAt(lookAtTarget.current);
+        campusCamera.matrix.lookAt(
+          campusCamera.position,
+          lookAtTarget.current,
+          normalTarget.current,
+        );
+        campusCamera.quaternion.setFromRotationMatrix(campusCamera.matrix);
+      },
+    });
+  };
+
+  const handleUpdateControlsFollowObject = () => {
+    if (buildingObject && controls) {
+      boxTarget.current.makeEmpty();
+      boxTarget.current.expandByObject(buildingObject);
+      // boxTarget.current.getSize(sizeTarget.current);
+      boxTarget.current.getCenter(centerTarget.current);
+
+      gsap.to((controls as any).target, {
+        x: centerTarget.current.x,
+        y: centerTarget.current.y,
+        z: centerTarget.current.z,
+        duration: 1.5,
+        ease: Power2.easeInOut,
+        onUpdate: () => {
+          (controls as any).update();
+        },
+      });
+    }
   };
 
   useEffect(() => {
@@ -65,6 +169,13 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
       scene.add(objLine);
     }
   }, [campusCamera]);
+
+  useEffect(() => {
+    if (isPicked) {
+      handleUpdateCameraFollowCurve();
+      handleUpdateControlsFollowObject();
+    }
+  }, [isPicked]);
 
   useFrame(() => {
     handleUpdateCurveFollowCamera();

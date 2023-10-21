@@ -1,3 +1,12 @@
+export const clamp = (value: number, min: number, max: number): number => {
+  if (value < min) {
+    return min;
+  } else if (value > max) {
+    return max;
+  }
+  return value;
+};
+
 export const maxOfArray = <T>(arr: T[], compareProperty: (item: T) => number): T => {
   if (arr.length === 0) {
     throw new Error("Array is empty");

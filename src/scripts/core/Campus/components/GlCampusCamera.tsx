@@ -4,7 +4,7 @@ import { memo, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useCampusStoreInContext } from "../hooks/useCampusStoreInContext";
 
-export const GlCampusCamera = memo(() => {
+export const GLCampusCamera = memo(() => {
   const setCampusCameraStore = useCampusStoreInContext().use.setCampusCamera();
 
   const cameraRef = useRef<THREE.PerspectiveCamera | any>(null);
@@ -33,7 +33,7 @@ export const GlCampusCamera = memo(() => {
         <sphereGeometry args={[5]} />
         <meshBasicMaterial color={new THREE.Color(0xf50359)} />
       </mesh>
-      <PerspectiveCamera makeDefault={false} ref={cameraRef} near={0.1} far={1200} fov={75} />
+      <PerspectiveCamera makeDefault={false} ref={cameraRef} near={0.1} far={1200} fov={45} />
     </group>
   );
 });
