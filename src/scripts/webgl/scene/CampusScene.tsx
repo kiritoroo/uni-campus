@@ -8,6 +8,7 @@ import { Skydom } from "@Scripts/webgl/common/Skydom";
 import { Camera } from "@Scripts/webgl/common/Camera";
 import { Perf } from "r3f-perf";
 import { CampusStoreProxyProvider } from "@Scripts/core/Campus/contexts/CampusStoreProxyContext";
+import { CampusStoreProvider } from "@Scripts/core/Campus/contexts/CampusStoreContext";
 
 export const CampusScene = () => {
   return (
@@ -29,9 +30,11 @@ export const CampusScene = () => {
       <Camera />
       <OrbitControls makeDefault enableDamping />
 
-      <CampusStoreProxyProvider>
-        <GLCampus />
-      </CampusStoreProxyProvider>
+      <CampusStoreProvider>
+        <CampusStoreProxyProvider>
+          <GLCampus />
+        </CampusStoreProxyProvider>
+      </CampusStoreProvider>
     </Canvas>
   );
 };

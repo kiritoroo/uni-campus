@@ -19,9 +19,9 @@ export const GLWallMerge = memo(
   forwardRef<TGLWallMergeRef, IGLWallMergeProps>(({ geometry, position }, ref) => {
     const campusStoreProxy = useCampusStoreProxyInContext();
     const buildingStoreProxy = useBuildingStoreProxyInContext();
-    const snapCampusStoreProxy = useSnapshot(campusStoreProxy);
-    const snapBuildingStoreProxy = useSnapshot(buildingStoreProxy);
-    const buildingUUID = useBuildingStoreInContext().use.building_uuid();
+    const { buildingPicked } = useSnapshot(campusStoreProxy);
+    const { isPicked } = useSnapshot(buildingStoreProxy);
+    const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
 
     const wallMergeRef = useRef<THREE.Mesh | any>(null);
     const animateTimeline = useMemo(() => {
@@ -66,14 +66,10 @@ export const GLWallMerge = memo(
     };
 
     useEffect(() => {
-      if (
-        snapCampusStoreProxy.buildingPicked !== null &&
-        snapCampusStoreProxy.buildingPicked.buidlingUUID !== buildingUUID &&
-        !snapBuildingStoreProxy.isPicked
-      ) {
+      if (buildingPicked !== null && buildingPicked.buidlingUUID !== buildingUUID && !isPicked) {
         handleIsBuildingNotPicked();
       }
-    }, [snapCampusStoreProxy.buildingPicked, snapBuildingStoreProxy.isPicked]);
+    }, [buildingPicked, isPicked]);
 
     return (
       <mesh
@@ -81,6 +77,8 @@ export const GLWallMerge = memo(
         geometry={geometry}
         position={position}
         material={material.current}
+        castShadow
+        receiveShadow
       />
     );
   }),

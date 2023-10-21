@@ -6,8 +6,10 @@ import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInCont
 import { minOfArray } from "@Utils/math.utils";
 import { useSnapshot } from "valtio";
 import { useEffect } from "react";
-import { GLGroundLayer } from "@Scripts/core/GLGroundLayer";
-import { GLGrassLayer } from "@Scripts/core/GLGrassLayer";
+import { GLGroundLayer } from "@Scripts/core/Campus/components/GLGroundLayer";
+import { GLGrassLayer } from "@Scripts/core/Campus/components/GLGrassLayer";
+import { GLBoundingCurve } from "./GLBoundingCurve";
+import { GlCampusCamera } from "./GlCampusCamera";
 
 export const GLCampus = () => {
   const campusStoreProxy = useCampusStoreProxyInContext();
@@ -34,6 +36,8 @@ export const GLCampus = () => {
     <group>
       <GLGroundLayer />
       <GLGrassLayer />
+      <GLBoundingCurve />
+      <GlCampusCamera />
       {campus_buildings_data.map((building_data) => (
         <BuildingStoreProvider key={building_data.name}>
           <BuildingStoreProxyProvider>

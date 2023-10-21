@@ -1,8 +1,8 @@
 import { StoreApi } from "zustand";
 
 export interface IBuildingStore {
-  building_uuid: string;
-  set_building_uuid: (id: string) => void;
+  buildingUUID: string;
+  setBuildingUUID: (id: string) => void;
 }
 
 export interface IBuildingStoreProxy {

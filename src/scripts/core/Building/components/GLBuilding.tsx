@@ -23,12 +23,12 @@ interface GLBuildingProps {
 export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
-  const buildingUUID = useBuildingStoreInContext().use.building_uuid();
+  const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
   const playSoundFx = useSoundFx();
 
   const gltf: TGLTFReference = useLoader(GLTFLoader, buildingData.model_url);
   const model = gltf.scenes[0];
-  const { camera, scene } = useThree();
+  const { camera } = useThree();
 
   const objWallMergeProperty: {
     ref: RefObject<TGLWallMergeRef>;

@@ -19,9 +19,9 @@ interface UIBuildingMarkerProps {
 export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarkerProps) => {
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
-  const snapCampusStoreProxy = useSnapshot(campusStoreProxy);
-  const snapBuildingStoreProxy = useSnapshot(buildingStoreProxy);
-  const buildingUUID = useBuildingStoreInContext().use.building_uuid();
+  const { buildingPicked } = useSnapshot(campusStoreProxy);
+  const { isPicked, isPointerEnter } = useSnapshot(buildingStoreProxy);
+  const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
 
   const [htmlRefForce, setHtmlRefForce] = useState<HTMLDivElement | null>(null);
   const [, animate] = useAnimate();
@@ -49,27 +49,16 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
   };
 
   useEffect(() => {
-    if (
-      snapCampusStoreProxy.buildingPicked?.buidlingUUID === buildingUUID &&
-      snapBuildingStoreProxy.isPicked
-    ) {
+    if (buildingPicked?.buidlingUUID === buildingUUID && isPicked) {
       controls.start("state-picked");
-    } else if (
-      snapCampusStoreProxy.buildingPicked === null &&
-      snapBuildingStoreProxy.isPointerEnter &&
-      !snapBuildingStoreProxy.isPicked
-    ) {
+    } else if (buildingPicked === null && isPointerEnter && !isPicked) {
       controls.start("state-pointer-enter");
-    } else if (snapCampusStoreProxy.buildingPicked && !snapBuildingStoreProxy.isPicked) {
+    } else if (buildingPicked && !isPicked) {
       controls.start("state-hide");
     } else {
       controls.start("state-idle");
     }
-  }, [
-    snapCampusStoreProxy.buildingPicked,
-    snapBuildingStoreProxy.isPicked,
-    snapBuildingStoreProxy.isPointerEnter,
-  ]);
+  }, [buildingPicked, isPicked, isPointerEnter]);
 
   useEffect(() => {
     // Controls cannot first animate because ref is undefined
@@ -130,8 +119,7 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
             className={cn(
               "relative z-[2] w-max max-w-[400px] rounded-[10px] bg-[#404A57] px-5 py-3 text-[#FFFFFF]",
               {
-                "bg-[#365AAB] transition-colors duration-300":
-                  snapBuildingStoreProxy.isPointerEnter || snapBuildingStoreProxy.isPicked,
+                "bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
               },
             )}
           >
@@ -144,7 +132,7 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
             </div>
 
             <h2 className="text-[16px] font-medium uppercase">{label}</h2>
-            {(snapBuildingStoreProxy.isPointerEnter || snapBuildingStoreProxy.isPicked) && (
+            {(isPointerEnter || isPicked) && (
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -162,8 +150,7 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
             className={cn(
               "bottom absolute bottom-0 left-1/2 z-[1] h-5 w-5 origin-center translate-x-[-50%] translate-y-[calc(100%-1px)] rotate-90 bg-[#404A57]",
               {
-                "bg-[#365AAB] transition-colors duration-300":
-                  snapBuildingStoreProxy.isPointerEnter || snapBuildingStoreProxy.isPicked,
+                "bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
               },
             )}
           />

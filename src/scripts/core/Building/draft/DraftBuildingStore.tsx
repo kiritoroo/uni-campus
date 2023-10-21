@@ -4,8 +4,8 @@ import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 
 const Child = () => {
   const buildingStore = useBuildingStoreInContext();
-  const buildingId = buildingStore.use.building_uuid();
-  // const setBuildingId = buildingStore.use.set_building_uuid();
+  const buildingId = buildingStore.use.buildingUUID();
+  // const setBuildingId = buildingStore.use.setBuildingUUID();
 
   useEffect(() => {
     // setBuildingId(`test-building-id: ${id}`)

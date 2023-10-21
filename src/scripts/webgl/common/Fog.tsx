@@ -1,3 +1,3 @@
 export const Fog = () => {
-  return <fog attach="fog" args={["#F9F4FA", 0, 400]} />;
+  return <fog attach="fog" args={["#F9F4FA", 0, 500]} />;
 };
