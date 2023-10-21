@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { Icons } from "@Scripts/ui/Icons";
 import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
-import { memo, useEffect, useState } from "react";
+import { RefObject, memo, useEffect, useRef, useState } from "react";
 import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { randomRand } from "@Utils/math.utils";
 
@@ -26,7 +26,7 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
   const [htmlRefForce, setHtmlRefForce] = useState<HTMLDivElement | null>(null);
   const [, animate] = useAnimate();
   const controls = useAnimationControls();
-  const variants: Variants = {
+  const variants = useRef<Variants>({
     "state-hide": {
       scale: 0,
       transition: { type: "spring", mass: 0.5, stiffness: randomRand(50, 100), damping: 10 },
@@ -46,7 +46,7 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
       scale: [0.8, 1.2],
       transition: { type: "spring", mass: 0.5, stiffness: 100, damping: 5 },
     },
-  };
+  });
 
   useEffect(() => {
     if (buildingPicked?.buidlingUUID === buildingUUID && isPicked) {
@@ -106,7 +106,7 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
               setHtmlRefForce(el);
             }
           }}
-          variants={variants}
+          variants={variants.current}
           initial={"state-hide"}
           animate={controls}
           style={{

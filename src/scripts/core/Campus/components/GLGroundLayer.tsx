@@ -3,16 +3,16 @@ import { TGLTFReference } from "@Types/three.type";
 import { useLoader } from "@react-three/fiber";
 import { assets } from "@Assets/assets";
 import * as THREE from "three";
-import { memo, useRef } from "react";
+import { memo, useMemo, useRef } from "react";
 
 export const GLGroundLayer = memo(() => {
   const gltf: TGLTFReference = useLoader(GLTFLoader, assets.models.GROUND_LAYER_PATH);
-  const model = gltf.scenes[0];
+  const model = useMemo(() => gltf.scenes[0], []);
 
-  const objGroundMergeProperty: {
+  const objGroundMergeProperty = useMemo<{
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
-  } | null = (() => {
+  } | null>(() => {
     const obj = model.getObjectByName("ground-merge");
     if (!obj || !(obj instanceof THREE.Mesh)) return null;
 
@@ -20,7 +20,7 @@ export const GLGroundLayer = memo(() => {
       geometry: obj.geometry,
       position: obj.position,
     };
-  })();
+  }, []);
 
   const material = useRef<THREE.MeshStandardMaterial>(
     new THREE.MeshStandardMaterial({

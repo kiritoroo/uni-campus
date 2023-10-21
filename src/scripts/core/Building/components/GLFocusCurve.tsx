@@ -13,10 +13,10 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   const campusCamera = useCampusStoreInContext().use.campusCamera();
   const { scene } = useThree();
 
-  const objFocusCurveProperty: {
+  const objFocusCurveProperty = useMemo<{
     curve: THREE.CubicBezierCurve3;
     points: THREE.Vector3[];
-  } = (() => {
+  }>(() => {
     const curve = new THREE.CubicBezierCurve3();
     curve.v0.copy(focusPosition);
 
@@ -26,7 +26,7 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
       curve,
       points,
     };
-  })();
+  }, []);
 
   const objLine = useMemo(() => {
     return new THREE.Line(
