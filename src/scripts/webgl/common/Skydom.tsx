@@ -6,7 +6,7 @@ import fs from "@Scripts/webgl/shaders/skydom/fragment.fs.glsl";
 import vs from "@Scripts/webgl/shaders/skydom/vertex.vs.glsl";
 
 export const Skydom = () => {
-  const geometry = useRef<THREE.SphereGeometry>(new THREE.SphereGeometry(500, 32, 32));
+  const geometry = useRef<THREE.SphereGeometry>(new THREE.SphereGeometry(800, 32, 32));
   const groupRef = useRef<THREE.Group>(null);
 
   const material = useRef<THREE.RawShaderMaterial>(

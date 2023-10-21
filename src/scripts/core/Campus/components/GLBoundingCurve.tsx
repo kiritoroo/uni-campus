@@ -10,6 +10,7 @@ import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInCont
 import { useSnapshot } from "valtio";
 
 export const GLBoundingCurve = memo(() => {
+  const SCALE_OFFSET = useRef<number>(1.5);
   const campusStoreProxy = useCampusStoreProxyInContext();
   const { buildingPicked } = useSnapshot(campusStoreProxy);
 
@@ -66,7 +67,7 @@ export const GLBoundingCurve = memo(() => {
     const looptime = 30 * 1000;
     const t = (time % looptime) / looptime;
     objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(t, positionTarget.current);
-    positionTarget.current.multiplyScalar(1.5);
+    positionTarget.current.multiplyScalar(SCALE_OFFSET.current);
 
     const segments = objBoundingCurveProperty.tubeGeometry.tangents.length;
     const pickt = t * segments;
@@ -84,7 +85,7 @@ export const GLBoundingCurve = memo(() => {
     objBoundingCurveProperty.tubeGeometry.parameters.path.getTangentAt(t, directionTarget.current);
 
     normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
-    positionTarget.current.add(normalTarget.current.clone().multiplyScalar(1));
+    positionTarget.current.add(normalTarget.current.clone().multiplyScalar(SCALE_OFFSET.current));
 
     campusCamera.position.lerp(positionTarget.current, 0.1);
     campusCamera.lookAt(0, 0, 0);
@@ -107,7 +108,7 @@ export const GLBoundingCurve = memo(() => {
         />
       )}
       {objBoundingCurveProperty && (
-        <mesh scale={1.05} geometry={objBoundingCurveProperty.tubeGeometry}>
+        <mesh scale={SCALE_OFFSET.current} geometry={objBoundingCurveProperty.tubeGeometry}>
           <meshBasicMaterial color="#54d184" />
         </mesh>
       )}

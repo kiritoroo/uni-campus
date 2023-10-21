@@ -9,8 +9,9 @@ import { Camera } from "@Scripts/webgl/common/Camera";
 import { Perf } from "r3f-perf";
 import { CampusStoreProxyProvider } from "@Scripts/core/Campus/contexts/CampusStoreProxyContext";
 import { CampusStoreProvider } from "@Scripts/core/Campus/contexts/CampusStoreContext";
+import { memo } from "react";
 
-export const CampusScene = () => {
+export const CampusScene = memo(() => {
   return (
     <Canvas
       shadows="soft"
@@ -37,4 +38,4 @@ export const CampusScene = () => {
       </CampusStoreProvider>
     </Canvas>
   );
-};
+});

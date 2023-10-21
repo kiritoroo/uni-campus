@@ -16,9 +16,10 @@ interface GLFocusCurveProps {
 export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   const buildingObject = useBuildingStoreInContext().use.buildingObject();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
+  const campusCamera = useCampusStoreInContext().use.campusCamera();
+  const campusControls = useCampusStoreInContext().use.campusControls();
   const { isPicked } = useSnapshot(buildingStoreProxy);
 
-  const campusCamera = useCampusStoreInContext().use.campusCamera();
   const { scene, controls } = useThree();
 
   const progress = useRef({
@@ -145,7 +146,7 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   };
 
   const handleUpdateControlsFollowObject = () => {
-    if (buildingObject && controls) {
+    if (buildingObject) {
       boxTarget.current.makeEmpty();
       boxTarget.current.expandByObject(buildingObject);
       // boxTarget.current.getSize(sizeTarget.current);
