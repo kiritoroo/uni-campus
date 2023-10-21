@@ -58,7 +58,7 @@ export const GLBoundingAround = memo(
           .to(
             (boundingArroundRef.current as THREE.Mesh).position,
             {
-              y: (boundingArroundRef.current as THREE.Object3D).position.y + 0.5,
+              y: position.y + 0.5,
               ease: Expo.easeInOut,
               duration: 0.3,
             },
@@ -94,7 +94,7 @@ export const GLBoundingAround = memo(
           .to(
             (boundingArroundRef.current as THREE.Mesh).position,
             {
-              y: (boundingArroundRef.current as THREE.Object3D).position.y - 0.5,
+              y: position.y - 0.5,
               ease: Expo.easeInOut,
               duration: 0.3,
               onComplete: () => {

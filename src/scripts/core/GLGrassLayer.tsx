@@ -24,7 +24,7 @@ export const GLGrassLayer = memo(() => {
 
   const material = useRef<THREE.MeshStandardMaterial>(
     new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0xc3d89e),
+      color: new THREE.Color(0x79cd9d),
       transparent: true,
       side: THREE.DoubleSide,
     }),

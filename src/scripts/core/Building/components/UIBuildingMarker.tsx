@@ -80,9 +80,10 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
         { scale: 1 },
         {
           type: "spring",
-          mass: 0.5,
+          mass: randomRand(0.5, 0.8),
           stiffness: randomRand(50, 100),
-          damping: 5,
+          damping: randomRand(5, 10),
+          delay: randomRand(0.0, 0.2),
           onComplete: () => {
             controls.set("state-idle");
           },

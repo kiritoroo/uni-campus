@@ -1,7 +1,7 @@
 import { TCambusBuildingData } from "@Types/db.type";
 import { TGLTFReference } from "@Types/three.type";
-import { ThreeEvent, useFrame, useLoader } from "@react-three/fiber";
-import { RefObject, memo, useRef } from "react";
+import { ThreeEvent, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { RefObject, memo, useEffect, useRef, useState } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLBoundingEffect, TGLBoundingEffectRef } from "./GLBoundingEffect";
 import * as THREE from "three";
@@ -13,6 +13,8 @@ import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
 import { useSoundFx } from "@Global/hooks/useSoundFx";
 import { GLWallMerge, TGLWallMergeRef } from "./GLWallMerge";
+import { Line } from "@react-three/drei";
+import { Line2, LineGeometry } from "three-stdlib";
 
 interface GLBuildingProps {
   buildingData: TCambusBuildingData;
@@ -26,6 +28,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
 
   const gltf: TGLTFReference = useLoader(GLTFLoader, buildingData.model_url);
   const model = gltf.scenes[0];
+  const { camera, scene } = useThree();
 
   const objWallMergeProperty: {
     ref: RefObject<TGLWallMergeRef>;
@@ -103,6 +106,91 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
     };
   })();
 
+  const objFocusCurveProperty: {
+    ref: RefObject<Line2>;
+    curve: THREE.CubicBezierCurve3;
+    points: THREE.Vector3[];
+    // geometry: THREE.BufferGeometry;
+    // material: THREE.LineBasicMaterial;
+    // line: THREE.Line;
+  } | null = (() => {
+    if (objPointMarkerProperty === null) return null;
+    const curve = new THREE.CubicBezierCurve3(
+      objPointMarkerProperty?.position ?? new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(
+        (objPointMarkerProperty?.position.x + camera.position.x) / 2,
+        objPointMarkerProperty?.position.y,
+        (objPointMarkerProperty?.position.z + camera.position.z) / 2,
+      ),
+      new THREE.Vector3(
+        (objPointMarkerProperty?.position.x + camera.position.x) / 2,
+        camera.position.y,
+        (objPointMarkerProperty?.position.z + camera.position.z) / 2,
+      ),
+      camera.position,
+    );
+
+    const points = curve.getPoints(100);
+    // const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    // const material = new THREE.LineBasicMaterial({
+    //   color: 0xf50359,
+    // });
+    // const line = new THREE.Line(geometry, material);
+
+    return {
+      ref: useRef(null),
+      curve,
+      points,
+      // geometry,
+      // material,
+      // line,
+    };
+  })();
+
+  const handleUpdateFocusCurveFollowCamera = () => {
+    if (!objFocusCurveProperty || !objPointMarkerProperty) return;
+    const cameraPosition = camera.position.clone();
+    objFocusCurveProperty.curve.v1 = new THREE.Vector3(
+      (objPointMarkerProperty?.position.x + camera.position.x) / 2,
+      objPointMarkerProperty?.position.y,
+      (objPointMarkerProperty?.position.z + camera.position.z) / 2,
+    );
+    (objFocusCurveProperty.curve.v2 = new THREE.Vector3(
+      (objPointMarkerProperty?.position.x + camera.position.x) / 2,
+      camera.position.y,
+      (objPointMarkerProperty?.position.z + camera.position.z) / 2,
+    )),
+      objFocusCurveProperty?.curve.v3.copy(cameraPosition);
+    objFocusCurveProperty?.curve.updateArcLengths();
+
+    // const points = objFocusCurveProperty?.curve.getPoints(100);
+    // const newGeo = new THREE.BufferGeometry().setFromPoints(points);
+    // scene.remove(objFocusCurveProperty.line);
+    // const line = new THREE.Line(newGeo, objFocusCurveProperty.material);
+    // objFocusCurveProperty.line.geometry = newGeo;
+    // console.log(objFocusCurveProperty.ref.current?.geometry);
+    // console.log(objFocusCurveProperty.line.geometry.attributes["position"]);
+    // const positions = objFocusCurveProperty.geometry.attributes.position.array;
+    // const numPoints = points.length;
+    // for (let i = 0; i < numPoints; i++) {
+    //   positions[i * 3] = positions[i * 3] + 0.4;
+    //   positions[i * 3 + 1] = points[i].y;
+    //   positions[i * 3 + 2] = points[i].z;
+    // }
+    // objFocusCurveProperty.geometry.attributes.position.needsUpdate = true;
+    // objFocusCurveProperty.line.geometry.setFromPoints(points);
+    // objFocusCurveProperty.line.geometry.computeBoundingBox();
+    // objFocusCurveProperty.line.geometry.computeBoundingSphere();
+    // objFocusCurveProperty.line.geometry.getAttribute("position").needsUpdate = true;
+    // if (objFocusCurveProperty.ref.current) {
+    //   const points = objFocusCurveProperty?.curve.getPoints(100);
+    //   const pValues = points.map((p) => {
+    //     return [p.x, p.y, p.z];
+    //   });
+    //   objFocusCurveProperty.ref.current.geometry.setPositions(pValues.flat());
+    // }
+  };
+
   const handleOnPointerEnterBuilding = _.throttle(
     (e: ThreeEvent<PointerEvent>) => {
       if (campusStoreProxy.buildingPicked) return;
@@ -159,6 +247,8 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   };
 
   useFrame(() => {
+    handleUpdateFocusCurveFollowCamera();
+
     if (
       campusStoreProxy.buildingPointerEnterNearest?.buildingUUID === buildingUUID &&
       !buildingStoreProxy.isPointerEnter
@@ -185,6 +275,10 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
       handleOnBuidingUnPicking();
     }
   });
+
+  useEffect(() => {
+    // objFocusCurveProperty && scene.add(objFocusCurveProperty.line);
+  }, []);
 
   return (
     <group>
@@ -226,6 +320,14 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
           position={objPointMarkerProperty.position}
           label={buildingData.label}
           uses={buildingData.uses}
+        />
+      )}
+      {objFocusCurveProperty && (
+        <Line
+          ref={objFocusCurveProperty.ref}
+          points={objFocusCurveProperty?.points}
+          color="#F50359"
+          linewidth={2}
         />
       )}
     </group>

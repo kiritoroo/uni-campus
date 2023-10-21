@@ -54,14 +54,14 @@ export const GLWallMerge = memo(
           },
           "<",
         )
-        .to(
-          material.current,
-          {
-            opacity: 0.5,
-            ease: Expo.easeInOut,
-          },
-          "<",
-        )
+        // .to(
+        //   material.current,
+        //   {
+        //     opacity: 0.5,
+        //     ease: Expo.easeInOut,
+        //   },
+        //   "<",
+        // )
         .play();
     };
 
