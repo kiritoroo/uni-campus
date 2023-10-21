@@ -54,39 +54,39 @@ export const GLBoundingCurve = memo(() => {
     };
   })();
 
+  const handleUpdateCameraFollowCurve = () => {
+    if (!objBoundingCurveProperty || !campusCamera) return;
+
+    const time = Date.now();
+    const looptime = 30 * 1000;
+    const t = (time % looptime) / looptime;
+    objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(t, positionTarget.current);
+    positionTarget.current.multiplyScalar(1);
+
+    const segments = objBoundingCurveProperty.tubeGeometry.tangents.length;
+    const pickt = t * segments;
+    const pick = Math.floor(pickt);
+    const pickNext = (pick + 1) % segments;
+
+    binormalTarget.current.subVectors(
+      objBoundingCurveProperty.tubeGeometry.binormals[pickNext],
+      objBoundingCurveProperty.tubeGeometry.binormals[pick],
+    );
+    binormalTarget.current
+      .multiplyScalar(pickt - pick)
+      .add(objBoundingCurveProperty.tubeGeometry.binormals[pick]);
+
+    objBoundingCurveProperty.tubeGeometry.parameters.path.getTangentAt(t, directionTarget.current);
+
+    normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
+    positionTarget.current.add(normalTarget.current.clone().multiplyScalar(1));
+
+    campusCamera.position.lerp(positionTarget.current, 0.1);
+    campusCamera.lookAt(0, 0, 0);
+  };
+
   useFrame(() => {
-    if (objBoundingCurveProperty && campusCamera) {
-      const time = Date.now();
-      const looptime = 20 * 1000;
-      const t = (time % looptime) / looptime;
-
-      objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(t, positionTarget.current);
-      positionTarget.current.multiplyScalar(1.2);
-
-      const segments = objBoundingCurveProperty.tubeGeometry.tangents.length;
-      const pickt = t * segments;
-      const pick = Math.floor(pickt);
-      const pickNext = (pick + 1) % segments;
-
-      binormalTarget.current.subVectors(
-        objBoundingCurveProperty.tubeGeometry.binormals[pickNext],
-        objBoundingCurveProperty.tubeGeometry.binormals[pick],
-      );
-      binormalTarget.current
-        .multiplyScalar(pickt - pick)
-        .add(objBoundingCurveProperty.tubeGeometry.binormals[pick]);
-
-      objBoundingCurveProperty.tubeGeometry.parameters.path.getTangentAt(
-        t,
-        directionTarget.current,
-      );
-
-      normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
-      positionTarget.current.add(normalTarget.current.clone().multiplyScalar(1));
-
-      campusCamera.position.lerp(positionTarget.current, 0.1);
-      campusCamera.lookAt(0, 0, 0);
-    }
+    handleUpdateCameraFollowCurve();
   });
 
   return (
@@ -100,7 +100,7 @@ export const GLBoundingCurve = memo(() => {
         />
       )}
       {objBoundingCurveProperty && (
-        <mesh scale={0.95} geometry={objBoundingCurveProperty.tubeGeometry}>
+        <mesh scale={1.05} geometry={objBoundingCurveProperty.tubeGeometry}>
           <meshBasicMaterial color="#54d184" />
         </mesh>
       )}

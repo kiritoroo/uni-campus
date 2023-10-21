@@ -33,7 +33,7 @@ export const GlCampusCamera = memo(() => {
         <sphereGeometry args={[5]} />
         <meshBasicMaterial color={new THREE.Color(0xf50359)} />
       </mesh>
-      <PerspectiveCamera makeDefault={false} ref={cameraRef} near={0.1} far={150} fov={45} />
+      <PerspectiveCamera makeDefault={false} ref={cameraRef} near={0.1} far={1200} fov={75} />
     </group>
   );
 });
