@@ -9,7 +9,6 @@ export interface ICampusStore {
 }
 
 export interface ICampusStoreProxy {
-  campusCamera: THREE.PerspectiveCamera | null;
   buildingsPointerEnter: {
     buildingUUID: string;
     distance: number;

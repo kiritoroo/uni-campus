@@ -54,9 +54,9 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
       transition: { type: "spring", mass: 0.5, stiffness: 100, damping: 5 },
     },
     "state-picked": {
-      y: "-15px",
-      opacity: 0,
-      transition: { duration: 0.5, delay: 0.5, type: "tween" },
+      y: 0,
+      scale: 0,
+      transition: { duration: 0.3, delay: 0.5, type: "tween" },
       transitionEnd: {
         display: "none",
       },

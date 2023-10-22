@@ -1,7 +1,7 @@
 import { TCambusBuildingData } from "@Types/db.type";
 import { TGLTFReference } from "@Types/three.type";
 import { ThreeEvent, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { RefObject, memo, useEffect, useRef, useState } from "react";
+import { RefObject, memo, useEffect, useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLBoundingEffect, TGLBoundingEffectRef } from "./GLBoundingEffect";
 import * as THREE from "three";

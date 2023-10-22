@@ -34,7 +34,7 @@ export const GLCampusCamera = memo(() => {
 
   return (
     <group>
-      <mesh ref={cameraEyeRef}>
+      <mesh ref={cameraEyeRef} visible={false}>
         <sphereGeometry args={[5]} />
         <meshBasicMaterial color={new THREE.Color(0xf50359)} />
       </mesh>

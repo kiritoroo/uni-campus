@@ -1,5 +1,5 @@
 import { createContext, useRef } from "react";
-import { IBuildingStoreProxyContext } from "../types";
+import { IBuildingStoreProxy, IBuildingStoreProxyContext } from "../types";
 import { BuildingStoreProxy } from "../stores/BuildingStoreProxy";
 
 export const BuildingStoreProxyContext = createContext<IBuildingStoreProxyContext | undefined>(
@@ -7,7 +7,7 @@ export const BuildingStoreProxyContext = createContext<IBuildingStoreProxyContex
 );
 
 export const BuildingStoreProxyProvider = ({ children }: { children: React.ReactNode }) => {
-  const storeProxyRef = useRef<IBuildingStoreProxyContext>();
+  const storeProxyRef = useRef<IBuildingStoreProxy>();
   if (!storeProxyRef.current) {
     storeProxyRef.current = BuildingStoreProxy();
   }

@@ -1,19 +1,23 @@
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { GLTFLoader, Line2 } from "three-stdlib";
 import * as THREE from "three";
-import { RefObject, memo, useRef } from "react";
+import { RefObject, memo, useEffect, useMemo, useRef, useState } from "react";
 import { TGLTFReference } from "@Types/three.type";
 import { assets } from "@Assets/assets";
 import { Line } from "@react-three/drei";
 import { useCampusStoreInContext } from "../hooks/useCampusStoreInContext";
 import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInContext";
 import { useSnapshot } from "valtio";
+import { useCampusSceneStoreProxyInContext } from "@Scripts/webgl/scene/CampusScene/hooks/useCampusSceneStoreProxyInContext";
+import gsap from "gsap";
+import { Expo } from "gsap";
 
 export const GLBoundingCurve = memo(() => {
   const SCALE_FOLLOW_OFFSET = useRef<number>(1.5);
   const SCALE_LOOK_AT_OFFSET = useRef<number>(0.5);
 
   const campusStoreProxy = useCampusStoreProxyInContext();
+  const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
   const { buildingPicked } = useSnapshot(campusStoreProxy);
   const campusCamera = useCampusStoreInContext().use.campusCamera();
 
@@ -21,6 +25,21 @@ export const GLBoundingCurve = memo(() => {
   const model = gltf.scenes[0];
 
   const { controls } = useThree();
+
+  const animateTimeline = useMemo(() => {
+    return gsap.timeline();
+  }, []);
+  const progress = useRef({
+    v: 0,
+  });
+  const previousSwipeVelocity = useRef({
+    v: 0,
+  });
+  const swipeAcc = useRef({
+    v: 0,
+  });
+  const lockSwipe = useRef(false);
+  const isSwipe = useRef(false);
 
   const positionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const binormalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
@@ -66,14 +85,59 @@ export const GLBoundingCurve = memo(() => {
   const handleUpdateCameraFollowCurve = () => {
     if (!objBoundingCurveProperty || !campusCamera) return;
 
+    if (
+      !isSwipe.current &&
+      Math.abs(campusSceneStoreProxy.swipeData.velocity) > 0 &&
+      Math.abs(previousSwipeVelocity.current.v) === 0
+    ) {
+      isSwipe.current = true;
+    }
+
+    if (
+      isSwipe &&
+      Math.abs(campusSceneStoreProxy.swipeData.velocity) > 0 &&
+      Math.abs(previousSwipeVelocity.current.v) > 0
+    ) {
+      const swipeVelocityChange = Math.abs(
+        campusSceneStoreProxy.swipeData.velocity - previousSwipeVelocity.current.v,
+      );
+      const threshold = 0.001;
+      if (swipeVelocityChange < threshold) {
+        lockSwipe.current = true;
+        previousSwipeVelocity.current.v = 0;
+        animateTimeline.clear();
+        animateTimeline
+          .to(campusSceneStoreProxy.swipeData, {
+            velocity: 0,
+            duration: 0.05,
+            ease: Expo.easeInOut,
+            onUpdate: () => {},
+            onComplete: () => {
+              isSwipe.current = false;
+              lockSwipe.current = false;
+            },
+          })
+          .play();
+      }
+    }
+
+    if (isSwipe && !lockSwipe.current) {
+      previousSwipeVelocity.current.v = campusSceneStoreProxy.swipeData.velocity;
+    }
+
     const time = Date.now();
     const looptime = 50 * 1000;
-    const t = (time % looptime) / looptime;
-    objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(t, positionTarget.current);
+    swipeAcc.current.v += campusSceneStoreProxy.swipeData.velocity * 200;
+    progress.current.v = ((time + swipeAcc.current.v) % looptime) / looptime;
+
+    objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(
+      progress.current.v,
+      positionTarget.current,
+    );
     positionTarget.current.multiplyScalar(SCALE_FOLLOW_OFFSET.current);
 
     const segments = objBoundingCurveProperty.tubeGeometry.tangents.length;
-    const pickt = t * segments;
+    const pickt = progress.current.v * segments;
     const pick = Math.floor(pickt);
     const pickNext = (pick + 1) % segments;
 
@@ -85,7 +149,10 @@ export const GLBoundingCurve = memo(() => {
       .multiplyScalar(pickt - pick)
       .add(objBoundingCurveProperty.tubeGeometry.binormals[pick]);
 
-    objBoundingCurveProperty.tubeGeometry.parameters.path.getTangentAt(t, directionTarget.current);
+    objBoundingCurveProperty.tubeGeometry.parameters.path.getTangentAt(
+      progress.current.v,
+      directionTarget.current,
+    );
 
     normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
     positionTarget.current.add(
@@ -95,7 +162,9 @@ export const GLBoundingCurve = memo(() => {
     campusCamera.position.lerp(positionTarget.current, 0.1);
 
     objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(
-      (t + 50 / objBoundingCurveProperty.tubeGeometry.parameters.path.getLength()) % 1,
+      (progress.current.v +
+        50 / objBoundingCurveProperty.tubeGeometry.parameters.path.getLength()) %
+        1,
       lookAtTarget.current,
     );
     lookAtTarget.current.multiplyScalar(SCALE_LOOK_AT_OFFSET.current);
