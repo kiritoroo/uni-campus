@@ -214,7 +214,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
           geometry={objBoundingBoxProperty?.geometry}
           position={objBoundingBoxProperty?.position}
           material={objBoundingBoxProperty.material}
-          visible={true}
+          visible={false}
           onPointerEnter={handleOnPointerEnterBuilding}
           onPointerLeave={handleOnPointerLeaveBuilding}
           onPointerMove={handleOnPointerMoveBuilding}
@@ -240,6 +240,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
           position={objPointMarkerProperty.position}
           label={buildingData.label}
           uses={buildingData.uses}
+          type={buildingData.type}
         />
       )}
       {objPointMarkerProperty && <GLFocusCurve focusPosition={objPointMarkerProperty.position} />}

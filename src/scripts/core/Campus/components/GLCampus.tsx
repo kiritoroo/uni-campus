@@ -11,6 +11,7 @@ import { GLGrassLayer } from "@Scripts/core/Campus/components/GLGrassLayer";
 import { GLBoundingCurve } from "./GLBoundingCurve";
 import { GLCampusCamera } from "./GLCampusCamera";
 import { GLCampusControls } from "./GLCampusControls";
+import { GLPlaneLayer } from "./GLPlaneLayer";
 
 export const GLCampus = memo(() => {
   const campusStoreProxy = useCampusStoreProxyInContext();
@@ -37,6 +38,7 @@ export const GLCampus = memo(() => {
     <group>
       <GLGroundLayer />
       <GLGrassLayer />
+      <GLPlaneLayer />
       <GLBoundingCurve />
       <GLCampusCamera />
       <GLCampusControls />

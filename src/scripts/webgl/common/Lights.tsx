@@ -8,7 +8,7 @@ export const Lights = () => {
 
   const sunRef = useRef<THREE.DirectionalLight | any>(undefined);
 
-  useHelper(sunRef, THREE.DirectionalLightHelper);
+  // useHelper(sunRef, THREE.DirectionalLightHelper);
 
   useEffect(() => {
     if (sunRef.current) {
@@ -23,15 +23,17 @@ export const Lights = () => {
       light.shadow.camera.near = 0.01;
       light.shadow.camera.far = 1000;
       // light.shadow.bias = -0.002;
-      light.shadow.normalBias = 0.1;
+      light.shadow.normalBias = 0.5;
 
       const shadowHelper = new THREE.CameraHelper(light.shadow.camera);
-      scene.add(shadowHelper);
+      // scene.add(shadowHelper);
     }
   }, [sunRef.current]);
 
   return (
     <>
+      <ambientLight intensity={0.2} />
+      {/* <hemisphereLight args={[0xe3b7ce, 0xe3b7ce, 0.6]} position={[0, 500, 0]} /> */}
       <directionalLight
         ref={sunRef}
         color={"#ffffff"}
@@ -39,8 +41,6 @@ export const Lights = () => {
         castShadow
         position={[-80, 200, 20]}
       />
-      <hemisphereLight args={[0xe3b7ce, 0xe3b7ce, 0.6]} position={[0, 500, 0]} />
-      <ambientLight intensity={1} />
     </>
   );
 };

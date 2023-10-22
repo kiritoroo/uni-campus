@@ -11,10 +11,10 @@ export const GLCampusCamera = memo(() => {
   const cameraRef = useRef<THREE.PerspectiveCamera | any>(null);
   const cameraEyeRef = useRef<THREE.Mesh | any>();
 
-  useHelper(cameraRef, THREE.CameraHelper);
+  // useHelper(cameraRef, THREE.CameraHelper);
 
   const config = useControls({
-    "campus-camera": false,
+    "campus-camera": true,
   });
 
   useFrame(() => {
@@ -43,7 +43,7 @@ export const GLCampusCamera = memo(() => {
         ref={cameraRef}
         near={0.5}
         far={1500}
-        fov={55}
+        fov={45}
       />
     </group>
   );

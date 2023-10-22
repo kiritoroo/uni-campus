@@ -13,7 +13,6 @@ const vec3 rgb2 = vec3(139.0 / 255.0, 167.0 / 255.0, 204.0 / 255.0);
 
 void main() {
   vec3 rgb = mix(rgb1, rgb2, vUv.y * 1.8 - 1.0);
-  float noise = randomv2(vUv + vec2(0.0, uTime * 0.01)) * 0.04;
 
-  gl_FragColor = vec4(rgb + noise, 1.0);
+  gl_FragColor = vec4(rgb, 1.0);
 }

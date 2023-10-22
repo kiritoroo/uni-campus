@@ -4,7 +4,7 @@ import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyIn
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
 import { useSnapshot } from "valtio";
 import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
-import gsap, { Expo } from "gsap";
+import gsap, { Expo, Power2 } from "gsap";
 
 export type TGLWallMergeRef = {
   object: THREE.Mesh;
@@ -32,7 +32,8 @@ export const GLWallMerge = memo(
       new THREE.MeshStandardMaterial({
         color: new THREE.Color(0xffffff),
         transparent: true,
-        side: THREE.DoubleSide,
+        roughness: 0.8,
+        side: THREE.FrontSide,
       }),
     );
 
@@ -41,30 +42,37 @@ export const GLWallMerge = memo(
     }));
 
     const handleIsBuildingNotPicked = () => {
+      if (!wallMergeRef.current) return;
+
+      (wallMergeRef.current as THREE.Mesh).castShadow = false;
+      (wallMergeRef.current as THREE.Mesh).receiveShadow = false;
+      material.current.depthWrite = false;
+      material.current.depthTest = false;
       animateTimeline.clear();
       animateTimeline
-        .to(
-          material.current.color,
-          {
-            r: 0.4,
-            g: 0.65,
-            b: 0.65,
-            duration: 0.4,
-            ease: Expo.easeInOut,
-          },
-          "<",
-        )
         // .to(
-        //   material.current,
+        //   material.current.color,
         //   {
-        //     opacity: 0,
+        //     r: 0.8,
+        //     g: 0.8,
+        //     b: 0.8,
+        //     duration: 0.4,
         //     ease: Expo.easeInOut,
-        //     onComplete: () => {
-        //       (wallMergeRef.current as THREE.Mesh).visible = false;
-        //     },
         //   },
         //   "<",
         // )
+        .to(
+          material.current,
+          {
+            opacity: 0,
+            ease: Power2.easeInOut,
+            duration: 0.5,
+            onComplete: () => {
+              (wallMergeRef.current as THREE.Mesh).visible = false;
+            },
+          },
+          "<",
+        )
         .play();
     };
 

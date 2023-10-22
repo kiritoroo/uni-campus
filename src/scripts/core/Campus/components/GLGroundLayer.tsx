@@ -26,6 +26,7 @@ export const GLGroundLayer = memo(() => {
     new THREE.MeshStandardMaterial({
       color: new THREE.Color(0xdcd7e5),
       transparent: true,
+      roughness: 0.8,
       side: THREE.DoubleSide,
     }),
   );
@@ -37,6 +38,8 @@ export const GLGroundLayer = memo(() => {
           geometry={objGroundMergeProperty?.geometry}
           material={material.current}
           position={objGroundMergeProperty?.position}
+          castShadow
+          receiveShadow
         />
       )}
     </group>

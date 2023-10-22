@@ -14,9 +14,18 @@ interface UIBuildingMarkerProps {
   position: THREE.Vector3;
   label: string;
   uses: string;
+  type: string;
 }
 
-export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarkerProps) => {
+const buildingColorMap: { [key: string]: string } = {
+  academic: "#404A57",
+  sport: "#5e68c9",
+  workshop: "#404A57",
+  parking: "#404A57",
+  service: "#404A57",
+};
+
+export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildingMarkerProps) => {
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const { buildingPicked } = useSnapshot(campusStoreProxy);
@@ -47,7 +56,7 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
     "state-picked": {
       y: "-15px",
       scale: 0,
-      transition: { delay: 0.5, type: "spring", mass: 0.5, stiffness: 100, damping: 5 },
+      transition: { delay: 0.5, type: "tween" },
       transitionEnd: {
         display: "none",
       },
@@ -125,20 +134,21 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
           className="pointer-events-none relative cursor-pointer select-none text-center drop-shadow-lg"
         >
           <div
+            style={{ backgroundColor: buildingColorMap[type] ?? "#FFFFFF" }}
             className={cn(
-              "relative z-[2] w-max max-w-[400px] rounded-[10px] bg-[#404A57] px-5 py-3 text-[#FFFFFF]",
+              "relative z-[2] w-max max-w-[400px] rounded-[5px] px-5 py-3 text-[#FFFFFF]",
               {
-                "bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
+                "!bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
               },
             )}
           >
-            <div className="absolute right-0 top-0 translate-x-[35%] translate-y-[-20%]">
+            {/* <div className="absolute right-0 top-0 translate-x-[35%] translate-y-[-20%]">
               <div className="animate__pulse ">
                 <div className="flex items-center justify-center rounded-full bg-[#F50359] p-[5px]">
                   <Icons.ExclamationMark className="h-[16px] w-[16px] fill-white" />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <h2 className="text-[16px] font-medium uppercase">{label}</h2>
             {(isPointerEnter || isPicked) && (
@@ -154,12 +164,13 @@ export const UIBuildingMarker = memo(({ position, label, uses }: UIBuildingMarke
           </div>
           <div
             style={{
+              backgroundColor: buildingColorMap[type] ?? "#FFFFFF",
               clipPath: "polygon(0 0, 50% 50%, 0 100%)",
             }}
             className={cn(
-              "bottom absolute bottom-0 left-1/2 z-[1] h-5 w-5 origin-center translate-x-[-50%] translate-y-[calc(100%-1px)] rotate-90 bg-[#404A57]",
+              "bottom absolute bottom-0 left-1/2 z-[1] h-5 w-5 origin-center translate-x-[-50%] translate-y-[calc(100%-1px)] rotate-90",
               {
-                "bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
+                "!bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
               },
             )}
           />

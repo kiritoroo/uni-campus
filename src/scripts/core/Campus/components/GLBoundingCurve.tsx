@@ -11,7 +11,7 @@ import { useSnapshot } from "valtio";
 
 export const GLBoundingCurve = memo(() => {
   const SCALE_FOLLOW_OFFSET = useRef<number>(1.5);
-  const SCALE_LOOK_AT_OFFSET = useRef<number>(0.9);
+  const SCALE_LOOK_AT_OFFSET = useRef<number>(0.5);
 
   const campusStoreProxy = useCampusStoreProxyInContext();
   const { buildingPicked } = useSnapshot(campusStoreProxy);
@@ -47,7 +47,7 @@ export const GLBoundingCurve = memo(() => {
       point.setX(point.x + obj.position.x);
       point.setY(point.y + obj.position.y);
       point.setZ(point.z + obj.position.z);
-      point.setY(80);
+      point.setY(100);
       points.push(point);
     }
     const curve = new THREE.CatmullRomCurve3(points, true, "centripetal" as THREE.CurveType);
@@ -120,16 +120,25 @@ export const GLBoundingCurve = memo(() => {
           ref={objBoundingCurveProperty.ref}
           points={objBoundingCurveProperty.curve.getPoints(200)}
           color="#F50359"
+          visible={false}
           linewidth={2}
         />
       )}
       {objBoundingCurveProperty && (
-        <mesh scale={SCALE_FOLLOW_OFFSET.current} geometry={objBoundingCurveProperty.tubeGeometry}>
+        <mesh
+          visible={false}
+          scale={SCALE_FOLLOW_OFFSET.current}
+          geometry={objBoundingCurveProperty.tubeGeometry}
+        >
           <meshBasicMaterial color="#54d184" />
         </mesh>
       )}
       {objBoundingCurveProperty && (
-        <mesh scale={SCALE_LOOK_AT_OFFSET.current} geometry={objBoundingCurveProperty.tubeGeometry}>
+        <mesh
+          visible={false}
+          scale={SCALE_LOOK_AT_OFFSET.current}
+          geometry={objBoundingCurveProperty.tubeGeometry}
+        >
           <meshBasicMaterial color="#54d184" />
         </mesh>
       )}

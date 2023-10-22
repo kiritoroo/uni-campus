@@ -84,7 +84,8 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   }, []);
 
   const handleUpdateCurveFollowCamera = () => {
-    if (!campusCamera || isPicked) return;
+    // if (!campusCamera || isPicked) return;
+    if (!campusCamera) return;
     const cameraPosition = campusCamera.position.clone();
 
     objFocusCurveProperty.cubicBezierCurve.v0.copy(cameraPosition);
@@ -106,16 +107,30 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
       objFocusCurveProperty.cubicBezierCurve.v0,
       new THREE.Vector3(
         objFocusCurveProperty.cubicBezierCurve.v1.x,
-        objFocusCurveProperty.cubicBezierCurve.v1.y + 20,
+        objFocusCurveProperty.cubicBezierCurve.v1.y +
+          objFocusCurveProperty.cubicBezierCurve.v1.y / 3,
         objFocusCurveProperty.cubicBezierCurve.v1.z,
       ),
       new THREE.Vector3(
         objFocusCurveProperty.cubicBezierCurve.v2.x -
           objFocusCurveProperty.cubicBezierCurve.v2.x / 2,
-        objFocusCurveProperty.cubicBezierCurve.v2.y + 40,
+        objFocusCurveProperty.cubicBezierCurve.v2.y +
+          objFocusCurveProperty.cubicBezierCurve.v1.y / 3,
         objFocusCurveProperty.cubicBezierCurve.v2.z -
           objFocusCurveProperty.cubicBezierCurve.v2.z / 2,
       ),
+      // new THREE.Vector3(
+      //   (objFocusCurveProperty.cubicBezierCurve.v2.x -
+      //     objFocusCurveProperty.cubicBezierCurve.v2.x / 2 +
+      //     objFocusCurveProperty.cubicBezierCurve.v3.x) /
+      //     2,
+      //   objFocusCurveProperty.cubicBezierCurve.v3.y -
+      //     objFocusCurveProperty.cubicBezierCurve.v3.y / 4,
+      //   (objFocusCurveProperty.cubicBezierCurve.v2.z -
+      //     objFocusCurveProperty.cubicBezierCurve.v2.z / 2 +
+      //     objFocusCurveProperty.cubicBezierCurve.v3.z) /
+      //     2,
+      // ),
       objFocusCurveProperty.cubicBezierCurve.v3,
     ];
     objFocusCurveProperty.catmullRomPoints = objFocusCurveProperty.catmullRomCurve.getPoints(200);
@@ -132,14 +147,14 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
       false,
     );
 
-    scene.add(
-      new THREE.Mesh(
-        tubeGeometry,
-        new THREE.MeshBasicMaterial({
-          color: "#54d184",
-        }),
-      ),
-    );
+    // scene.add(
+    //   new THREE.Mesh(
+    //     tubeGeometry,
+    //     new THREE.MeshBasicMaterial({
+    //       color: "#54d184",
+    //     }),
+    //   ),
+    // );
 
     maxDistanceFromCameraToFocus.current =
       objFocusCurveProperty.cubicBezierCurve.v0.distanceTo(focusPosition) - 80;
@@ -224,20 +239,21 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
 
   useEffect(() => {
     if (campusCamera) {
-      scene.add(objCubicBezierLine);
-      scene.add(objCatmullRomLine);
+      // scene.add(objCubicBezierLine);
+      // scene.add(objCatmullRomLine);
     }
   }, [campusCamera]);
 
   useEffect(() => {
     if (isPicked) {
+      handleUpdateCurveFollowCamera();
       handleUpdateCameraFollowCurve();
       handleUpdateControlsFollowObject();
     }
   }, [isPicked]);
 
   useFrame(() => {
-    handleUpdateCurveFollowCamera();
+    // handleUpdateCurveFollowCamera();
   });
 
   return null;

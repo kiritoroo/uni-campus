@@ -6,6 +6,7 @@ export type TSoundEffectData = {
 
 export type TCambusBuildingData = {
   name: string;
+  type: string;
   model_url: string;
   label: string;
   uses: string;

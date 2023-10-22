@@ -24,8 +24,9 @@ export const GLGrassLayer = memo(() => {
 
   const material = useRef<THREE.MeshStandardMaterial>(
     new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x79cd9d),
+      color: new THREE.Color(0x91e2b4),
       transparent: true,
+      // roughness: 0.8,
       side: THREE.DoubleSide,
     }),
   );
@@ -37,6 +38,8 @@ export const GLGrassLayer = memo(() => {
           geometry={objGroundMergeProperty?.geometry}
           material={material.current}
           position={objGroundMergeProperty?.position}
+          castShadow
+          receiveShadow
         />
       )}
     </group>

@@ -1,6 +1,6 @@
 import { GLCampus } from "@Scripts/core/Campus/components/GLCampus";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { Center, Environment, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { Lights } from "@Scripts/webgl/common/Lights";
 import { Fog } from "@Scripts/webgl/common/Fog";
@@ -18,7 +18,7 @@ export const CampusScene = memo(() => {
       dpr={[1, 2]}
       gl={{
         antialias: true,
-        toneMapping: THREE.NoToneMapping,
+        toneMapping: THREE.ACESFilmicToneMapping,
         alpha: true,
         outputColorSpace: THREE.SRGBColorSpace,
         shadowMapType: THREE.PCFSoftShadowMap,
@@ -30,6 +30,7 @@ export const CampusScene = memo(() => {
       <Fog />
       <Camera />
       <OrbitControls makeDefault enableDamping />
+      <Environment files="/assets/rooitou_park.hdr" blur={0.5} />
 
       <CampusStoreProvider>
         <CampusStoreProxyProvider>
