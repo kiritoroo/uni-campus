@@ -9,8 +9,9 @@ import { useCampusStoreInContext } from "../hooks/useCampusStoreInContext";
 import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInContext";
 import { useSnapshot } from "valtio";
 import { useCampusSceneStoreProxyInContext } from "@Scripts/webgl/scene/CampusScene/hooks/useCampusSceneStoreProxyInContext";
-import gsap from "gsap";
+import gsap, { Power2 } from "gsap";
 import { Expo } from "gsap";
+import { clamp } from "@Utils/math.utils";
 
 export const GLBoundingCurve = memo(() => {
   const SCALE_FOLLOW_OFFSET = useRef<number>(1.5);
@@ -26,21 +27,35 @@ export const GLBoundingCurve = memo(() => {
 
   const { controls } = useThree();
 
+  const isMouseDown = useRef(false);
+  const isMouseMove = useRef(false);
+  const isMouseSwipe = useRef(false);
+  const mouseDownData = useRef({
+    clientX: 0,
+    clientY: 0,
+  });
+  const previousMouseMoveData = useRef({
+    clientX: 0,
+    clientY: 0,
+  });
+  const mouseSwipeDirection = useRef<"left" | "right">("left");
+  const swipeAcceleration = useRef({
+    v: 0,
+  });
+  const swipeAccumulate = useRef(100000);
+  const swipeIntensity = useRef(0);
+  const followAcceleration = useRef({
+    v: 1,
+  });
+  const lockSwipe = useRef(false);
+
+  const timer = useRef<any>(0);
   const animateTimeline = useMemo(() => {
     return gsap.timeline();
   }, []);
   const progress = useRef({
     v: 0,
   });
-  const previousSwipeVelocity = useRef({
-    v: 0,
-  });
-  const swipeAcc = useRef({
-    v: 0,
-  });
-  const lockSwipe = useRef(false);
-  const isSwipe = useRef(false);
-
   const positionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const binormalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const directionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
@@ -85,50 +100,12 @@ export const GLBoundingCurve = memo(() => {
   const handleUpdateCameraFollowCurve = () => {
     if (!objBoundingCurveProperty || !campusCamera) return;
 
-    if (
-      !isSwipe.current &&
-      Math.abs(campusSceneStoreProxy.swipeData.velocity) > 0 &&
-      Math.abs(previousSwipeVelocity.current.v) === 0
-    ) {
-      isSwipe.current = true;
-    }
-
-    if (
-      isSwipe &&
-      Math.abs(campusSceneStoreProxy.swipeData.velocity) > 0 &&
-      Math.abs(previousSwipeVelocity.current.v) > 0
-    ) {
-      const swipeVelocityChange = Math.abs(
-        campusSceneStoreProxy.swipeData.velocity - previousSwipeVelocity.current.v,
-      );
-      const threshold = 0.001;
-      if (swipeVelocityChange < threshold) {
-        lockSwipe.current = true;
-        previousSwipeVelocity.current.v = 0;
-        animateTimeline.clear();
-        animateTimeline
-          .to(campusSceneStoreProxy.swipeData, {
-            velocity: 0,
-            duration: 0.05,
-            ease: Expo.easeInOut,
-            onUpdate: () => {},
-            onComplete: () => {
-              isSwipe.current = false;
-              lockSwipe.current = false;
-            },
-          })
-          .play();
-      }
-    }
-
-    if (isSwipe && !lockSwipe.current) {
-      previousSwipeVelocity.current.v = campusSceneStoreProxy.swipeData.velocity;
-    }
-
-    const time = Date.now();
-    const looptime = 50 * 1000;
-    swipeAcc.current.v += campusSceneStoreProxy.swipeData.velocity * 200;
-    progress.current.v = ((time + swipeAcc.current.v) % looptime) / looptime;
+    swipeAccumulate.current +=
+      followAcceleration.current.v * 1.2 +
+      swipeAcceleration.current.v *
+        (clamp(swipeIntensity.current, 1, 5) + 8) *
+        (mouseSwipeDirection.current === "right" ? 1 : -1);
+    progress.current.v = clamp((swipeAccumulate.current % 2000) / 2000, 0, 1);
 
     objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(
       progress.current.v,
@@ -175,6 +152,162 @@ export const GLBoundingCurve = memo(() => {
       (controls as any).update();
     }
   };
+
+  const handleOnMouseDownScene = (e: MouseEvent) => {
+    isMouseDown.current = true;
+    mouseDownData.current.clientX = e.clientX;
+    mouseDownData.current.clientY = e.clientY;
+  };
+
+  const handleOnMouseUpScene = () => {
+    isMouseDown.current = false;
+    isMouseSwipe.current = false;
+    campusSceneStoreProxy.mouseState.isMouseSwipe = false;
+  };
+
+  const handleOnMouseMoveScene = (e: MouseEvent) => {
+    if (Math.abs(e.clientY - mouseDownData.current.clientY) > 20) return;
+
+    if (isMouseDown.current && isMouseSwipe.current === false) {
+      const DELTA_CHANGE_IS_SWIPE = 10;
+      if (Math.abs(e.clientX - mouseDownData.current.clientX) > DELTA_CHANGE_IS_SWIPE) {
+        isMouseSwipe.current = true;
+        lockSwipe.current = true;
+        campusSceneStoreProxy.mouseState.isMouseSwipe = true;
+        animateTimeline.clear();
+        animateTimeline
+          .to(
+            swipeAcceleration.current,
+            {
+              v: 1,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .to(
+            followAcceleration.current,
+            {
+              v: 0.1,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .play();
+
+        swipeIntensity.current = Math.abs(e.clientX - previousMouseMoveData.current.clientX);
+        if (e.clientX - previousMouseMoveData.current.clientX > 0) {
+          mouseSwipeDirection.current = "right";
+        } else if (e.clientX - previousMouseMoveData.current.clientX < 0) {
+          mouseSwipeDirection.current = "left";
+        }
+      }
+    }
+
+    if (e.clientX - previousMouseMoveData.current.clientX > 0) {
+      if (isMouseSwipe.current && isMouseMove.current === false) {
+        animateTimeline.clear();
+        animateTimeline
+          .to(
+            swipeAcceleration.current,
+            {
+              v: 0.3,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .to(
+            followAcceleration.current,
+            {
+              v: 0.2,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .play();
+
+        lockSwipe.current = true;
+        swipeIntensity.current = Math.abs(e.clientX - previousMouseMoveData.current.clientX);
+        mouseSwipeDirection.current = "right";
+      }
+    } else if (e.clientX - previousMouseMoveData.current.clientX < 0) {
+      if (isMouseSwipe.current && isMouseMove.current === false) {
+        animateTimeline.clear();
+        animateTimeline
+          .to(
+            swipeAcceleration.current,
+            {
+              v: 0.3,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .to(
+            followAcceleration.current,
+            {
+              v: 0.2,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .play();
+
+        lockSwipe.current = true;
+        swipeIntensity.current = Math.abs(e.clientX - previousMouseMoveData.current.clientX);
+        mouseSwipeDirection.current = "left";
+      }
+    }
+
+    isMouseMove.current = true;
+    previousMouseMoveData.current.clientX = e.clientX;
+    previousMouseMoveData.current.clientY = e.clientY;
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      isMouseMove.current = false;
+
+      if (lockSwipe.current) {
+        lockSwipe.current = false;
+        animateTimeline
+          .to(
+            swipeAcceleration.current,
+            {
+              v: 0,
+              delay: 0.2,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .to(
+            followAcceleration.current,
+            {
+              v: 1,
+              duration: 0.3,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .play();
+      }
+    }, 20);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOnMouseDownScene);
+    document.addEventListener("mouseup", handleOnMouseUpScene);
+    document.addEventListener("mousemove", handleOnMouseMoveScene);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOnMouseDownScene);
+      document.removeEventListener("mouseup", handleOnMouseUpScene);
+      document.removeEventListener("mousemove", handleOnMouseMoveScene);
+    };
+  });
 
   useFrame(() => {
     if (buildingPicked === null) {

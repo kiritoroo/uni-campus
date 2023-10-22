@@ -30,7 +30,7 @@ export const GLCampusScene = memo(() => {
       document.body.style.cursor = "auto";
     },
     ...{
-      delta: 10,
+      delta: 5,
       preventScrollOnSwipe: true,
       trackMouse: true,
       trackTouch: true,

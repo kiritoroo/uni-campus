@@ -4,6 +4,8 @@ import * as THREE from "three";
 import gsap, { Expo } from "gsap";
 import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 import { useSnapshot } from "valtio";
+import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
+import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 
 export type TGLBoundingEffectRef = {
   object: THREE.Mesh;
@@ -18,8 +20,11 @@ interface IGLBoundingEffectProps {
 
 export const GLBoundingEffect = memo(
   forwardRef<TGLBoundingEffectRef, IGLBoundingEffectProps>(({ geometry, position }, ref) => {
+    const campusStoreProxy = useCampusStoreProxyInContext();
     const buildingStoreProxy = useBuildingStoreProxyInContext();
     const { isPicked } = useSnapshot(buildingStoreProxy);
+    const { buildingPicked } = useSnapshot(campusStoreProxy);
+    const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
 
     const boundingEffectRef = useRef<THREE.Mesh | any>(null);
     const animateTimeline = useMemo(() => {
@@ -140,6 +145,12 @@ export const GLBoundingEffect = memo(
           .play();
       }
     }, [isPicked]);
+
+    useEffect(() => {
+      if (buildingPicked !== null && buildingPicked.buidlingUUID !== buildingUUID && !isPicked) {
+        (boundingEffectRef.current as THREE.Mesh).visible = false;
+      }
+    }, [buildingPicked, isPicked]);
 
     useFrame(({ clock }) => {
       effectUniform.current.uTime.value = clock.getElapsedTime();

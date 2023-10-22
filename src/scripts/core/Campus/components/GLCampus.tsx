@@ -12,8 +12,11 @@ import { GLBoundingCurve } from "./GLBoundingCurve";
 import { GLCampusCamera } from "./GLCampusCamera";
 import { GLCampusControls } from "./GLCampusControls";
 import { GLPlaneLayer } from "./GLPlaneLayer";
+import { useCampusSceneStoreProxyInContext } from "@Scripts/webgl/scene/CampusScene/hooks/useCampusSceneStoreProxyInContext";
+import { useFrame } from "@react-three/fiber";
 
 export const GLCampus = memo(() => {
+  const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
   const campusStoreProxy = useCampusStoreProxyInContext();
   const { buildingsPointerEnter } = useSnapshot(campusStoreProxy);
 
@@ -33,6 +36,13 @@ export const GLCampus = memo(() => {
       campusStoreProxy.buildingPointerEnterNearest = null;
     }
   }, [buildingsPointerEnter]);
+
+  useFrame(() => {
+    if (campusSceneStoreProxy.mouseState.isMouseSwipe && buildingsPointerEnter.length > 0) {
+      campusStoreProxy.buildingsPointerEnter = [];
+      campusStoreProxy.buildingPicked = null;
+    }
+  });
 
   return (
     <group>

@@ -3,6 +3,8 @@ import { forwardRef, memo, useEffect, useImperativeHandle, useMemo, useRef } fro
 import * as THREE from "three";
 import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 import { useSnapshot } from "valtio";
+import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
+import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
 
 export type TGLBoundingAroundRef = {
   object: THREE.Mesh;
@@ -17,8 +19,11 @@ interface IGlBoundingArroundProps {
 
 export const GLBoundingAround = memo(
   forwardRef<TGLBoundingAroundRef, IGlBoundingArroundProps>(({ geometry, position }, ref) => {
+    const campusStoreProxy = useCampusStoreProxyInContext();
     const buildingStoreProxy = useBuildingStoreProxyInContext();
     const { isPicked } = useSnapshot(buildingStoreProxy);
+    const { buildingPicked } = useSnapshot(campusStoreProxy);
+    const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
 
     const boundingArroundRef = useRef<THREE.Mesh | any>(null);
     const animateTimeline = useMemo(() => {
@@ -138,6 +143,12 @@ export const GLBoundingAround = memo(
           .play();
       }
     }, [isPicked]);
+
+    useEffect(() => {
+      if (buildingPicked !== null && buildingPicked.buidlingUUID !== buildingUUID && !isPicked) {
+        (boundingArroundRef.current as THREE.Mesh).visible = false;
+      }
+    }, [buildingPicked, isPicked]);
 
     return (
       <mesh

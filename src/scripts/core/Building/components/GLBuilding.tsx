@@ -16,12 +16,14 @@ import { GLWallMerge, TGLWallMergeRef } from "./GLWallMerge";
 import { Line } from "@react-three/drei";
 import { Line2, LineGeometry } from "three-stdlib";
 import { GLFocusCurve } from "./GLFocusCurve";
+import { useCampusSceneStoreProxyInContext } from "@Scripts/webgl/scene/CampusScene/hooks/useCampusSceneStoreProxyInContext";
 
 interface GLBuildingProps {
   buildingData: TCambusBuildingData;
 }
 
 export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
+  const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
@@ -112,7 +114,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
 
   const handleOnPointerEnterBuilding = _.throttle(
     (e: ThreeEvent<PointerEvent>) => {
-      if (campusStoreProxy.buildingPicked) return;
+      if (campusStoreProxy.buildingPicked || campusSceneStoreProxy.mouseState.isMouseSwipe) return;
       document.body.style.cursor = "pointer";
       campusStoreProxy.buildingsPointerEnter.push({
         buildingUUID: buildingUUID,
@@ -124,7 +126,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   );
 
   const handleOnPointerLeaveBuilding = () => {
-    if (campusStoreProxy.buildingPicked) return;
+    if (campusStoreProxy.buildingPicked || campusSceneStoreProxy.mouseState.isMouseSwipe) return;
     document.body.style.cursor = "auto";
     campusStoreProxy.buildingsPointerEnter = campusStoreProxy.buildingsPointerEnter.filter(
       (data) => data.buildingUUID !== buildingUUID,
@@ -132,6 +134,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   };
 
   const handleOnPointerMoveBuilding = () => {
+    if (campusStoreProxy.buildingPicked || campusSceneStoreProxy.mouseState.isMouseSwipe) return;
     document.body.style.cursor = "pointer";
   };
 
