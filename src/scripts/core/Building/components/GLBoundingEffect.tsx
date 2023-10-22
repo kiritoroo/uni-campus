@@ -2,6 +2,8 @@ import { useFrame } from "@react-three/fiber";
 import { forwardRef, memo, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import * as THREE from "three";
 import gsap, { Expo } from "gsap";
+import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
+import { useSnapshot } from "valtio";
 
 export type TGLBoundingEffectRef = {
   object: THREE.Mesh;
@@ -16,6 +18,9 @@ interface IGLBoundingEffectProps {
 
 export const GLBoundingEffect = memo(
   forwardRef<TGLBoundingEffectRef, IGLBoundingEffectProps>(({ geometry, position }, ref) => {
+    const buildingStoreProxy = useBuildingStoreProxyInContext();
+    const { isPicked } = useSnapshot(buildingStoreProxy);
+
     const boundingEffectRef = useRef<THREE.Mesh | any>(null);
     const animateTimeline = useMemo(() => {
       return gsap.timeline();
@@ -28,6 +33,7 @@ export const GLBoundingEffect = memo(
         transparent: true,
         opacity: 0,
         depthWrite: false,
+        depthTest: true,
       }),
     );
 
@@ -118,6 +124,23 @@ export const GLBoundingEffect = memo(
       material.current.defines = { USE_UV: "" };
     }, []);
 
+    useEffect(() => {
+      if (isPicked) {
+        animateTimeline.clear();
+        animateTimeline
+          .to(
+            effectUniform.current.uAlpha,
+            {
+              value: 0,
+              ease: Expo.easeInOut,
+              duration: 0.5,
+            },
+            "<",
+          )
+          .play();
+      }
+    }, [isPicked]);
+
     useFrame(({ clock }) => {
       effectUniform.current.uTime.value = clock.getElapsedTime();
     });
@@ -131,6 +154,7 @@ export const GLBoundingEffect = memo(
         geometry={geometry}
         material={material.current}
         scale={[1, 0, 1]}
+        renderOrder={1000}
       />
     );
   }),

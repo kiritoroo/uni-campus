@@ -55,8 +55,8 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
     },
     "state-picked": {
       y: "-15px",
-      scale: 0,
-      transition: { delay: 0.5, type: "tween" },
+      opacity: 0,
+      transition: { duration: 0.5, delay: 0.5, type: "tween" },
       transitionEnd: {
         display: "none",
       },
@@ -64,12 +64,12 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
   });
 
   useEffect(() => {
-    if (buildingPicked?.buidlingUUID === buildingUUID && isPicked) {
+    if (buildingPicked && buildingPicked?.buidlingUUID === buildingUUID && isPicked) {
       controls.start("state-picked");
+    } else if (buildingPicked && buildingPicked?.buidlingUUID !== buildingUUID && !isPicked) {
+      controls.start("state-hide");
     } else if (buildingPicked === null && isPointerEnter && !isPicked) {
       controls.start("state-pointer-enter");
-    } else if (buildingPicked && !isPicked) {
-      controls.start("state-hide");
     } else {
       controls.start("state-idle");
     }
@@ -87,7 +87,7 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
           mass: randomRand(0.5, 0.8),
           stiffness: randomRand(50, 100),
           damping: randomRand(5, 10),
-          delay: randomRand(0.0, 0.2),
+          delay: randomRand(0.0, 0.4),
           onPlay: () => {},
           onComplete: () => {
             controls.set("state-idle");

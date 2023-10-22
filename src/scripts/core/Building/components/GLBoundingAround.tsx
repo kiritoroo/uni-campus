@@ -1,6 +1,8 @@
 import gsap, { Expo } from "gsap";
-import { forwardRef, memo, useImperativeHandle, useMemo, useRef } from "react";
+import { forwardRef, memo, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import * as THREE from "three";
+import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
+import { useSnapshot } from "valtio";
 
 export type TGLBoundingAroundRef = {
   object: THREE.Mesh;
@@ -15,6 +17,9 @@ interface IGlBoundingArroundProps {
 
 export const GLBoundingAround = memo(
   forwardRef<TGLBoundingAroundRef, IGlBoundingArroundProps>(({ geometry, position }, ref) => {
+    const buildingStoreProxy = useBuildingStoreProxyInContext();
+    const { isPicked } = useSnapshot(buildingStoreProxy);
+
     const boundingArroundRef = useRef<THREE.Mesh | any>(null);
     const animateTimeline = useMemo(() => {
       return gsap.timeline();
@@ -25,6 +30,8 @@ export const GLBoundingAround = memo(
         color: new THREE.Color(0.21, 0.35, 0.67),
         side: THREE.DoubleSide,
         transparent: true,
+        depthWrite: false,
+        depthTest: true,
         opacity: 0,
         visible: false,
       }),
@@ -112,6 +119,26 @@ export const GLBoundingAround = memo(
       onPointerLeaveBuilding: handleOnPointerLeaveBuilding,
     }));
 
+    useEffect(() => {
+      if (isPicked) {
+        animateTimeline.clear();
+        animateTimeline
+          .to(
+            material.current,
+            {
+              opacity: 0,
+              ease: Expo.easeInOut,
+              duration: 0.5,
+              onComplete: () => {
+                (boundingArroundRef.current as THREE.Mesh).visible = false;
+              },
+            },
+            "<",
+          )
+          .play();
+      }
+    }, [isPicked]);
+
     return (
       <mesh
         ref={boundingArroundRef}
@@ -121,6 +148,10 @@ export const GLBoundingAround = memo(
         geometry={geometry}
         material={material.current}
         scale={[0.8, 1, 0.8]}
+        renderOrder={999}
+        onBeforeRender={(gl) => {
+          // gl.clearDepth();
+        }}
       />
     );
   }),

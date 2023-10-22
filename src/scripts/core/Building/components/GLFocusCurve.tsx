@@ -80,7 +80,7 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   }, []);
 
   const curveVOffset = useMemo<THREE.Vector3>(() => {
-    return new THREE.Vector3(randomRand(-100, 100), 0, randomRand(-100, 100));
+    return new THREE.Vector3(randomRand(-50, 50), 0, randomRand(-50, 50));
   }, []);
 
   const handleUpdateCurveFollowCamera = () => {
@@ -108,14 +108,14 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
       new THREE.Vector3(
         objFocusCurveProperty.cubicBezierCurve.v1.x,
         objFocusCurveProperty.cubicBezierCurve.v1.y +
-          objFocusCurveProperty.cubicBezierCurve.v1.y / 3,
+          objFocusCurveProperty.cubicBezierCurve.v1.y / 4,
         objFocusCurveProperty.cubicBezierCurve.v1.z,
       ),
       new THREE.Vector3(
         objFocusCurveProperty.cubicBezierCurve.v2.x -
           objFocusCurveProperty.cubicBezierCurve.v2.x / 2,
         objFocusCurveProperty.cubicBezierCurve.v2.y +
-          objFocusCurveProperty.cubicBezierCurve.v1.y / 3,
+          objFocusCurveProperty.cubicBezierCurve.v1.y / 2,
         objFocusCurveProperty.cubicBezierCurve.v2.z -
           objFocusCurveProperty.cubicBezierCurve.v2.z / 2,
       ),
@@ -140,7 +140,7 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   const handleUpdateCameraFollowCurve = () => {
     if (!campusCamera) return;
     const tubeGeometry = new THREE.TubeGeometry(
-      objFocusCurveProperty.catmullRomCurve,
+      objFocusCurveProperty.cubicBezierCurve,
       200,
       1,
       15,
