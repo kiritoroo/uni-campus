@@ -5,4 +5,7 @@ export const assets = {
     PLANT_LAYER_PATH: "/models/plant-layer.glb",
     CAMPUS_BOUNDING_CURVE_PATH: "/models/campus-bounding-curve.glb",
   },
+  sounds: {
+    THEME_PATH: "/sounds/theme.mp3",
+  },
 };

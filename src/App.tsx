@@ -1,7 +1,7 @@
 import { CampusScene } from "@Scripts/webgl/scene/CampusScene";
 import { Fragment, useState } from "react";
 import { SoundFxProvider } from "./global/context/SoundFxContext";
-import Sound from "react-sound";
+import { assets } from "@Assets/assets";
 
 const App = () => {
   console.warn("Re: Render");
@@ -24,7 +24,11 @@ const App = () => {
           </div>
         </main>
 
-        {interactive && <Sound url="/sounds/theme.mp3" playStatus={"PLAYING"} loop volume={50} />}
+        {interactive && (
+          <audio autoPlay loop>
+            <source src={assets.sounds.THEME_PATH} />
+          </audio>
+        )}
       </SoundFxProvider>
     </Fragment>
   );
