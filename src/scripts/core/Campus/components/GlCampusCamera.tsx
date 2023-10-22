@@ -14,7 +14,7 @@ export const GLCampusCamera = memo(() => {
   useHelper(cameraRef, THREE.CameraHelper);
 
   const config = useControls({
-    "campus-camera": true,
+    "campus-camera": false,
   });
 
   useFrame(() => {
