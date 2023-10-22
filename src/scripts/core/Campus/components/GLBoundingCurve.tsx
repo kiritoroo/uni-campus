@@ -180,7 +180,7 @@ export const GLBoundingCurve = memo(() => {
             swipeAcceleration.current,
             {
               v: 1,
-              duration: 0.2,
+              duration: 0.1,
               ease: Expo.easeInOut,
             },
             "<",
@@ -189,7 +189,7 @@ export const GLBoundingCurve = memo(() => {
             followAcceleration.current,
             {
               v: 0.1,
-              duration: 0.2,
+              duration: 0.1,
               ease: Expo.easeInOut,
             },
             "<",
@@ -213,7 +213,7 @@ export const GLBoundingCurve = memo(() => {
             swipeAcceleration.current,
             {
               v: 0.3,
-              duration: 0.2,
+              duration: 0.1,
               ease: Expo.easeInOut,
             },
             "<",
@@ -222,7 +222,7 @@ export const GLBoundingCurve = memo(() => {
             followAcceleration.current,
             {
               v: 0.2,
-              duration: 0.2,
+              duration: 0.1,
               ease: Expo.easeInOut,
             },
             "<",
@@ -241,7 +241,7 @@ export const GLBoundingCurve = memo(() => {
             swipeAcceleration.current,
             {
               v: 0.3,
-              duration: 0.2,
+              duration: 0.1,
               ease: Expo.easeInOut,
             },
             "<",
@@ -250,7 +250,7 @@ export const GLBoundingCurve = memo(() => {
             followAcceleration.current,
             {
               v: 0.2,
-              duration: 0.2,
+              duration: 0.1,
               ease: Expo.easeInOut,
             },
             "<",
@@ -273,25 +273,17 @@ export const GLBoundingCurve = memo(() => {
       if (lockSwipe.current) {
         lockSwipe.current = false;
         animateTimeline
-          .to(
-            swipeAcceleration.current,
-            {
-              v: 0,
-              delay: 0.2,
-              duration: 0.2,
-              ease: Expo.easeInOut,
-            },
-            "<",
-          )
-          .to(
-            followAcceleration.current,
-            {
-              v: 1,
-              duration: 0.3,
-              ease: Expo.easeInOut,
-            },
-            "<",
-          )
+          .to(swipeAcceleration.current, {
+            v: 0,
+            delay: 0.2,
+            duration: 0.2,
+            ease: Expo.easeInOut,
+          })
+          .to(followAcceleration.current, {
+            v: 1,
+            duration: 0.1,
+            ease: Expo.easeInOut,
+          })
           .play();
       }
     }, 20);
