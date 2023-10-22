@@ -21,6 +21,12 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   const { isPicked } = useSnapshot(buildingStoreProxy);
 
   const { scene, controls } = useThree();
+  const animateCameraTimeline = useMemo(() => {
+    return gsap.timeline();
+  }, []);
+  const animateControlsTimeline = useMemo(() => {
+    return gsap.timeline();
+  }, []);
 
   const progress = useRef({
     v: 0,
@@ -32,6 +38,7 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   const lookAtTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const centerTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const boxTarget = useRef<THREE.Box3>(new THREE.Box3());
+  const maxDistanceFromCameraToFocus = useRef<number>(0);
 
   const objFocusCurveProperty = useMemo<{
     curve: THREE.CubicBezierCurve3;
@@ -92,56 +99,62 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
       ),
     );
 
-    gsap.to(progress.current, {
-      v: 0.8,
-      duration: 1.5,
-      ease: Power2.easeInOut,
-      onStart: () => {
-        // campusCamera.lookAt(focusPosition);
-      },
-      onUpdate: () => {
-        tubeGeometry.parameters.path.getPointAt(
-          clamp(progress.current.v, 0, 1),
-          positionTarget.current,
-        );
-        positionTarget.current.multiplyScalar(1);
+    maxDistanceFromCameraToFocus.current =
+      objFocusCurveProperty.curve.v0.distanceTo(focusPosition) - 80;
 
-        const segments = tubeGeometry.tangents.length;
-        const pickt = clamp(progress.current.v, 0, 1) * segments;
-        const pick = Math.floor(pickt);
-        const pickNext = (pick + 1) % segments;
+    animateCameraTimeline.clear();
+    animateCameraTimeline
+      .to(progress.current, {
+        v: (maxDistanceFromCameraToFocus.current - 50) / maxDistanceFromCameraToFocus.current,
+        duration: 1.5,
+        ease: Power2.easeInOut,
+        onStart: () => {
+          positionTarget.current.copy(campusCamera.position);
+        },
+        onUpdate: () => {
+          tubeGeometry.parameters.path.getPointAt(
+            clamp(progress.current.v, 0, 1),
+            positionTarget.current,
+          );
+          positionTarget.current.multiplyScalar(1);
 
-        binormalTarget.current.subVectors(
-          tubeGeometry.binormals[pickNext],
-          tubeGeometry.binormals[pick],
-        );
-        binormalTarget.current.multiplyScalar(pickt - pick).add(tubeGeometry.binormals[pick]);
+          const segments = tubeGeometry.tangents.length;
+          const pickt = clamp(progress.current.v, 0, 1) * segments;
+          const pick = Math.floor(pickt);
+          const pickNext = (pick + 1) % segments;
 
-        tubeGeometry.parameters.path.getTangentAt(
-          clamp(progress.current.v, 0, 1),
-          directionTarget.current,
-        );
+          binormalTarget.current.subVectors(
+            tubeGeometry.binormals[pickNext],
+            tubeGeometry.binormals[pick],
+          );
+          binormalTarget.current.multiplyScalar(pickt - pick).add(tubeGeometry.binormals[pick]);
 
-        normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
-        positionTarget.current.add(normalTarget.current.clone().multiplyScalar(1));
+          tubeGeometry.parameters.path.getTangentAt(
+            clamp(progress.current.v, 0, 1),
+            directionTarget.current,
+          );
 
-        campusCamera.position.lerp(positionTarget.current, 0.5);
+          normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
+          positionTarget.current.add(normalTarget.current.clone().multiplyScalar(1));
 
-        tubeGeometry.parameters.path.getPointAt(
-          (clamp(progress.current.v, 0, 1) + 2 / tubeGeometry.parameters.path.getLength()) % 1,
-          lookAtTarget.current,
-        );
-        lookAtTarget.current.multiplyScalar(1);
+          campusCamera.position.lerp(positionTarget.current, 0.5);
 
-        lookAtTarget.current.copy(positionTarget.current).add(directionTarget.current);
-        campusCamera.matrix.lookAt(
-          campusCamera.position,
-          lookAtTarget.current,
-          normalTarget.current,
-        );
-        campusCamera.quaternion.setFromRotationMatrix(campusCamera.matrix);
-      },
-    });
+          tubeGeometry.parameters.path.getPointAt(
+            (clamp(progress.current.v, 0, 1) + 2 / tubeGeometry.parameters.path.getLength()) % 1,
+            lookAtTarget.current,
+          );
+          lookAtTarget.current.multiplyScalar(1);
+
+          lookAtTarget.current.copy(positionTarget.current).add(directionTarget.current);
+          campusCamera.matrix.lookAt(
+            campusCamera.position,
+            lookAtTarget.current,
+            normalTarget.current,
+          );
+          campusCamera.quaternion.setFromRotationMatrix(campusCamera.matrix);
+        },
+      })
+      .play();
   };
 
   const handleUpdateControlsFollowObject = () => {
@@ -151,16 +164,19 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
       // boxTarget.current.getSize(sizeTarget.current);
       boxTarget.current.getCenter(centerTarget.current);
 
-      gsap.to((controls as any).target, {
-        x: centerTarget.current.x,
-        y: centerTarget.current.y,
-        z: centerTarget.current.z,
-        duration: 1.5,
-        ease: Power2.easeInOut,
-        onUpdate: () => {
-          (controls as any).update();
-        },
-      });
+      animateControlsTimeline.clear();
+      animateControlsTimeline
+        .to((controls as any).target, {
+          x: centerTarget.current.x,
+          y: centerTarget.current.y,
+          z: centerTarget.current.z,
+          duration: 1.5,
+          ease: Power2.easeInOut,
+          onUpdate: () => {
+            (controls as any).update();
+          },
+        })
+        .play();
     }
   };
 
