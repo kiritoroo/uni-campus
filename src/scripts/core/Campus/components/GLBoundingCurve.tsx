@@ -263,6 +263,14 @@ export const GLBoundingCurve = memo(() => {
       }
     }
 
+    if (swipeAcceleration.current.v < 0.1) {
+      if (e.clientX - previousMouseMoveData.current.clientX > 0) {
+        mouseSwipeDirection.current = "right";
+      } else if (e.clientX - previousMouseMoveData.current.clientX < 0) {
+        mouseSwipeDirection.current = "left";
+      }
+    }
+
     isMouseMove.current = true;
     previousMouseMoveData.current.clientX = e.clientX;
     previousMouseMoveData.current.clientY = e.clientY;
