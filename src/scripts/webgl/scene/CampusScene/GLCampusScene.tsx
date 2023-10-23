@@ -16,31 +16,31 @@ import { useCampusSceneStoreProxyInContext } from "./hooks/useCampusSceneStorePr
 export const GLCampusScene = memo(() => {
   const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
 
-  const swipeHandlers = useSwipeable({
-    onSwiping: (e: SwipeEventData) => {
-      campusSceneStoreProxy.swipeData = {
-        velocity: e.dir === "Right" ? e.velocity : -e.velocity,
-        dir: e.dir as "Left" | "Right",
-      };
-    },
-    onTouchStartOrOnMouseDown: () => {
-      document.body.style.cursor = "grabbing";
-    },
-    onSwiped: () => {
-      document.body.style.cursor = "auto";
-    },
-    ...{
-      delta: 5,
-      preventScrollOnSwipe: true,
-      trackMouse: true,
-      trackTouch: true,
-      swipeDuration: Infinity,
-    },
-  });
+  // const swipeHandlers = useSwipeable({
+  //   onSwiping: (e: SwipeEventData) => {
+  //     campusSceneStoreProxy.swipeData = {
+  //       velocity: e.dir === "Right" ? e.velocity : -e.velocity,
+  //       dir: e.dir as "Left" | "Right",
+  //     };
+  //   },
+  //   onTouchStartOrOnMouseDown: () => {
+  //     document.body.style.cursor = "grabbing";
+  //   },
+  //   onSwiped: () => {
+  //     document.body.style.cursor = "auto";
+  //   },
+  //   ...{
+  //     delta: 5,
+  //     preventScrollOnSwipe: true,
+  //     trackMouse: true,
+  //     trackTouch: true,
+  //     swipeDuration: Infinity,
+  //   },
+  // });
 
   return (
     <Canvas
-      {...swipeHandlers}
+      // {...swipeHandlers}
       shadows="soft"
       dpr={[1, 2]}
       gl={{

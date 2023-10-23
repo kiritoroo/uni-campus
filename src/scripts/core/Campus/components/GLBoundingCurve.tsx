@@ -9,8 +9,7 @@ import { useCampusStoreInContext } from "../hooks/useCampusStoreInContext";
 import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInContext";
 import { useSnapshot } from "valtio";
 import { useCampusSceneStoreProxyInContext } from "@Scripts/webgl/scene/CampusScene/hooks/useCampusSceneStoreProxyInContext";
-import gsap, { Power2 } from "gsap";
-import { Expo } from "gsap";
+import gsap, { Expo, Circ } from "gsap";
 import { clamp } from "@Utils/math.utils";
 
 export const GLBoundingCurve = memo(() => {
@@ -101,9 +100,9 @@ export const GLBoundingCurve = memo(() => {
     if (!objBoundingCurveProperty || !campusCamera) return;
 
     swipeAccumulate.current +=
-      followAcceleration.current.v * 1.2 +
+      followAcceleration.current.v * 1.1 +
       swipeAcceleration.current.v *
-        (clamp(swipeIntensity.current, 1, 5) + 8) *
+        (clamp(swipeIntensity.current, 1, 5) + 5) *
         (mouseSwipeDirection.current === "right" ? 1 : -1);
     progress.current.v = clamp((swipeAccumulate.current % 2000) / 2000, 0, 1);
 
@@ -155,6 +154,7 @@ export const GLBoundingCurve = memo(() => {
 
   const handleOnMouseDownScene = (e: MouseEvent) => {
     isMouseDown.current = true;
+    document.body.style.cursor = "grabbing";
     mouseDownData.current.clientX = e.clientX;
     mouseDownData.current.clientY = e.clientY;
   };
@@ -162,6 +162,7 @@ export const GLBoundingCurve = memo(() => {
   const handleOnMouseUpScene = () => {
     isMouseDown.current = false;
     isMouseSwipe.current = false;
+    document.body.style.cursor = "auto";
     campusSceneStoreProxy.mouseState.isMouseSwipe = false;
   };
 
@@ -181,7 +182,7 @@ export const GLBoundingCurve = memo(() => {
             {
               v: 1,
               duration: 0.1,
-              ease: Expo.easeInOut,
+              ease: Circ.easeInOut,
             },
             "<",
           )
@@ -190,7 +191,7 @@ export const GLBoundingCurve = memo(() => {
             {
               v: 0.1,
               duration: 0.1,
-              ease: Expo.easeInOut,
+              ease: Circ.easeInOut,
             },
             "<",
           )
@@ -214,7 +215,7 @@ export const GLBoundingCurve = memo(() => {
             {
               v: 0.3,
               duration: 0.1,
-              ease: Expo.easeInOut,
+              ease: Circ.easeInOut,
             },
             "<",
           )
@@ -223,7 +224,7 @@ export const GLBoundingCurve = memo(() => {
             {
               v: 0.2,
               duration: 0.1,
-              ease: Expo.easeInOut,
+              ease: Circ.easeInOut,
             },
             "<",
           )
@@ -242,7 +243,7 @@ export const GLBoundingCurve = memo(() => {
             {
               v: 0.3,
               duration: 0.1,
-              ease: Expo.easeInOut,
+              ease: Circ.easeInOut,
             },
             "<",
           )
@@ -251,7 +252,7 @@ export const GLBoundingCurve = memo(() => {
             {
               v: 0.2,
               duration: 0.1,
-              ease: Expo.easeInOut,
+              ease: Circ.easeInOut,
             },
             "<",
           )
