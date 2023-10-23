@@ -47,6 +47,8 @@ export const GLBoundingCurve = memo(() => {
     v: 1,
   });
   const lockSwipe = useRef(false);
+  const isMouseDragg = useRef(false);
+  const saveSwipAccumulateOnDragg = useRef(swipeAccumulate.current);
 
   const timer = useRef<any>(0);
   const animateTimeline = useMemo(() => {
@@ -99,11 +101,20 @@ export const GLBoundingCurve = memo(() => {
   const handleUpdateCameraFollowCurve = () => {
     if (!objBoundingCurveProperty || !campusCamera) return;
 
-    swipeAccumulate.current +=
-      followAcceleration.current.v * 1.1 +
-      swipeAcceleration.current.v *
-        (clamp(swipeIntensity.current, 1, 5) + 5) *
-        (mouseSwipeDirection.current === "right" ? 1 : -1);
+    if (
+      isMouseDragg.current &&
+      followAcceleration.current.v === 0 &&
+      swipeAcceleration.current.v === 0
+    ) {
+      swipeAccumulate.current = saveSwipAccumulateOnDragg.current;
+    } else {
+      swipeAccumulate.current +=
+        followAcceleration.current.v * 1.1 +
+        swipeAcceleration.current.v *
+          (clamp(Math.abs(campusSceneStoreProxy.swipeData.velocity * 2), 1, 15) + 5) *
+          (mouseSwipeDirection.current === "right" ? 1 : -1);
+    }
+
     progress.current.v = clamp((swipeAccumulate.current % 2000) / 2000, 0, 1);
 
     objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(
@@ -162,8 +173,35 @@ export const GLBoundingCurve = memo(() => {
   const handleOnMouseUpScene = () => {
     isMouseDown.current = false;
     isMouseSwipe.current = false;
+    isMouseDragg.current = false;
     document.body.style.cursor = "auto";
     campusSceneStoreProxy.mouseState.isMouseSwipe = false;
+
+    if (mouseSwipeDirection.current === "right") {
+      animateTimeline
+        .to(
+          followAcceleration.current,
+          {
+            v: 1,
+            duration: 0.2,
+            ease: Circ.easeInOut,
+          },
+          "<",
+        )
+        .play();
+    } else {
+      animateTimeline
+        .to(
+          followAcceleration.current,
+          {
+            v: -1,
+            duration: 0.2,
+            ease: Circ.easeInOut,
+          },
+          "<",
+        )
+        .play();
+    }
   };
 
   const handleOnMouseMoveScene = (e: MouseEvent) => {
@@ -172,95 +210,122 @@ export const GLBoundingCurve = memo(() => {
     if (isMouseDown.current && isMouseSwipe.current === false) {
       const DELTA_CHANGE_IS_SWIPE = 10;
       if (Math.abs(e.clientX - mouseDownData.current.clientX) > DELTA_CHANGE_IS_SWIPE) {
-        isMouseSwipe.current = true;
         lockSwipe.current = true;
+        isMouseSwipe.current = true;
         campusSceneStoreProxy.mouseState.isMouseSwipe = true;
-        animateTimeline.clear();
-        animateTimeline
-          .to(
-            swipeAcceleration.current,
-            {
-              v: 1,
-              duration: 0.1,
-              ease: Circ.easeInOut,
-            },
-            "<",
-          )
-          .to(
-            followAcceleration.current,
-            {
-              v: 0.1,
-              duration: 0.1,
-              ease: Circ.easeInOut,
-            },
-            "<",
-          )
-          .play();
-
         swipeIntensity.current = Math.abs(e.clientX - previousMouseMoveData.current.clientX);
         if (e.clientX - previousMouseMoveData.current.clientX > 0) {
           mouseSwipeDirection.current = "right";
         } else if (e.clientX - previousMouseMoveData.current.clientX < 0) {
           mouseSwipeDirection.current = "left";
         }
+
+        animateTimeline.clear();
+        if (mouseSwipeDirection.current === "left") {
+          animateTimeline
+            .to(
+              swipeAcceleration.current,
+              {
+                v: 2,
+                duration: 0.2,
+                ease: Circ.easeInOut,
+              },
+              "<",
+            )
+            .to(
+              followAcceleration.current,
+              {
+                v: 1,
+                duration: 0.2,
+                ease: Circ.easeInOut,
+              },
+              "<",
+            )
+            .play();
+        } else {
+          animateTimeline
+            .to(
+              swipeAcceleration.current,
+              {
+                v: 2,
+                duration: 0.2,
+                ease: Circ.easeInOut,
+              },
+              "<",
+            )
+            .to(
+              followAcceleration.current,
+              {
+                v: -1,
+                duration: 0.2,
+                ease: Circ.easeInOut,
+              },
+              "<",
+            )
+            .play();
+        }
       }
     }
 
     if (e.clientX - previousMouseMoveData.current.clientX > 0) {
       if (isMouseSwipe.current && isMouseMove.current === false) {
-        animateTimeline.clear();
-        animateTimeline
-          .to(
-            swipeAcceleration.current,
-            {
-              v: 0.3,
-              duration: 0.1,
-              ease: Circ.easeInOut,
-            },
-            "<",
-          )
-          .to(
-            followAcceleration.current,
-            {
-              v: 0.2,
-              duration: 0.1,
-              ease: Circ.easeInOut,
-            },
-            "<",
-          )
-          .play();
-
         lockSwipe.current = true;
         swipeIntensity.current = Math.abs(e.clientX - previousMouseMoveData.current.clientX);
         mouseSwipeDirection.current = "right";
+
+        animateTimeline.clear();
+        // followAcceleration.current.v = 1;
+        // swipeAcceleration.current.v = 1;
+        // animateTimeline
+        //   .to(
+        //     swipeAcceleration.current,
+        //     {
+        //       v: 0,
+        //       duration: 0.2,
+        //       ease: Circ.easeInOut,
+        //     },
+        //     "<",
+        //   )
+        //   .to(
+        //     followAcceleration.current,
+        //     {
+        //       v: 0,
+        //       duration: 0.2,
+        //       ease: Circ.easeInOut,
+        //     },
+        //     "<",
+        //   )
+        //   .play();
       }
     } else if (e.clientX - previousMouseMoveData.current.clientX < 0) {
       if (isMouseSwipe.current && isMouseMove.current === false) {
-        animateTimeline.clear();
-        animateTimeline
-          .to(
-            swipeAcceleration.current,
-            {
-              v: 0.3,
-              duration: 0.1,
-              ease: Circ.easeInOut,
-            },
-            "<",
-          )
-          .to(
-            followAcceleration.current,
-            {
-              v: 0.2,
-              duration: 0.1,
-              ease: Circ.easeInOut,
-            },
-            "<",
-          )
-          .play();
-
         lockSwipe.current = true;
         swipeIntensity.current = Math.abs(e.clientX - previousMouseMoveData.current.clientX);
         mouseSwipeDirection.current = "left";
+        // followAcceleration.current.v = -1;
+        // swipeAcceleration.current.v = 1;
+
+        // animateTimeline.clear();
+        // animateTimeline
+        //   .to(
+        //     swipeAcceleration.current,
+        //     {
+        //       v: 0,
+        //       duration: 0.2,
+        //       ease: Circ.easeInOut,
+        //     },
+        //     "<",
+        //   )
+        //   .to(
+        //     followAcceleration.current,
+        //     {
+        //       v: 0,
+        //       duration: 0.2,
+        //       ease: Circ.easeInOut,
+        //     },
+        //     "<",
+        //   )
+        //   .play();
       }
     }
 
@@ -272,29 +337,16 @@ export const GLBoundingCurve = memo(() => {
       }
     }
 
+    if (isMouseSwipe.current) {
+      document.body.style.cursor = "grabbing";
+    }
+
     isMouseMove.current = true;
     previousMouseMoveData.current.clientX = e.clientX;
     previousMouseMoveData.current.clientY = e.clientY;
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
       isMouseMove.current = false;
-
-      if (lockSwipe.current) {
-        lockSwipe.current = false;
-        animateTimeline
-          .to(swipeAcceleration.current, {
-            v: 0,
-            delay: 0.2,
-            duration: 0.2,
-            ease: Expo.easeInOut,
-          })
-          .to(followAcceleration.current, {
-            v: 1,
-            duration: 0.1,
-            ease: Expo.easeInOut,
-          })
-          .play();
-      }
     }, 20);
   };
 
@@ -311,6 +363,80 @@ export const GLBoundingCurve = memo(() => {
   });
 
   useFrame(() => {
+    if (isMouseSwipe.current && !isMouseMove.current && isMouseDragg.current === false) {
+      isMouseDragg.current = true;
+      animateTimeline
+        .to(
+          swipeAcceleration.current,
+          {
+            v: 0,
+            duration: 0.2,
+            ease: Circ.easeInOut,
+          },
+          "<",
+        )
+        .to(
+          followAcceleration.current,
+          {
+            v: 0,
+            duration: 0.2,
+            ease: Circ.easeInOut,
+            onComplete: () => {
+              saveSwipAccumulateOnDragg.current = swipeAccumulate.current;
+            },
+          },
+          "<",
+        )
+        .play();
+    } else if (lockSwipe.current && !isMouseDragg.current) {
+      lockSwipe.current = false;
+      if (mouseSwipeDirection.current === "right") {
+        animateTimeline
+          .to(
+            swipeAcceleration.current,
+            {
+              v: 0,
+              delay: 0.2,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .to(
+            followAcceleration.current,
+            {
+              v: 1,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .play();
+      } else {
+        animateTimeline
+          .to(
+            swipeAcceleration.current,
+            {
+              v: 0,
+              delay: 0.2,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .to(
+            followAcceleration.current,
+            {
+              v: -1,
+              duration: 0.2,
+              ease: Expo.easeInOut,
+            },
+            "<",
+          )
+          .play();
+      }
+    }
+
     if (buildingPicked === null) {
       handleUpdateCameraFollowCurve();
     }
