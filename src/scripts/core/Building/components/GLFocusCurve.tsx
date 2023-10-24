@@ -28,6 +28,7 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
     return gsap.timeline();
   }, []);
 
+  const OFFSET_FOCUS_DISTANCE = useRef(100);
   const progress = useRef({
     v: 0,
   });
@@ -157,12 +158,15 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
     // );
 
     maxDistanceFromCameraToFocus.current =
-      objFocusCurveProperty.cubicBezierCurve.v0.distanceTo(focusPosition) - 80;
+      objFocusCurveProperty.cubicBezierCurve.v0.distanceTo(focusPosition) -
+      OFFSET_FOCUS_DISTANCE.current;
 
     animateCameraTimeline.clear();
     animateCameraTimeline
       .to(progress.current, {
-        v: (maxDistanceFromCameraToFocus.current - 50) / maxDistanceFromCameraToFocus.current,
+        v:
+          (maxDistanceFromCameraToFocus.current - OFFSET_FOCUS_DISTANCE.current) /
+          maxDistanceFromCameraToFocus.current,
         duration: 2,
         ease: Power2.easeInOut,
         onStart: () => {

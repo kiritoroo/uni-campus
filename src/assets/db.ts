@@ -2,14 +2,14 @@ import { TCambusBuildingData, TSoundEffectData } from "@Types/db.type";
 
 export const sounds_effect_data: TSoundEffectData[] = [
   {
-    name: "mouseover1",
-    volume: 2,
-    file_url: "/sounds/mouseover1.mp3",
+    name: "mouseover",
+    volume: 1,
+    file_url: "/sounds/mouseover.mp3",
   },
   {
-    name: "mouseover2",
+    name: "mouseclick",
     volume: 1,
-    file_url: "/sounds/mouseover2.mp3",
+    file_url: "/sounds/mouseclick.wav",
   },
 ];
 

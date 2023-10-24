@@ -148,7 +148,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
 
   const handleOnPointerEnterBuildingIsNearest = () => {
     buildingStoreProxy.isPointerEnter = true;
-    playSoundFx.mouseover1();
+    playSoundFx.mouseover();
     objBoundingFxProperty?.ref.current?.onPointerEnterBuilding();
     objBoundingArroundProperty?.ref.current?.onPointerEnterBuilding();
   };
@@ -161,7 +161,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
 
   const handleOnBuidingPicking = () => {
     buildingStoreProxy.isPicked = true;
-    playSoundFx.mouseover1();
+    playSoundFx.mouseclick();
   };
 
   const handleOnBuidingUnPicking = () => {

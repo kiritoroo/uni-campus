@@ -4,7 +4,7 @@ import { createContext } from "react";
 import useSound from "use-sound";
 import { PlayFunction } from "use-sound/dist/types";
 
-type TSoundFxNames = "mouseover1" | "mouseover2";
+type TSoundFxNames = "mouseover" | "mouseclick";
 
 type TSoundFx = {
   [key in TSoundFxNames]: PlayFunction;
