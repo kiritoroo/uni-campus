@@ -8,6 +8,7 @@ import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 import { useSnapshot } from "valtio";
 import gsap, { Expo, Power4, Linear, Quart, Power2 } from "gsap";
+import { OrbitControls } from "three-stdlib";
 
 interface GLFocusCurveProps {
   focusPosition: THREE.Vector3;
@@ -28,7 +29,7 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
     return gsap.timeline();
   }, []);
 
-  const OFFSET_FOCUS_DISTANCE = useRef(100);
+  const OFFSET_FOCUS_DISTANCE = useRef(80);
   const progress = useRef({
     v: 0,
   });
@@ -231,10 +232,13 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
           x: centerTarget.current.x,
           y: centerTarget.current.y,
           z: centerTarget.current.z,
-          duration: 1.5,
+          duration: 2,
           ease: Power2.easeInOut,
           onUpdate: () => {
             (controls as any).update();
+          },
+          onComplete: () => {
+            (controls as OrbitControls).autoRotate = true;
           },
         })
         .play();
@@ -257,6 +261,9 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
   }, [isPicked]);
 
   useFrame(() => {
+    // if ((controls as OrbitControls).autoRotate) {
+    //   (controls as OrbitControls).update();
+    // }
     // handleUpdateCurveFollowCamera();
   });
 
