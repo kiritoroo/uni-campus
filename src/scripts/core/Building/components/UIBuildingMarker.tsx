@@ -1,4 +1,4 @@
-import { cn } from "@Utils/common.utils";
+import { cn, lightenDarkenColor } from "@Utils/common.utils";
 import { Html } from "@react-three/drei";
 import { Variants, motion, useAnimate, useAnimationControls } from "framer-motion";
 import { useSnapshot } from "valtio";
@@ -19,10 +19,10 @@ interface UIBuildingMarkerProps {
 
 const buildingColorMap: { [key: string]: string } = {
   academic: "#404A57",
-  sport: "#5e68c9",
-  workshop: "#404A57",
+  sport: "#4889F5",
+  workshop: "#78909C",
   parking: "#404A57",
-  service: "#404A57",
+  service: "#F29900",
 };
 
 export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildingMarkerProps) => {
@@ -134,9 +134,15 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
           className="pointer-events-none relative cursor-pointer select-none text-center drop-shadow-lg"
         >
           <div
-            style={{ backgroundColor: buildingColorMap[type] ?? "#FFFFFF" }}
+            style={{
+              backgroundColor: buildingColorMap[type] ?? "#FFFFFF",
+              borderColor:
+                isPointerEnter || isPicked
+                  ? lightenDarkenColor("#365AAB", -10)
+                  : lightenDarkenColor(buildingColorMap[type], -10),
+            }}
             className={cn(
-              "relative z-[2] w-max max-w-[400px] rounded-[5px] px-5 py-3 text-[#FFFFFF]",
+              "relative z-[2] w-max max-w-[400px] rounded-[5px] border-2 px-5 py-3 text-[#FFFFFF]",
               {
                 "!bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
               },
@@ -165,10 +171,14 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
           <div
             style={{
               backgroundColor: buildingColorMap[type] ?? "#FFFFFF",
-              clipPath: "polygon(0 0, 50% 50%, 0 100%)",
+              borderColor:
+                isPointerEnter || isPicked
+                  ? lightenDarkenColor("#365AAB", -10)
+                  : lightenDarkenColor(buildingColorMap[type], -10),
+              // clipPath: "polygon(0 0, 50% 50%, 0 100%)",
             }}
             className={cn(
-              "bottom absolute bottom-0 left-1/2 z-[1] h-5 w-5 origin-center translate-x-[-50%] translate-y-[calc(100%-1px)] rotate-90",
+              "bottom absolute bottom-0 left-1/2 z-[2] h-4 w-4 origin-center translate-x-[-50%] translate-y-[calc(50%)] rotate-45 border-b-2 border-r-2",
               {
                 "!bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
               },
