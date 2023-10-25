@@ -40,7 +40,7 @@ export const GLCampus = memo(() => {
   useFrame(() => {
     if (campusSceneStoreProxy.mouseState.isMouseSwipe && buildingsPointerEnter.length > 0) {
       campusStoreProxy.buildingsPointerEnter = [];
-      campusStoreProxy.buildingPicked = null;
+      campusStoreProxy.buildingPointerEnterNearest = null;
     }
   });
 

@@ -13,7 +13,13 @@ export interface ISpaceData {
 export type TCambusBuildingData = {
   name: string;
   space: string;
-  model_url: string;
-  label: string;
+  label?: string;
   uses: string;
+  model_url: string;
+  blocks?: {
+    name: string;
+    space: string;
+    label: string;
+    uses: string;
+  }[];
 };

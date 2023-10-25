@@ -17,6 +17,15 @@ import { Line } from "@react-three/drei";
 import { Line2, LineGeometry } from "three-stdlib";
 import { GLFocusCurve } from "./GLFocusCurve";
 import { useCampusSceneStoreProxyInContext } from "@Scripts/webgl/scene/CampusScene/hooks/useCampusSceneStoreProxyInContext";
+import { GLBlock } from "@Scripts/core/Block/components/GLBlock";
+import { GLBoundingBox } from "./GLBoundingBox";
+import {
+  BlockStoreContext,
+  BlockStoreProvider,
+} from "@Scripts/core/Block/contexts/BlockStoreContext";
+import { BlockStoreProxyContextProvider } from "@Scripts/core/Block/contexts/BlockStoreProxyContext";
+import { useSnapshot } from "valtio";
+import { minOfArray } from "@Utils/math.utils";
 
 interface GLBuildingProps {
   buildingData: TCambusBuildingData;
@@ -28,6 +37,8 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
   const setBuildingObject = useBuildingStoreInContext().use.setBuildingObject();
+  const { blocksPointerEnter } = useSnapshot(buildingStoreProxy);
+
   const playSoundFx = useSoundFx();
 
   const gltf: TGLTFReference = useLoader(GLTFLoader, buildingData.model_url);
@@ -112,44 +123,11 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
     };
   })();
 
-  const handleOnPointerEnterBuilding = _.throttle(
-    (e: ThreeEvent<PointerEvent>) => {
-      if (campusStoreProxy.buildingPicked || campusSceneStoreProxy.mouseState.isMouseSwipe) return;
-      document.body.style.cursor = "pointer";
-      campusStoreProxy.buildingsPointerEnter.push({
-        buildingUUID: buildingUUID,
-        distance: e.distance,
-      });
-    },
-    200,
-    { trailing: false },
-  );
-
-  const handleOnPointerLeaveBuilding = () => {
-    if (campusStoreProxy.buildingPicked || campusSceneStoreProxy.mouseState.isMouseSwipe) return;
-    document.body.style.cursor = "auto";
-    campusStoreProxy.buildingsPointerEnter = campusStoreProxy.buildingsPointerEnter.filter(
-      (data) => data.buildingUUID !== buildingUUID,
-    );
-  };
-
-  const handleOnPointerMoveBuilding = () => {
-    if (campusStoreProxy.buildingPicked || campusSceneStoreProxy.mouseState.isMouseSwipe) return;
-    document.body.style.cursor = "pointer";
-  };
-
-  const handleOnPointerClickBuilding = () => {
-    if (buildingStoreProxy.isPointerEnter) {
-      document.body.style.cursor = "auto";
-      campusStoreProxy.buildingPicked = {
-        buidlingUUID: buildingUUID,
-      };
-    }
-  };
-
   const handleOnPointerEnterBuildingIsNearest = () => {
     buildingStoreProxy.isPointerEnter = true;
-    playSoundFx.mouseover();
+    if (!buildingData.blocks || (buildingData?.blocks ?? []).length === 0) {
+      playSoundFx.mouseover();
+    }
     objBoundingFxProperty?.ref.current?.onPointerEnterBuilding();
     objBoundingArroundProperty?.ref.current?.onPointerEnterBuilding();
   };
@@ -162,7 +140,9 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
 
   const handleOnBuidingPicking = () => {
     buildingStoreProxy.isPicked = true;
-    playSoundFx.mouseclick();
+    if (!buildingData.blocks || (buildingData?.blocks ?? []).length === 0) {
+      playSoundFx.mouseclick();
+    }
   };
 
   const handleOnBuidingUnPicking = () => {
@@ -204,6 +184,30 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
     // objFocusCurveProperty && scene.add(objFocusCurveProperty.line);
   }, []);
 
+  useEffect(() => {
+    if (buildingStoreProxy.blocksPointerEnter.length > 0) {
+      const nearestBlock = minOfArray(
+        buildingStoreProxy.blocksPointerEnter,
+        (data) => data.distance,
+      );
+      buildingStoreProxy.blockPointerEnterNearest = {
+        blockUUID: nearestBlock.blockUUID,
+      };
+    } else if (
+      buildingStoreProxy.blocksPointerEnter.length === 0 &&
+      buildingStoreProxy.blockPointerEnterNearest !== null
+    ) {
+      buildingStoreProxy.blockPointerEnterNearest = null;
+    }
+  }, [blocksPointerEnter]);
+
+  useFrame(() => {
+    if (campusSceneStoreProxy.mouseState.isMouseSwipe && blocksPointerEnter.length > 0) {
+      buildingStoreProxy.blocksPointerEnter = [];
+      buildingStoreProxy.blockPointerEnterNearest = null;
+    }
+  });
+
   return (
     <group ref={buildngRef}>
       {objWallMergeProperty && (
@@ -213,18 +217,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
           position={objWallMergeProperty?.position}
         />
       )}
-      {objBoundingBoxProperty && (
-        <mesh
-          geometry={objBoundingBoxProperty?.geometry}
-          position={objBoundingBoxProperty?.position}
-          material={objBoundingBoxProperty.material}
-          visible={false}
-          onPointerEnter={handleOnPointerEnterBuilding}
-          onPointerLeave={handleOnPointerLeaveBuilding}
-          onPointerMove={handleOnPointerMoveBuilding}
-          onClick={handleOnPointerClickBuilding}
-        />
-      )}
+      {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
       {objBoundingFxProperty && (
         <GLBoundingEffect
           ref={objBoundingFxProperty.ref}
@@ -239,7 +232,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
           position={objBoundingArroundProperty.position}
         />
       )}
-      {objPointMarkerProperty && (
+      {objPointMarkerProperty && buildingData.label && (
         <UIBuildingMarker
           position={objPointMarkerProperty.position}
           label={buildingData.label}
@@ -248,6 +241,53 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
         />
       )}
       {objPointMarkerProperty && <GLFocusCurve focusPosition={objPointMarkerProperty.position} />}
+
+      {/* Building with blocks */}
+      {buildingData.blocks &&
+        buildingData.blocks?.map((blockData) => {
+          const objBlockBoundingBoxProperty: {
+            geometry: THREE.BufferGeometry;
+            position: THREE.Vector3;
+            material: THREE.Material;
+          } | null = (() => {
+            const obj = model.getObjectByName(`${blockData.name}_bounding-box`);
+            if (!obj || !(obj instanceof THREE.Mesh)) return null;
+
+            const material = new THREE.MeshBasicMaterial({
+              color: new THREE.Color(0x5bad64),
+            });
+            material.wireframe = true;
+
+            return {
+              geometry: obj.geometry,
+              position: obj.position,
+              material,
+            };
+          })();
+
+          const objBlockPointMarkerProperty: {
+            position: THREE.Vector3;
+          } | null = (() => {
+            const obj = model.getObjectByName(`${blockData.name}_point-marker`);
+            if (!obj || !(obj instanceof THREE.Object3D)) return null;
+
+            return {
+              position: obj.position,
+            };
+          })();
+
+          return (
+            <BlockStoreProvider key={blockData.name}>
+              <BlockStoreProxyContextProvider>
+                <GLBlock
+                  blockData={blockData}
+                  boundingBoxProperty={objBlockBoundingBoxProperty}
+                  pointMarkerProperty={objBlockPointMarkerProperty}
+                />
+              </BlockStoreProxyContextProvider>
+            </BlockStoreProvider>
+          );
+        })}
     </group>
   );
 });

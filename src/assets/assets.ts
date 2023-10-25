@@ -13,10 +13,11 @@ export const assets = {
   images: {
     ROOITOU_PARK_HDR_PATH: "/images/rooitou_park.hdr",
     ACADEMIC_SPACE_ICON_PATH: "/images/academic-space.png",
-    SPORT_SPACE_ICON_PATH: "/images/sport-space.png",
+    OFFICE_SPACE_ICON_PATH: "/images/office-space.png",
     WORKSHOP_SPACE_ICON_PATH: "/images/workshop-space.png",
+    SPORT_SPACE_ICON_PATH: "/images/sport-space.png",
     SERVICE_SPACE_ICON_PATH: "/images/service-space.png",
-    PARKING_SPACE_ICON_PATH: "/images/parking-space.png",
     PARK_SPACE_ICON_PATH: "/images/park-space.png",
+    PARKING_SPACE_ICON_PATH: "/images/parking-space.png",
   },
 };

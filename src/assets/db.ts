@@ -17,37 +17,80 @@ export const sounds_effect_data: TSoundEffectData[] = [
 export const spacesData: ISpaceData[] = [
   {
     id: "academic",
-    label: "Academic space",
+    label: "Academic",
     iconPath: assets.images.ACADEMIC_SPACE_ICON_PATH,
   },
   {
+    id: "office",
+    label: "Office",
+    iconPath: assets.images.OFFICE_SPACE_ICON_PATH,
+  },
+  {
     id: "workshop",
-    label: "Workshop space",
+    label: "Workshop",
     iconPath: assets.images.WORKSHOP_SPACE_ICON_PATH,
   },
   {
     id: "sport",
-    label: "Sport space",
+    label: "Sport",
     iconPath: assets.images.SPORT_SPACE_ICON_PATH,
   },
   {
     id: "service",
-    label: "Service space",
+    label: "Service",
     iconPath: assets.images.SERVICE_SPACE_ICON_PATH,
   },
   {
     id: "parking",
-    label: "Parking space",
+    label: "Parking",
     iconPath: assets.images.PARKING_SPACE_ICON_PATH,
   },
   {
     id: "park",
-    label: "Park space",
+    label: "Park",
     iconPath: assets.images.PARK_SPACE_ICON_PATH,
   },
 ];
 
 export const campus_buildings_data: TCambusBuildingData[] = [
+  {
+    name: "building-a",
+    space: "academic",
+    model_url: "/models/building-a.glb",
+    uses: "Classroom and workshop block",
+    blocks: [
+      {
+        name: "block-a1",
+        space: "office",
+        label: "A1",
+        uses: "Classrom block",
+      },
+      {
+        name: "block-a2",
+        space: "academic",
+        label: "A2",
+        uses: "Classrom block",
+      },
+      {
+        name: "block-a3",
+        space: "academic",
+        label: "A3",
+        uses: "Classrom block",
+      },
+      {
+        name: "block-a4",
+        space: "academic",
+        label: "A4",
+        uses: "Classrom block",
+      },
+      {
+        name: "block-a5",
+        space: "academic",
+        label: "A5",
+        uses: "Classrom block",
+      },
+    ],
+  },
   {
     name: "block-f1",
     space: "academic",

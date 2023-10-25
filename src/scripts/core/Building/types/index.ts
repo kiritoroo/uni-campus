@@ -10,6 +10,16 @@ export interface IBuildingStore {
 export interface IBuildingStoreProxy {
   isPointerEnter: boolean;
   isPicked: boolean;
+  blocksPointerEnter: {
+    blockUUID: string;
+    distance: number;
+  }[];
+  blockPointerEnterNearest: {
+    blockUUID: string;
+  } | null;
+  blockPicked: {
+    blockUUID: string;
+  } | null;
 }
 
 export type IBuildingStoreContext = StoreApi<IBuildingStore>;

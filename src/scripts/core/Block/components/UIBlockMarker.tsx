@@ -3,13 +3,12 @@ import { Html } from "@react-three/drei";
 import { Variants, motion, useAnimate, useAnimationControls } from "framer-motion";
 import { useSnapshot } from "valtio";
 import * as THREE from "three";
-import { Icons } from "@Scripts/shared/Icons";
-import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
-import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
 import { RefObject, memo, useEffect, useRef, useState } from "react";
-import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { randomRand } from "@Utils/math.utils";
 import { SPACE_COLOR_MAP } from "@Assets/constants";
+import { useBuildingStoreProxyInContext } from "@Scripts/core/Building/hooks/useBuildingStoreProxyInContext";
+import { useBlockStoreProxyInContext } from "../hooks/useBlockStoreProxyInContext";
+import { useBlockStoreInContext } from "../hooks/useBlockStoreInContext";
 
 interface UIBuildingMarkerProps {
   position: THREE.Vector3;
@@ -18,12 +17,12 @@ interface UIBuildingMarkerProps {
   space: string;
 }
 
-export const UIBuildingMarker = memo(({ position, space, label, uses }: UIBuildingMarkerProps) => {
-  const campusStoreProxy = useCampusStoreProxyInContext();
+export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingMarkerProps) => {
   const buildingStoreProxy = useBuildingStoreProxyInContext();
-  const { buildingPicked } = useSnapshot(campusStoreProxy);
-  const { isPicked, isPointerEnter } = useSnapshot(buildingStoreProxy);
-  const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
+  const blockStoreProxy = useBlockStoreProxyInContext();
+  const { blockPicked } = useSnapshot(buildingStoreProxy);
+  const { isPicked, isPointerEnter } = useSnapshot(blockStoreProxy);
+  const blockUUID = useBlockStoreInContext().use.blockUUID();
 
   const [htmlRefForce, setHtmlRefForce] = useState<HTMLDivElement | null>(null);
   const [, animate] = useAnimate();
@@ -57,16 +56,16 @@ export const UIBuildingMarker = memo(({ position, space, label, uses }: UIBuildi
   });
 
   useEffect(() => {
-    if (buildingPicked && buildingPicked?.buidlingUUID === buildingUUID && isPicked) {
+    if (blockPicked && blockPicked?.blockUUID === blockUUID && isPicked) {
       controls.start("state-picked");
-    } else if (buildingPicked && buildingPicked?.buidlingUUID !== buildingUUID && !isPicked) {
+    } else if (blockPicked && blockPicked?.blockUUID !== blockUUID && !isPicked) {
       controls.start("state-hide");
-    } else if (buildingPicked === null && isPointerEnter && !isPicked) {
+    } else if (blockPicked === null && isPointerEnter && !isPicked) {
       controls.start("state-pointer-enter");
     } else {
       controls.start("state-idle");
     }
-  }, [buildingPicked, isPicked, isPointerEnter]);
+  }, [blockPicked, isPicked, isPointerEnter]);
 
   useEffect(() => {
     // Controls cannot first animate because ref is undefined
