@@ -9,23 +9,16 @@ import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCamp
 import { RefObject, memo, useEffect, useRef, useState } from "react";
 import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { randomRand } from "@Utils/math.utils";
+import { SPACE_COLOR_MAP } from "@Assets/constants";
 
 interface UIBuildingMarkerProps {
   position: THREE.Vector3;
   label: string;
   uses: string;
-  type: string;
+  space: string;
 }
 
-const buildingColorMap: { [key: string]: string } = {
-  academic: "#404A57",
-  sport: "#6B7FDF",
-  workshop: "#404A57",
-  parking: "#404A57",
-  service: "#FD9A43",
-};
-
-export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildingMarkerProps) => {
+export const UIBuildingMarker = memo(({ position, space, label, uses }: UIBuildingMarkerProps) => {
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const { buildingPicked } = useSnapshot(campusStoreProxy);
@@ -135,11 +128,11 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
         >
           <div
             style={{
-              backgroundColor: buildingColorMap[type] ?? "#FFFFFF",
+              backgroundColor: SPACE_COLOR_MAP[space] ?? "#FFFFFF",
               borderColor:
                 isPointerEnter || isPicked
                   ? lightenDarkenColor("#46448B", -10)
-                  : lightenDarkenColor(buildingColorMap[type], -10),
+                  : lightenDarkenColor(SPACE_COLOR_MAP[space], -10),
             }}
             className={cn(
               "relative z-[2] w-max max-w-[400px] rounded-[10px] border-2 px-5 py-3 text-[#FFFFFF]",
@@ -156,7 +149,7 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
               </div>
             </div>
 
-            <h2 className="text-[16px] font-medium uppercase">{label}</h2>
+            <h2 className="text-[18px] font-bold uppercase">{label}</h2>
             {(isPointerEnter || isPicked) && (
               <motion.p
                 initial={{ opacity: 0 }}
@@ -170,11 +163,11 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
           </div>
           <div
             style={{
-              backgroundColor: buildingColorMap[type] ?? "#FFFFFF",
+              backgroundColor: SPACE_COLOR_MAP[space] ?? "#FFFFFF",
               borderColor:
                 isPointerEnter || isPicked
                   ? lightenDarkenColor("#46448B", -10)
-                  : lightenDarkenColor(buildingColorMap[type], -10),
+                  : lightenDarkenColor(SPACE_COLOR_MAP[space], -10),
               // clipPath: "polygon(0 0, 50% 50%, 0 100%)",
             }}
             className={cn(

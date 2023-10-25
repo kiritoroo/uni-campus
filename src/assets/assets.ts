@@ -7,6 +7,8 @@ export const assets = {
   },
   sounds: {
     THEME_PATH: "/sounds/theme.mp3",
+    MOUSE_OVER_SFX_PATH: "/sounds/mouseover.mp3",
+    MOUSE_CLICK_SFX_PATH: "/sounds/mouseclick.wav",
   },
   images: {
     ROOITOU_PARK_HDR_PATH: "/images/rooitou_park.hdr",
@@ -14,5 +16,7 @@ export const assets = {
     SPORT_SPACE_ICON_PATH: "/images/sport-space.png",
     WORKSHOP_SPACE_ICON_PATH: "/images/workshop-space.png",
     SERVICE_SPACE_ICON_PATH: "/images/service-space.png",
+    PARKING_SPACE_ICON_PATH: "/images/parking-space.png",
+    PARK_SPACE_ICON_PATH: "/images/park-space.png",
   },
 };

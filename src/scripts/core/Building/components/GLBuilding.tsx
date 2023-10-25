@@ -244,7 +244,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
           position={objPointMarkerProperty.position}
           label={buildingData.label}
           uses={buildingData.uses}
-          type={buildingData.type}
+          space={buildingData.space}
         />
       )}
       {objPointMarkerProperty && <GLFocusCurve focusPosition={objPointMarkerProperty.position} />}

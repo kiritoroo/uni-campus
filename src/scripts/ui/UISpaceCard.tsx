@@ -1,13 +1,6 @@
 import { cn } from "@Utils/common.utils";
 import { ISpaceData } from "./UISpaceFilter";
-
-const spaceColorMap: { [key: string]: string } = {
-  academic: "#373674",
-  sport: "#6B7FDF",
-  workshop: "#373674",
-  parking: "#404A57",
-  service: "#FD9A43",
-};
+import { SPACE_COLOR_MAP } from "@Assets/constants";
 
 export const UISpaceCard = ({ id, label, iconPath }: ISpaceData) => {
   return (
@@ -19,7 +12,7 @@ export const UISpaceCard = ({ id, label, iconPath }: ISpaceData) => {
       <div
         className={cn(
           "rounded-full bg-[#24244D]/10 p-[6px] transition-colors duration-100",
-          `group-hover:bg-[${spaceColorMap[id]}]/30`,
+          `group-hover:bg-[${SPACE_COLOR_MAP[id]}]/30`,
         )}
       >
         <img width={18} height={18} src={iconPath} />

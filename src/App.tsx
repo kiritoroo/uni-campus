@@ -14,13 +14,13 @@ const App = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [interactive, setInteractive] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (interactive && audioRef.current) {
-      audioRef.current.loop = true;
-      audioRef.current.play();
-      audioFadeIn(audioRef.current, 0.3);
-    }
-  }, [interactive]);
+  // useEffect(() => {
+  //   if (interactive && audioRef.current) {
+  //     audioRef.current.loop = true;
+  //     audioRef.current.play();
+  //     audioFadeIn(audioRef.current, 0.5);
+  //   }
+  // }, [interactive]);
 
   return (
     <Fragment>

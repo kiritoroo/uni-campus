@@ -4,9 +4,15 @@ export type TSoundEffectData = {
   file_url: string;
 };
 
+export interface ISpaceData {
+  id: string;
+  label: string;
+  iconPath: string;
+}
+
 export type TCambusBuildingData = {
   name: string;
-  type: string;
+  space: string;
   model_url: string;
   label: string;
   uses: string;
