@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 
-export const Header = () => {
+export const UIHeader = () => {
   return (
     <header className="fixed left-[50px] right-[50px] top-[25px] z-[10] flex items-center justify-between">
       <Link
         to={"/"}
-        className="text-2xl font-bold uppercase text-[#2B2A5A] transition-colors duration-200 hover:text-[#46448B]"
+        className="text-2xl font-extrabold uppercase text-[#23262D] transition-colors duration-200 hover:text-[#46448B]"
       >
         UTE Campus
       </Link>
@@ -13,7 +13,7 @@ export const Header = () => {
         <li>
           <Link
             to={"/project"}
-            className="font-medium text-[#2B2A5A] transition-colors duration-200 hover:text-[#46448B]"
+            className="font-medium text-[#23262D] transition-colors duration-200 hover:text-[#46448B]"
           >
             Project
           </Link>
@@ -21,7 +21,7 @@ export const Header = () => {
         <li>
           <Link
             to={"/contacts"}
-            className="font-medium text-[#2B2A5A] transition-colors duration-200 hover:text-[#46448B]"
+            className="font-medium text-[#23262D] transition-colors duration-200 hover:text-[#46448B]"
           >
             Contacts
           </Link>

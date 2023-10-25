@@ -22,7 +22,7 @@ const buildingColorMap: { [key: string]: string } = {
   sport: "#6B7FDF",
   workshop: "#404A57",
   parking: "#404A57",
-  service: "#404A57",
+  service: "#FD9A43",
 };
 
 export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildingMarkerProps) => {
@@ -138,11 +138,11 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
               backgroundColor: buildingColorMap[type] ?? "#FFFFFF",
               borderColor:
                 isPointerEnter || isPicked
-                  ? lightenDarkenColor("#365AAB", -10)
+                  ? lightenDarkenColor("#46448B", -10)
                   : lightenDarkenColor(buildingColorMap[type], -10),
             }}
             className={cn(
-              "relative z-[2] w-max max-w-[400px] rounded-[5px] border-2 px-5 py-3 text-[#FFFFFF]",
+              "relative z-[2] w-max max-w-[400px] rounded-[10px] border-2 px-5 py-3 text-[#FFFFFF]",
               {
                 "!bg-[#46448B] transition-colors duration-300": isPointerEnter || isPicked,
               },

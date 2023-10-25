@@ -13,6 +13,7 @@ import { memo } from "react";
 import { SwipeEventData, useSwipeable } from "react-swipeable";
 import { useCampusSceneStoreProxyInContext } from "./hooks/useCampusSceneStoreProxyInContext";
 import { useControls } from "leva";
+import { assets } from "@Assets/assets";
 
 export const GLCampusScene = memo(() => {
   const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
@@ -64,7 +65,7 @@ export const GLCampusScene = memo(() => {
         enableZoom={false}
         enableRotate={false}
       />
-      <Environment files="/assets/rooitou_park.hdr" blur={0.5} />
+      <Environment files={assets.images.ROOITOU_PARK_HDR_PATH} blur={0.5} />
 
       <CampusStoreProvider>
         <CampusStoreProxyProvider>

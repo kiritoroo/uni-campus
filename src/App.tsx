@@ -4,8 +4,9 @@ import { SoundFxProvider } from "./global/context/SoundFxContext";
 import { assets } from "@Assets/assets";
 import { CampusSceneStoreProxyProvider } from "@Scripts/webgl/scene/CampusScene/contexts/CampusSceneStoreProxyContext";
 import { audioFadeIn } from "@Utils/common.utils";
-import { Layout } from "@Scripts/ui/Layout";
+import { UILayout } from "@Scripts/ui/UILayout";
 import { Leva } from "leva";
+import { UISpaceFilter } from "@Scripts/ui/UISpaceFilter";
 
 const App = () => {
   console.warn("Re: Render");
@@ -13,17 +14,17 @@ const App = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [interactive, setInteractive] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (interactive && audioRef.current) {
-  //     audioRef.current.loop = true;
-  //     audioRef.current.play();
-  //     audioFadeIn(audioRef.current, 0.3);
-  //   }
-  // }, [interactive]);
+  useEffect(() => {
+    if (interactive && audioRef.current) {
+      audioRef.current.loop = true;
+      audioRef.current.play();
+      audioFadeIn(audioRef.current, 0.3);
+    }
+  }, [interactive]);
 
   return (
     <Fragment>
-      <Layout>
+      <UILayout>
         <SoundFxProvider>
           <div
             className="font-dinpro bg-[#F9F4FA] font-normal antialiased"
@@ -37,6 +38,8 @@ const App = () => {
               <CampusSceneStoreProxyProvider>
                 <GLCampusScene />
               </CampusSceneStoreProxyProvider>
+
+              <UISpaceFilter />
             </div>
           </div>
 
@@ -44,9 +47,8 @@ const App = () => {
             <source src={assets.sounds.THEME_PATH} />
           </audio>
         </SoundFxProvider>
-
         <Leva collapsed />
-      </Layout>
+      </UILayout>
     </Fragment>
   );
 };

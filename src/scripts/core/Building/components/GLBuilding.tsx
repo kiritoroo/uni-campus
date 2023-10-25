@@ -140,6 +140,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
 
   const handleOnPointerClickBuilding = () => {
     if (buildingStoreProxy.isPointerEnter) {
+      document.body.style.cursor = "auto";
       campusStoreProxy.buildingPicked = {
         buidlingUUID: buildingUUID,
       };
