@@ -148,13 +148,13 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
               },
             )}
           >
-            {/* <div className="absolute right-0 top-0 translate-x-[35%] translate-y-[-20%]">
+            <div className="absolute right-0 top-0 translate-x-[35%] translate-y-[-20%]">
               <div className="animate__pulse ">
                 <div className="flex items-center justify-center rounded-full bg-[#F50359] p-[5px]">
                   <Icons.ExclamationMark className="h-[16px] w-[16px] fill-white" />
                 </div>
               </div>
-            </div> */}
+            </div>
 
             <h2 className="text-[16px] font-medium uppercase">{label}</h2>
             {(isPointerEnter || isPicked) && (

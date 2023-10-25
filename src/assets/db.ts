@@ -25,7 +25,7 @@ export const campus_buildings_data: TCambusBuildingData[] = [
     name: "dome-courtyard",
     type: "sport",
     model_url: "/models/dome-courtyard.glb",
-    label: "Sân mái vòm",
+    label: "Dome Courtyard",
     uses: "Outdoor courtyard space",
   },
   {
@@ -39,21 +39,21 @@ export const campus_buildings_data: TCambusBuildingData[] = [
     name: "block-e2",
     type: "sport",
     model_url: "/models/block-e2.glb",
-    label: "Nhà thi đấu",
+    label: "Sports stadium",
     uses: "Sport zone",
   },
   {
     name: "block-e3",
     type: "workshop",
     model_url: "/models/block-e3.glb",
-    label: "Xưởng in",
+    label: "Printing workshop",
     uses: "Workshop block",
   },
   {
     name: "block-e4",
     type: "workshop",
     model_url: "/models/block-e4.glb",
-    label: "Xưởng hàn",
+    label: "Welding workshop",
     uses: "Workshop block",
   },
   {
@@ -102,7 +102,7 @@ export const campus_buildings_data: TCambusBuildingData[] = [
     name: "engine-workshop",
     type: "workshop",
     model_url: "/models/engine-workshop.glb",
-    label: "Xưởng động cơ",
+    label: "Engine workshop",
     uses: "Workshop block",
   },
   {
