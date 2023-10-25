@@ -15,7 +15,7 @@ export const UIHeader = () => {
             to={"/project"}
             className="font-medium text-[#23262D] transition-colors duration-200 hover:text-[#46448B]"
           >
-            Project
+            Projects
           </Link>
         </li>
         <li>

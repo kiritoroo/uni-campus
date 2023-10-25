@@ -6,7 +6,7 @@ export const UISpaceCard = ({ id, label, iconPath }: ISpaceData) => {
   return (
     <li
       className={cn(
-        `group flex h-[42px] cursor-pointer items-center justify-center gap-[14px] rounded-[15px] bg-white px-5 shadow-[0_1px_5px_0_rgba(220,220,220,0.2)] ring-[#D5DAE2]/10 transition-all duration-100 hover:bg-[#F8F7FA] md:hover:ring-1`,
+        `group flex h-[42px] cursor-pointer items-center justify-center gap-[14px] rounded-[10px] bg-white px-5 shadow-[0_1px_5px_0_rgba(220,220,220,0.2)] ring-[#D5DAE2]/10 transition-all duration-100 hover:bg-[#F8F7FA] md:hover:ring-1`,
       )}
     >
       <div

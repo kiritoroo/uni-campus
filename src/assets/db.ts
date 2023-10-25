@@ -63,7 +63,7 @@ export const campus_buildings_data: TCambusBuildingData[] = [
         name: "block-a1",
         space: "office",
         label: "A1",
-        uses: "Classrom block",
+        uses: "Office block",
       },
       {
         name: "block-a2",
@@ -187,13 +187,13 @@ export const campus_buildings_data: TCambusBuildingData[] = [
     space: "parking",
     model_url: "/models/parking-zone-a.glb",
     label: "P",
-    uses: "Pakring zone for students",
+    uses: "Commuter Student Parking",
   },
   {
     name: "parking-zone-center",
     space: "parking",
     model_url: "/models/parking-zone-center.glb",
     label: "P",
-    uses: "Pakring zone for teachers",
+    uses: "Faculty/Staff Parking",
   },
 ];

@@ -7,6 +7,7 @@ import { useBuildingStoreProxyInContext } from "@Scripts/core/Building/hooks/use
 import { useFrame } from "@react-three/fiber";
 import { useBlockStoreInContext } from "../hooks/useBlockStoreInContext";
 import { useSoundFx } from "@Global/hooks/useSoundFx";
+import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
 
 interface GLBlockProps {
   blockData: {
@@ -27,6 +28,7 @@ interface GLBlockProps {
 
 export const GLBlock = memo(
   ({ blockData, boundingBoxProperty, pointMarkerProperty }: GLBlockProps) => {
+    const campusStoreProxy = useCampusStoreProxyInContext();
     const buildingStoreProxy = useBuildingStoreProxyInContext();
     const blockStoreProxy = useBlockStoreProxyInContext();
     const blockUUID = useBlockStoreInContext().use.blockUUID();
@@ -44,15 +46,16 @@ export const GLBlock = memo(
 
     const handleOnBlockPicking = () => {
       blockStoreProxy.isPicked = true;
+      playSoundFx.mouseclick();
     };
 
     const handleOnBlockUnPicking = () => {
       blockStoreProxy.isPicked = false;
-      playSoundFx.mouseclick();
     };
 
     useFrame(() => {
       if (
+        buildingStoreProxy.isPointerEnter &&
         buildingStoreProxy.blockPointerEnterNearest?.blockUUID === blockUUID &&
         !blockStoreProxy.isPointerEnter
       ) {
@@ -65,9 +68,14 @@ export const GLBlock = memo(
         handleOnPointerLeaveBlockIsNearest();
       }
 
-      if (buildingStoreProxy.blockPicked?.blockUUID === blockUUID && !blockStoreProxy.isPicked) {
+      if (
+        buildingStoreProxy.isPicked &&
+        buildingStoreProxy.blockPicked?.blockUUID === blockUUID &&
+        !blockStoreProxy.isPicked
+      ) {
         handleOnBlockPicking();
       } else if (
+        !buildingStoreProxy.isPicked &&
         (buildingStoreProxy.blockPicked === null ||
           buildingStoreProxy.blockPicked?.blockUUID !== blockUUID) &&
         blockStoreProxy.isPicked

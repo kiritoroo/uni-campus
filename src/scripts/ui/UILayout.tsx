@@ -9,6 +9,7 @@ export const UILayout = ({ children }: { children: React.ReactNode }) => {
         className={cn(
           "sr-only group-hover:bg-[#404A57]/30",
           "group-hover:bg-[#6B7FDF]/30",
+          "group-hover:bg-[#F86D6D]/30",
           "group-hover:bg-[#404A57]/30",
           "group-hover:bg-[#FD9A43]/30",
           "group-hover:bg-[#6EDC6C]/30",

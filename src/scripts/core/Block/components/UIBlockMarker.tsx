@@ -9,6 +9,8 @@ import { SPACE_COLOR_MAP } from "@Assets/constants";
 import { useBuildingStoreProxyInContext } from "@Scripts/core/Building/hooks/useBuildingStoreProxyInContext";
 import { useBlockStoreProxyInContext } from "../hooks/useBlockStoreProxyInContext";
 import { useBlockStoreInContext } from "../hooks/useBlockStoreInContext";
+import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
+import { useBuildingStoreInContext } from "@Scripts/core/Building/hooks/useBuildingStoreInContext";
 
 interface UIBuildingMarkerProps {
   position: THREE.Vector3;
@@ -18,10 +20,17 @@ interface UIBuildingMarkerProps {
 }
 
 export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingMarkerProps) => {
+  const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const blockStoreProxy = useBlockStoreProxyInContext();
-  const { blockPicked } = useSnapshot(buildingStoreProxy);
+  const { buildingPicked } = useSnapshot(campusStoreProxy);
+  const {
+    blockPicked,
+    isPicked: isBuildingPicked,
+    isPointerEnter: isBuildingPointerEnter,
+  } = useSnapshot(buildingStoreProxy);
   const { isPicked, isPointerEnter } = useSnapshot(blockStoreProxy);
+  const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
   const blockUUID = useBlockStoreInContext().use.blockUUID();
 
   const [htmlRefForce, setHtmlRefForce] = useState<HTMLDivElement | null>(null);
@@ -56,16 +65,33 @@ export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingM
   });
 
   useEffect(() => {
-    if (blockPicked && blockPicked?.blockUUID === blockUUID && isPicked) {
+    if (
+      buildingPicked &&
+      buildingPicked?.buidlingUUID === buildingUUID &&
+      isBuildingPicked &&
+      blockPicked &&
+      blockPicked?.blockUUID === blockUUID &&
+      isPicked
+    ) {
       controls.start("state-picked");
-    } else if (blockPicked && blockPicked?.blockUUID !== blockUUID && !isPicked) {
+    } else if (
+      (buildingPicked && buildingPicked?.buidlingUUID !== buildingUUID && !isBuildingPicked) ||
+      (blockPicked && blockPicked?.blockUUID !== blockUUID && !isPicked)
+    ) {
       controls.start("state-hide");
-    } else if (blockPicked === null && isPointerEnter && !isPicked) {
+    } else if (
+      buildingPicked === null &&
+      isBuildingPointerEnter &&
+      !isBuildingPicked &&
+      blockPicked === null &&
+      isPointerEnter &&
+      !isPicked
+    ) {
       controls.start("state-pointer-enter");
     } else {
       controls.start("state-idle");
     }
-  }, [blockPicked, isPicked, isPointerEnter]);
+  }, [buildingPicked, blockPicked, isPicked, isPointerEnter]);
 
   useEffect(() => {
     // Controls cannot first animate because ref is undefined
@@ -129,14 +155,15 @@ export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingM
             style={{
               backgroundColor: SPACE_COLOR_MAP[space] ?? "#FFFFFF",
               borderColor:
-                isPointerEnter || isPicked
+                (isBuildingPointerEnter && isPointerEnter) || (isBuildingPicked && isPicked)
                   ? lightenDarkenColor("#46448B", -10)
                   : lightenDarkenColor(SPACE_COLOR_MAP[space], -10),
             }}
             className={cn(
               "relative z-[2] w-max max-w-[400px] rounded-[10px] border-2 px-3 py-2 text-[#FFFFFF]",
               {
-                "!bg-[#46448B] transition-colors duration-300": isPointerEnter || isPicked,
+                "!bg-[#46448B] transition-colors duration-300":
+                  (isBuildingPointerEnter && isPointerEnter) || (isBuildingPicked && isPicked),
               },
             )}
           >
@@ -149,7 +176,7 @@ export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingM
             </div> */}
 
             <h2 className="text-[14px] font-bold uppercase">{label}</h2>
-            {(isPointerEnter || isPicked) && (
+            {((isBuildingPointerEnter && isPointerEnter) || (isBuildingPicked && isPicked)) && (
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -164,7 +191,7 @@ export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingM
             style={{
               backgroundColor: SPACE_COLOR_MAP[space] ?? "#FFFFFF",
               borderColor:
-                isPointerEnter || isPicked
+                (isBuildingPointerEnter && isPointerEnter) || (isBuildingPicked && isPicked)
                   ? lightenDarkenColor("#46448B", -10)
                   : lightenDarkenColor(SPACE_COLOR_MAP[space], -10),
               // clipPath: "polygon(0 0, 50% 50%, 0 100%)",
@@ -172,7 +199,8 @@ export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingM
             className={cn(
               "bottom absolute bottom-0 left-1/2 z-[2] h-3 w-3 origin-center translate-x-[-50%] translate-y-[calc(50%)] rotate-45 border-b-2 border-r-2",
               {
-                "!bg-[#46448B] transition-colors duration-300": isPointerEnter || isPicked,
+                "!bg-[#46448B] transition-colors duration-300":
+                  (isBuildingPointerEnter && isPointerEnter) || (isBuildingPicked && isPicked),
               },
             )}
           />
