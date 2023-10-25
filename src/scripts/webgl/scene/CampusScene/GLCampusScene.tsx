@@ -12,6 +12,7 @@ import { CampusStoreProvider } from "@Scripts/core/Campus/contexts/CampusStoreCo
 import { memo } from "react";
 import { SwipeEventData, useSwipeable } from "react-swipeable";
 import { useCampusSceneStoreProxyInContext } from "./hooks/useCampusSceneStoreProxyInContext";
+import { useControls } from "leva";
 
 export const GLCampusScene = memo(() => {
   const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
@@ -34,6 +35,10 @@ export const GLCampusScene = memo(() => {
     },
   });
 
+  const config = useControls({
+    "perf-monitor": false,
+  });
+
   return (
     <Canvas
       {...swipeHandlers}
@@ -47,7 +52,7 @@ export const GLCampusScene = memo(() => {
         shadowMapType: THREE.PCFSoftShadowMap,
       }}
     >
-      <Perf position="top-left" />
+      {config["perf-monitor"] && <Perf position="top-left" />}
       <Lights />
       <Skydom />
       <Fog />

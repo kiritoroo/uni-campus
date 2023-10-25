@@ -3,7 +3,7 @@ import { Html } from "@react-three/drei";
 import { Variants, motion, useAnimate, useAnimationControls } from "framer-motion";
 import { useSnapshot } from "valtio";
 import * as THREE from "three";
-import { Icons } from "@Scripts/ui/Icons";
+import { Icons } from "@Scripts/shared/Icons";
 import { useBuildingStoreProxyInContext } from "../hooks/useBuildingStoreProxyInContext";
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
 import { RefObject, memo, useEffect, useRef, useState } from "react";
@@ -19,10 +19,10 @@ interface UIBuildingMarkerProps {
 
 const buildingColorMap: { [key: string]: string } = {
   academic: "#404A57",
-  sport: "#4889F5",
-  workshop: "#78909C",
+  sport: "#6B7FDF",
+  workshop: "#404A57",
   parking: "#404A57",
-  service: "#F29900",
+  service: "#404A57",
 };
 
 export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildingMarkerProps) => {
@@ -144,7 +144,7 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
             className={cn(
               "relative z-[2] w-max max-w-[400px] rounded-[5px] border-2 px-5 py-3 text-[#FFFFFF]",
               {
-                "!bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
+                "!bg-[#46448B] transition-colors duration-300": isPointerEnter || isPicked,
               },
             )}
           >
@@ -173,14 +173,14 @@ export const UIBuildingMarker = memo(({ position, type, label, uses }: UIBuildin
               backgroundColor: buildingColorMap[type] ?? "#FFFFFF",
               borderColor:
                 isPointerEnter || isPicked
-                  ? lightenDarkenColor("#365AAB", -10)
+                  ? lightenDarkenColor("#46448B", -10)
                   : lightenDarkenColor(buildingColorMap[type], -10),
               // clipPath: "polygon(0 0, 50% 50%, 0 100%)",
             }}
             className={cn(
               "bottom absolute bottom-0 left-1/2 z-[2] h-4 w-4 origin-center translate-x-[-50%] translate-y-[calc(50%)] rotate-45 border-b-2 border-r-2",
               {
-                "!bg-[#365AAB] transition-colors duration-300": isPointerEnter || isPicked,
+                "!bg-[#46448B] transition-colors duration-300": isPointerEnter || isPicked,
               },
             )}
           />

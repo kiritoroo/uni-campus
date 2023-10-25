@@ -215,7 +215,11 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
           );
           campusCamera.quaternion.setFromRotationMatrix(campusCamera.matrix);
         },
+        onComplete: () => {
+          (controls as OrbitControls).autoRotate = true;
+        },
       })
+
       .play();
   };
 
@@ -232,13 +236,10 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
           x: centerTarget.current.x,
           y: centerTarget.current.y,
           z: centerTarget.current.z,
-          duration: 2,
+          duration: 1,
           ease: Power2.easeInOut,
           onUpdate: () => {
             (controls as any).update();
-          },
-          onComplete: () => {
-            (controls as OrbitControls).autoRotate = true;
           },
         })
         .play();

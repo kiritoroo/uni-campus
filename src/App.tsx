@@ -4,6 +4,8 @@ import { SoundFxProvider } from "./global/context/SoundFxContext";
 import { assets } from "@Assets/assets";
 import { CampusSceneStoreProxyProvider } from "@Scripts/webgl/scene/CampusScene/contexts/CampusSceneStoreProxyContext";
 import { audioFadeIn } from "@Utils/common.utils";
+import { Layout } from "@Scripts/ui/Layout";
+import { Leva } from "leva";
 
 const App = () => {
   console.warn("Re: Render");
@@ -11,36 +13,40 @@ const App = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [interactive, setInteractive] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (interactive && audioRef.current) {
-      audioRef.current.loop = true;
-      audioRef.current.play();
-      audioFadeIn(audioRef.current, 0.3);
-    }
-  }, [interactive]);
+  // useEffect(() => {
+  //   if (interactive && audioRef.current) {
+  //     audioRef.current.loop = true;
+  //     audioRef.current.play();
+  //     audioFadeIn(audioRef.current, 0.3);
+  //   }
+  // }, [interactive]);
 
   return (
     <Fragment>
-      <SoundFxProvider>
-        <main
-          className="font-dinpro bg-[#F9F4FA] font-normal antialiased"
-          onClick={() => {
-            setTimeout(() => {
-              setInteractive(true);
-            }, 1000);
-          }}
-        >
-          <div className="relative h-screen w-screen">
-            <CampusSceneStoreProxyProvider>
-              <GLCampusScene />
-            </CampusSceneStoreProxyProvider>
+      <Layout>
+        <SoundFxProvider>
+          <div
+            className="font-dinpro bg-[#F9F4FA] font-normal antialiased"
+            onClick={() => {
+              setTimeout(() => {
+                setInteractive(true);
+              }, 1000);
+            }}
+          >
+            <div className="relative h-screen w-screen">
+              <CampusSceneStoreProxyProvider>
+                <GLCampusScene />
+              </CampusSceneStoreProxyProvider>
+            </div>
           </div>
-        </main>
 
-        <audio ref={audioRef} autoPlay={false}>
-          <source src={assets.sounds.THEME_PATH} />
-        </audio>
-      </SoundFxProvider>
+          <audio ref={audioRef} autoPlay={false}>
+            <source src={assets.sounds.THEME_PATH} />
+          </audio>
+        </SoundFxProvider>
+
+        <Leva collapsed />
+      </Layout>
     </Fragment>
   );
 };
