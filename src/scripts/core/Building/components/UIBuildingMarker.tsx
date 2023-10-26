@@ -1,6 +1,12 @@
 import { cn, lightenDarkenColor } from "@Utils/common.utils";
 import { Html } from "@react-three/drei";
-import { Variants, motion, useAnimate, useAnimationControls } from "framer-motion";
+import {
+  AnimationDefinition,
+  Variants,
+  motion,
+  useAnimate,
+  useAnimationControls,
+} from "framer-motion";
 import { useSnapshot } from "valtio";
 import * as THREE from "three";
 import { Icons } from "@Scripts/shared/Icons";
@@ -10,6 +16,7 @@ import { RefObject, memo, useEffect, useRef, useState } from "react";
 import { useBuildingStoreInContext } from "../hooks/useBuildingStoreInContext";
 import { randomRand } from "@Utils/math.utils";
 import { SPACE_COLOR_MAP } from "@Assets/constants";
+import { useSpaceFilterStoreProxyInContext } from "@Scripts/core/Campus/hooks/useSpaceFilterStoreProxyInContext";
 
 interface UIBuildingMarkerProps {
   position: THREE.Vector3;
@@ -19,8 +26,10 @@ interface UIBuildingMarkerProps {
 }
 
 export const UIBuildingMarker = memo(({ position, space, label, uses }: UIBuildingMarkerProps) => {
+  const spaceFilterStoreProxy = useSpaceFilterStoreProxyInContext();
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
+  const { spacePicked } = useSnapshot(spaceFilterStoreProxy);
   const { buildingPicked } = useSnapshot(campusStoreProxy);
   const { isPicked, isPointerEnter } = useSnapshot(buildingStoreProxy);
   const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
@@ -64,9 +73,37 @@ export const UIBuildingMarker = memo(({ position, space, label, uses }: UIBuildi
     } else if (buildingPicked === null && isPointerEnter && !isPicked) {
       controls.start("state-pointer-enter");
     } else {
+      controls.start({
+        display: "block",
+        transition: { duration: 0 },
+      });
       controls.start("state-idle");
     }
-  }, [buildingPicked, isPicked, isPointerEnter]);
+  }, [spacePicked, buildingPicked, isPicked, isPointerEnter]);
+
+  useEffect(() => {
+    if (spacePicked && spacePicked.id === space) {
+      controls.start({
+        scale: [1, 1.2, 1],
+        opacity: 1,
+        transition: { duration: 0.4, type: "tween" },
+      });
+    } else if (spacePicked && spacePicked.id !== space) {
+      controls.start({
+        opacity: 0,
+        transition: { duration: 0.2, type: "tween" },
+      });
+    } else if (!spacePicked || (spacePicked && spacePicked.id === space)) {
+      controls.start({
+        display: "block",
+        transition: { duration: 0 },
+      });
+      controls.start({
+        opacity: 1,
+        transition: { duration: 0.2, type: "tween" },
+      });
+    }
+  }, [spacePicked]);
 
   useEffect(() => {
     // Controls cannot first animate because ref is undefined

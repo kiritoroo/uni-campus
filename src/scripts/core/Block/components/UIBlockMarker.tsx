@@ -11,6 +11,7 @@ import { useBlockStoreProxyInContext } from "../hooks/useBlockStoreProxyInContex
 import { useBlockStoreInContext } from "../hooks/useBlockStoreInContext";
 import { useCampusStoreProxyInContext } from "@Scripts/core/Campus/hooks/useCampusStoreProxyInContext";
 import { useBuildingStoreInContext } from "@Scripts/core/Building/hooks/useBuildingStoreInContext";
+import { useSpaceFilterStoreProxyInContext } from "@Scripts/core/Campus/hooks/useSpaceFilterStoreProxyInContext";
 
 interface UIBuildingMarkerProps {
   position: THREE.Vector3;
@@ -20,9 +21,11 @@ interface UIBuildingMarkerProps {
 }
 
 export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingMarkerProps) => {
+  const spaceFilterStoreProxy = useSpaceFilterStoreProxyInContext();
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const blockStoreProxy = useBlockStoreProxyInContext();
+  const { spacePicked } = useSnapshot(spaceFilterStoreProxy);
   const { buildingPicked } = useSnapshot(campusStoreProxy);
   const {
     blockPicked,
@@ -92,6 +95,30 @@ export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingM
       controls.start("state-idle");
     }
   }, [buildingPicked, blockPicked, isPicked, isPointerEnter]);
+
+  useEffect(() => {
+    if (spacePicked && spacePicked.id === space) {
+      controls.start({
+        scale: [1, 1.2, 1],
+        opacity: 1,
+        transition: { duration: 0.4, type: "tween" },
+      });
+    } else if (spacePicked && spacePicked.id !== space) {
+      controls.start({
+        opacity: 0,
+        transition: { duration: 0.2, type: "tween" },
+      });
+    } else if (!spacePicked || (spacePicked && spacePicked.id === space)) {
+      controls.start({
+        display: "block",
+        transition: { duration: 0 },
+      });
+      controls.start({
+        opacity: 1,
+        transition: { duration: 0.2, type: "tween" },
+      });
+    }
+  }, [spacePicked]);
 
   useEffect(() => {
     // Controls cannot first animate because ref is undefined

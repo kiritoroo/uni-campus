@@ -6,7 +6,8 @@ import { CampusSceneStoreProxyProvider } from "@Scripts/webgl/scene/CampusScene/
 import { audioFadeIn } from "@Utils/common.utils";
 import { UILayout } from "@Scripts/ui/UILayout";
 import { Leva } from "leva";
-import { UISpaceFilter } from "@Scripts/ui/UISpaceFilter";
+import { UISpaceFilter } from "@Scripts/core/Campus/components/UISpaceFilter";
+import { SpaceFilterStoreProxyProvider } from "@Scripts/core/Campus/contexts/SpaceFilterStoreProxyContext";
 
 const App = () => {
   console.warn("Re: Render");
@@ -14,13 +15,13 @@ const App = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [interactive, setInteractive] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (interactive && audioRef.current) {
-      audioRef.current.loop = true;
-      audioRef.current.play();
-      audioFadeIn(audioRef.current, 0.5);
-    }
-  }, [interactive]);
+  // useEffect(() => {
+  //   if (interactive && audioRef.current) {
+  //     audioRef.current.loop = true;
+  //     audioRef.current.play();
+  //     audioFadeIn(audioRef.current, 0.5);
+  //   }
+  // }, [interactive]);
 
   return (
     <Fragment>
@@ -36,10 +37,11 @@ const App = () => {
           >
             <div className="relative h-screen w-screen">
               <CampusSceneStoreProxyProvider>
-                <GLCampusScene />
+                <SpaceFilterStoreProxyProvider>
+                  <GLCampusScene />
+                  <UISpaceFilter />
+                </SpaceFilterStoreProxyProvider>
               </CampusSceneStoreProxyProvider>
-
-              <UISpaceFilter />
             </div>
           </div>
 

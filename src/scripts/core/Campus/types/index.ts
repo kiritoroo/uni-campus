@@ -21,6 +21,14 @@ export interface ICampusStoreProxy {
   } | null;
 }
 
+export interface ISpaceFilterStoreProxy {
+  spacePicked: {
+    id: string;
+  } | null;
+}
+
 export type ICampusStoreContext = StoreApi<ICampusStore>;
 
 export type ICampusStoreProxyContext = ICampusStoreProxy;
+
+export type ISpaceFilterStoreProxyContext = ISpaceFilterStoreProxy;

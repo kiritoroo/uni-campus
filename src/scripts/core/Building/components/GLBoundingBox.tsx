@@ -60,7 +60,7 @@ export const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
       geometry={property?.geometry}
       position={property?.position}
       material={property.material}
-      visible={true}
+      visible={false}
       onPointerEnter={handleOnPointerEnterBuilding}
       onPointerLeave={handleOnPointerLeaveBuilding}
       onPointerMove={handleOnPointerMoveBuilding}

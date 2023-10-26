@@ -248,8 +248,8 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
 
   useEffect(() => {
     if (campusCamera) {
-      scene.add(objCubicBezierLine);
-      scene.add(objCatmullRomLine);
+      // scene.add(objCubicBezierLine);
+      // scene.add(objCatmullRomLine);
     }
   }, [campusCamera]);
 
