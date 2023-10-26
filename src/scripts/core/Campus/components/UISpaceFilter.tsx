@@ -15,8 +15,8 @@ export const UISpaceFilter = () => {
           className="overflow-visible overflow-x-clip"
         >
           {spacesData.map((spaceData, idx) => (
-            <SwiperSlide className="w-fit">
-              <UISpaceCard key={idx} {...spaceData} />
+            <SwiperSlide key={idx} className="w-fit">
+              <UISpaceCard {...spaceData} />
             </SwiperSlide>
           ))}
         </Swiper>

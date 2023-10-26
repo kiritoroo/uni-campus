@@ -11,6 +11,8 @@ import { SpaceFilterStoreProxyProvider } from "@Scripts/core/Campus/contexts/Spa
 import { UICampusSearch } from "@Scripts/core/Campus/components/UICampusSearch";
 import { UIBuildingInfo } from "@Scripts/ui/UIBuildingInfo";
 import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const App = () => {
   console.warn("Re: Render");
@@ -42,7 +44,7 @@ const App = () => {
               <CampusSceneStoreProxyProvider>
                 <SpaceFilterStoreProxyProvider>
                   <GLCampusScene />
-                  {/* <UIBuildingInfo /> */}
+                  <UIBuildingInfo />
                   <div className="absolute left-0 top-[90px] z-[9999999999999] flex h-fit w-screen items-start justify-start gap-x-16 px-[50px]">
                     <UICampusSearch />
                     <UISpaceFilter />
