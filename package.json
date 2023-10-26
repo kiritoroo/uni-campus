@@ -16,7 +16,7 @@
     "@types/lodash": "^4.14.200",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
-    "google-map-react": "^2.2.1",
+    "google-map-react": "2.2.1",
     "gsap": "^3.12.2",
     "immer": "^10.0.3",
     "leva": "^0.9.35",

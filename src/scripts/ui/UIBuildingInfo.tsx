@@ -1,15 +1,39 @@
 import { cn } from "@Utils/common.utils";
-import GoogleMapReact from "google-map-react";
+// import GoogleMapReact from "google-map-react";
 import { Swiper } from "swiper/react";
 import { SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { Pagination } from "swiper/modules";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { MapMarker } from "./UIMapMarker";
+// import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import GoogleMapReact from "google-map-react";
 
 export const UIBuildingInfo = () => {
   const [isDragMap, setIsDragMap] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
+
+  // const { isLoaded } = useJsApiLoader({
+  //   id: "google-map-script",
+  //   googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY!,
+  // });
+
+  // const [map, setMap] = useState(null);
+
+  // const onLoad = useCallback(function callback(map: any) {
+  //   // This is just an example of getting and using the map instance!!! don't just blindly copy!
+  //   const bounds = new window.google.maps.LatLngBounds({
+  //     lat: 10.85005873263376,
+  //     lng: 106.77204753200438,
+  //   });
+  //   map.fitBounds(bounds);
+
+  //   setMap(map);
+  // }, []);
+
+  // const onUnmount = useCallback(function callback(map: any) {
+  //   setMap(null);
+  // }, []);
 
   const handleOnDrag = (e: any) => {
     setIsDragMap(true);
@@ -22,6 +46,11 @@ export const UIBuildingInfo = () => {
   const handleOnMapLoaded = () => {
     setIsMapReady(true);
   };
+
+  const mapDefaultCenter = useRef({
+    lat: 10.849977264746508,
+    lng: 106.77229702519801,
+  });
 
   return (
     <div className="absolute left-[50px] top-[180px] z-[9999999999]">
@@ -92,33 +121,48 @@ export const UIBuildingInfo = () => {
               lng: 106.77204753200438,
             }}
           ></GoogleMap> */}
+
+          {/* <GoogleMap
+            mapContainerStyle={{ width: "420px", height: "250px" }}
+            center={{
+              lat: 10.85005873263376,
+              lng: 106.77204753200438,
+            }}
+            zoom={18}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+          >
+            <MapMarker
+              key={"A1"}
+              label="A1"
+              center={{
+                lat: 10.85005873263376,
+                lng: 106.77204753200438,
+              }}
+            />
+          </GoogleMap> */}
+
           <GoogleMapReact
             bootstrapURLKeys={{
               key: process.env.GOOGLE_MAP_API_KEY!,
             }}
             onGoogleApiLoaded={handleOnMapLoaded}
-            defaultCenter={{
-              lat: 10.85005873263376,
-              lng: 106.77204753200438,
-            }}
-            center={{
-              lat: 10.85005873263376,
-              lng: 106.77204753200438,
-            }}
+            defaultCenter={mapDefaultCenter.current}
             defaultZoom={17}
             zoom={17}
             onDrag={handleOnDrag}
             onDragEnd={handleOnDragEnd}
+            resetBoundsOnResize
           >
-            {isMapReady && (
-              <MapMarker
-                isShow={!isDragMap}
-                key={"A1"}
-                label="A1"
-                lat={10.85005873263376}
-                lng={106.77204753200438}
-              />
-            )}
+            {/* {isMapReady && ( */}
+            <MapMarker
+              key={"A1"}
+              label="A1"
+              isShow={!isDragMap}
+              lat={mapDefaultCenter.current.lat}
+              lng={mapDefaultCenter.current.lng}
+            />
+            {/* )} */}
           </GoogleMapReact>
         </div>
       </div>
