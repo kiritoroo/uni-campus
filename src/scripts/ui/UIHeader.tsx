@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 
 export const UIHeader = () => {
   return (
-    <header className="fixed left-[50px] right-[50px] top-[25px] z-[10] flex items-center justify-between">
+    <header className="fixed left-[50px] right-[50px] top-[20px] z-[10] flex items-center justify-between">
       <Link
         to={"/"}
-        className="text-2xl font-extrabold uppercase text-[#23262D] transition-colors duration-200 hover:text-[#46448B]"
+        className="text-xl font-extrabold uppercase text-[#23262D] transition-colors duration-200 hover:text-[#46448B]"
       >
         UTE Campus
       </Link>

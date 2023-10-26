@@ -51,6 +51,7 @@ export const GLCampusScene = memo(() => {
         alpha: true,
         outputColorSpace: THREE.SRGBColorSpace,
         shadowMapType: THREE.PCFSoftShadowMap,
+        pixelRatio: 1,
       }}
     >
       {config["perf-monitor"] && <Perf position="top-left" />}

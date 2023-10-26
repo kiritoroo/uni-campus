@@ -8,6 +8,9 @@ import { UILayout } from "@Scripts/ui/UILayout";
 import { Leva } from "leva";
 import { UISpaceFilter } from "@Scripts/core/Campus/components/UISpaceFilter";
 import { SpaceFilterStoreProxyProvider } from "@Scripts/core/Campus/contexts/SpaceFilterStoreProxyContext";
+import { UICampusSearch } from "@Scripts/core/Campus/components/UICampusSearch";
+import { UIBuildingInfo } from "@Scripts/ui/UIBuildingInfo";
+import "swiper/css";
 
 const App = () => {
   console.warn("Re: Render");
@@ -39,7 +42,11 @@ const App = () => {
               <CampusSceneStoreProxyProvider>
                 <SpaceFilterStoreProxyProvider>
                   <GLCampusScene />
-                  <UISpaceFilter />
+                  {/* <UIBuildingInfo /> */}
+                  <div className="absolute left-0 top-[90px] z-[9999999999999] flex h-fit w-screen items-start justify-start gap-x-16 px-[50px]">
+                    <UICampusSearch />
+                    <UISpaceFilter />
+                  </div>
                 </SpaceFilterStoreProxyProvider>
               </CampusSceneStoreProxyProvider>
             </div>
