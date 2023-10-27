@@ -145,7 +145,7 @@ export const GLBoundingAround = memo(
     }, [isPicked]);
 
     useEffect(() => {
-      if (buildingPicked !== null && buildingPicked.buidlingUUID !== buildingUUID && !isPicked) {
+      if (buildingPicked !== null && buildingPicked.buildingUUID !== buildingUUID && !isPicked) {
         (boundingArroundRef.current as THREE.Mesh).visible = false;
       }
     }, [buildingPicked, isPicked]);

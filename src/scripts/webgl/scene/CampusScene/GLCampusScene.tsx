@@ -68,11 +68,11 @@ export const GLCampusScene = memo(() => {
       />
       <Environment files={assets.images.ROOITOU_PARK_HDR_PATH} blur={0.5} />
 
-      <CampusStoreProvider>
-        <CampusStoreProxyProvider>
-          <GLCampus />
-        </CampusStoreProxyProvider>
-      </CampusStoreProvider>
+      {/* <CampusStoreProvider>
+        <CampusStoreProxyProvider> */}
+      <GLCampus />
+      {/* </CampusStoreProxyProvider>
+      </CampusStoreProvider> */}
     </Canvas>
   );
 });

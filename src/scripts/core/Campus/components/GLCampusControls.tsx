@@ -14,5 +14,16 @@ export const GLCampusControls = memo(() => {
     }
   }, [controlsRef.current]);
 
-  return <>{/* <OrbitControls ref={controlsRef} makeDefault={false} enableDamping /> */}</>;
+  return (
+    <>
+      {/* <OrbitControls
+        ref={controlsRef}
+        makeDefault
+        enableDamping
+        enablePan={false}
+        enableZoom={false}
+        enableRotate={false}
+      /> */}
+    </>
+  );
 });

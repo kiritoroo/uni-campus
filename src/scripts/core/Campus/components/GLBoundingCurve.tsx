@@ -20,6 +20,8 @@ export const GLBoundingCurve = memo(() => {
   const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
   const { buildingPicked } = useSnapshot(campusStoreProxy);
   const campusCamera = useCampusStoreInContext().use.campusCamera();
+  // const campusControls = useCampusStoreInContext().use.campusControls();
+  const { cameraState } = useSnapshot(campusSceneStoreProxy);
 
   const gltf: TGLTFReference = useLoader(GLTFLoader, assets.models.CAMPUS_BOUNDING_CURVE_PATH);
   const model = gltf.scenes[0];
@@ -125,7 +127,7 @@ export const GLBoundingCurve = memo(() => {
   };
 
   useFrame(() => {
-    if (buildingPicked === null) {
+    if (buildingPicked === null && cameraState.isFlyAroundcampus) {
       handleUpdateCameraFollowCurve();
     }
   });

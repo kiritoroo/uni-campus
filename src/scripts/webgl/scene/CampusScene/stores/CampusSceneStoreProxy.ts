@@ -3,6 +3,10 @@ import { ICampusSceneStoreProxy } from "../types";
 
 export const CampusSceneStoreProxy = () => {
   return proxy<ICampusSceneStoreProxy>({
+    cameraState: {
+      isFocusBuilding: false,
+      isFlyAroundcampus: true,
+    },
     mouseState: {
       isMouseMove: false,
       isMouseSwipe: false,

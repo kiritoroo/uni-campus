@@ -13,6 +13,8 @@ import { UIBuildingInfo } from "@Scripts/ui/UIBuildingInfo";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { CampusStoreProvider } from "@Scripts/core/Campus/contexts/CampusStoreContext";
+import { CampusStoreProxyProvider } from "@Scripts/core/Campus/contexts/CampusStoreProxyContext";
 
 const App = () => {
   console.warn("Re: Render");
@@ -43,12 +45,16 @@ const App = () => {
             <div className="relative h-screen w-screen">
               <CampusSceneStoreProxyProvider>
                 <SpaceFilterStoreProxyProvider>
-                  <GLCampusScene />
-                  <UIBuildingInfo />
-                  <div className="absolute left-0 top-[90px] z-[9999999999999] flex h-fit w-screen items-start justify-start gap-x-16 px-[50px]">
-                    <UICampusSearch />
-                    <UISpaceFilter />
-                  </div>
+                  <CampusStoreProvider>
+                    <CampusStoreProxyProvider>
+                      <GLCampusScene />
+                      <UIBuildingInfo />
+                      <div className="absolute left-0 top-[90px] z-[9999999999999] flex h-fit w-screen items-start justify-start gap-x-16 px-[50px]">
+                        <UICampusSearch />
+                        <UISpaceFilter />
+                      </div>
+                    </CampusStoreProxyProvider>
+                  </CampusStoreProvider>
                 </SpaceFilterStoreProxyProvider>
               </CampusSceneStoreProxyProvider>
             </div>

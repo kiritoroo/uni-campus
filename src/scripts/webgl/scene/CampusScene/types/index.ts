@@ -1,4 +1,8 @@
 export interface ICampusSceneStoreProxy {
+  cameraState: {
+    isFocusBuilding: boolean;
+    isFlyAroundcampus: boolean;
+  };
   mouseState: {
     isMouseSwipe: boolean;
     isMouseMove: boolean;

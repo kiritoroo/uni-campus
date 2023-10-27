@@ -1,10 +1,13 @@
+import { TCambusBuildingData } from "@Types/db.type";
 import { StoreApi } from "zustand";
 
 export interface IBuildingStore {
   buildingUUID: string;
   buildingObject: THREE.Object3D | null;
+  buildingData: TCambusBuildingData | null;
   setBuildingUUID: (id: string) => void;
   setBuildingObject: (obj: THREE.Object3D) => void;
+  setBuildingData: (data: TCambusBuildingData) => void;
 }
 
 export interface IBuildingStoreProxy {

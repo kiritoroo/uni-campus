@@ -66,13 +66,13 @@ export const UIBuildingMarker = memo(({ position, space, label, uses }: UIBuildi
   });
 
   useEffect(() => {
-    if (buildingPicked && buildingPicked?.buidlingUUID === buildingUUID && isPicked) {
+    if (buildingPicked && buildingPicked?.buildingUUID === buildingUUID && isPicked) {
       controls.start("state-picked");
-    } else if (buildingPicked && buildingPicked?.buidlingUUID !== buildingUUID && !isPicked) {
+    } else if (buildingPicked && buildingPicked?.buildingUUID !== buildingUUID && !isPicked) {
       controls.start("state-hide");
     } else if (buildingPicked === null && isPointerEnter && !isPicked) {
       controls.start("state-pointer-enter");
-    } else {
+    } else if (buildingPicked == null && !spacePicked) {
       controls.start({
         display: "block",
         transition: { duration: 0 },
@@ -83,6 +83,10 @@ export const UIBuildingMarker = memo(({ position, space, label, uses }: UIBuildi
 
   useEffect(() => {
     if (spacePicked && spacePicked.id === space) {
+      controls.start({
+        display: "block",
+        transition: { duration: 0 },
+      });
       controls.start({
         scale: [1, 1.2, 1],
         opacity: 1,

@@ -4,10 +4,18 @@ import { ISpaceData } from "@Types/db.type";
 import { useSpaceFilterStoreProxyInContext } from "../hooks/useSpaceFilterStoreProxyInContext";
 import { useSnapshot } from "valtio";
 import { css } from "@emotion/react";
+import { useCampusStoreProxyInContext } from "../hooks/useCampusStoreProxyInContext";
+import { useCampusSceneStoreProxyInContext } from "@Scripts/webgl/scene/CampusScene/hooks/useCampusSceneStoreProxyInContext";
+import { useCampusStoreInContext } from "../hooks/useCampusStoreInContext";
+import { OrbitControls } from "three-stdlib";
 
 export const UISpaceCard = ({ id, label, iconPath }: ISpaceData) => {
   const spaceFilterStoreProxy = useSpaceFilterStoreProxyInContext();
+  const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
+  const campusStoreProxy = useCampusStoreProxyInContext();
   const { spacePicked } = useSnapshot(spaceFilterStoreProxy);
+  // const campusControls = useCampusStoreInContext().use.campusControls();
+  // const { cameraState } = useSnapshot(campusSceneStoreProxy);
 
   const handleMouseClick = () => {
     if (spaceFilterStoreProxy.spacePicked && spaceFilterStoreProxy.spacePicked.id === id) {
@@ -16,6 +24,10 @@ export const UISpaceCard = ({ id, label, iconPath }: ISpaceData) => {
       spaceFilterStoreProxy.spacePicked = {
         id: id,
       };
+    }
+
+    if (campusStoreProxy.buildingPicked !== null) {
+      campusStoreProxy.buildingPicked = null;
     }
   };
 

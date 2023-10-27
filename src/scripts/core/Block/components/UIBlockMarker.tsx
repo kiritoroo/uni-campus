@@ -70,7 +70,7 @@ export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingM
   useEffect(() => {
     if (
       buildingPicked &&
-      buildingPicked?.buidlingUUID === buildingUUID &&
+      buildingPicked?.buildingUUID === buildingUUID &&
       isBuildingPicked &&
       blockPicked &&
       blockPicked?.blockUUID === blockUUID &&
@@ -78,7 +78,7 @@ export const UIBlockMarker = memo(({ position, space, label, uses }: UIBuildingM
     ) {
       controls.start("state-picked");
     } else if (
-      (buildingPicked && buildingPicked?.buidlingUUID !== buildingUUID && !isBuildingPicked) ||
+      (buildingPicked && buildingPicked?.buildingUUID !== buildingUUID && !isBuildingPicked) ||
       (blockPicked && blockPicked?.blockUUID !== blockUUID && !isPicked)
     ) {
       controls.start("state-hide");

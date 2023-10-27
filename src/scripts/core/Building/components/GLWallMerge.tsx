@@ -77,8 +77,29 @@ export const GLWallMerge = memo(
     };
 
     useEffect(() => {
-      if (buildingPicked !== null && buildingPicked.buidlingUUID !== buildingUUID && !isPicked) {
+      if (buildingPicked !== null && buildingPicked.buildingUUID !== buildingUUID && !isPicked) {
         handleIsBuildingNotPicked();
+      } else {
+        animateTimeline.clear();
+        animateTimeline
+          .to(
+            material.current,
+            {
+              opacity: 1,
+              ease: Power2.easeInOut,
+              delay: 1,
+              duration: 0.5,
+              onStart: () => {
+                (wallMergeRef.current as THREE.Mesh).castShadow = true;
+                (wallMergeRef.current as THREE.Mesh).receiveShadow = true;
+                material.current.depthWrite = true;
+                material.current.depthTest = true;
+                (wallMergeRef.current as THREE.Mesh).visible = true;
+              },
+            },
+            "<",
+          )
+          .play();
       }
     }, [buildingPicked, isPicked]);
 

@@ -19,6 +19,7 @@ export const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
   const campusStoreProxy = useCampusStoreProxyInContext();
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
+  const buildingData = useBuildingStoreInContext().use.buildingData();
 
   const handleOnPointerEnterBuilding = _.throttle(
     (e: ThreeEvent<PointerEvent>) => {
@@ -50,7 +51,8 @@ export const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
     if (buildingStoreProxy.isPointerEnter) {
       document.body.style.cursor = "auto";
       campusStoreProxy.buildingPicked = {
-        buidlingUUID: buildingUUID,
+        buildingUUID: buildingUUID,
+        buildingData: buildingData!,
       };
     }
   };

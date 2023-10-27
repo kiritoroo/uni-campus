@@ -37,6 +37,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   const buildingStoreProxy = useBuildingStoreProxyInContext();
   const buildingUUID = useBuildingStoreInContext().use.buildingUUID();
   const setBuildingObject = useBuildingStoreInContext().use.setBuildingObject();
+  const setBuildingData = useBuildingStoreInContext().use.setBuildingData();
   const { blocksPointerEnter } = useSnapshot(buildingStoreProxy);
 
   const playSoundFx = useSoundFx();
@@ -45,7 +46,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   const model = gltf.scenes[0];
   const { camera } = useThree();
 
-  const buildngRef = useRef<THREE.Group | any>(null);
+  const buildingRef = useRef<THREE.Group | any>(null);
 
   const objWallMergeProperty: {
     ref: RefObject<TGLWallMergeRef>;
@@ -164,13 +165,13 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
     }
 
     if (
-      campusStoreProxy.buildingPicked?.buidlingUUID === buildingUUID &&
+      campusStoreProxy.buildingPicked?.buildingUUID === buildingUUID &&
       !buildingStoreProxy.isPicked
     ) {
       handleOnBuidingPicking();
     } else if (
       (campusStoreProxy.buildingPicked === null ||
-        campusStoreProxy.buildingPicked?.buidlingUUID !== buildingUUID) &&
+        campusStoreProxy.buildingPicked?.buildingUUID !== buildingUUID) &&
       buildingStoreProxy.isPicked
     ) {
       handleOnBuidingUnPicking();
@@ -178,10 +179,14 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   });
 
   useEffect(() => {
-    if (buildngRef.current) {
-      setBuildingObject(buildngRef.current);
+    if (buildingRef.current) {
+      setBuildingObject(buildingRef.current);
     }
     // objFocusCurveProperty && scene.add(objFocusCurveProperty.line);
+  }, [buildingRef.current]);
+
+  useEffect(() => {
+    setBuildingData(buildingData);
   }, []);
 
   useEffect(() => {
@@ -209,7 +214,7 @@ export const GLBuilding = memo(({ buildingData }: GLBuildingProps) => {
   });
 
   return (
-    <group ref={buildngRef}>
+    <group ref={buildingRef}>
       {objWallMergeProperty && (
         <GLWallMerge
           ref={objWallMergeProperty?.ref}

@@ -1,3 +1,4 @@
+import { TCambusBuildingData } from "@Types/db.type";
 import { OrbitControls } from "three-stdlib";
 import { StoreApi } from "zustand";
 
@@ -17,7 +18,8 @@ export interface ICampusStoreProxy {
     buildingUUID: string;
   } | null;
   buildingPicked: {
-    buidlingUUID: string;
+    buildingUUID: string;
+    buildingData: TCambusBuildingData;
   } | null;
 }
 
