@@ -8,6 +8,7 @@ import { useCallback, useRef, useState } from "react";
 import { MapMarker } from "./UIMapMarker";
 // import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import GoogleMapReact from "google-map-react";
+import mapTheme from "./map_theme.json";
 
 export const UIBuildingInfo = () => {
   const [isDragMap, setIsDragMap] = useState(false);
@@ -153,6 +154,16 @@ export const UIBuildingInfo = () => {
             onDrag={handleOnDrag}
             onDragEnd={handleOnDragEnd}
             resetBoundsOnResize
+            options={{
+              panControl: true,
+              zoomControl: true,
+              mapTypeControl: false,
+              scaleControl: false,
+              streetViewControl: false,
+              rotateControl: false,
+              fullscreenControl: false,
+              styles: mapTheme,
+            }}
           >
             {/* {isMapReady && ( */}
             <MapMarker
