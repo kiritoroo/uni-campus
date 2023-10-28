@@ -1,5 +1,6 @@
 export const assets = {
   models: {
+    FLOOR_LAYER_PATH: "/models/floor-layer.glb",
     GROUND_LAYER_PATH: "/models/ground-layer.glb",
     GRASS_LAYER_PATH: "/models/grass-layer.glb",
     PLANT_LAYER_PATH: "/models/plant-layer.glb",

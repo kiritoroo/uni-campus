@@ -14,6 +14,8 @@ import { GLCampusControls } from "./GLCampusControls";
 import { GLPlaneLayer } from "./GLPlaneLayer";
 import { useCampusSceneStoreProxyInContext } from "@Scripts/webgl/scene/CampusScene/hooks/useCampusSceneStoreProxyInContext";
 import { useFrame } from "@react-three/fiber";
+import { GLFloorLayer } from "./GLFloorLayer";
+import { GLTestLayer } from "./GLTestLayer";
 
 export const GLCampus = memo(() => {
   const campusSceneStoreProxy = useCampusSceneStoreProxyInContext();
@@ -46,10 +48,12 @@ export const GLCampus = memo(() => {
 
   return (
     <group>
+      <GLTestLayer />
       <GLGroundLayer />
       <GLGrassLayer />
       <GLPlaneLayer />
-      <GLBoundingCurve />
+      <GLFloorLayer />
+      {/* <GLBoundingCurve /> */}
       <GLCampusCamera />
       <GLCampusControls />
 

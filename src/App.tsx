@@ -22,20 +22,20 @@ const App = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [interactive, setInteractive] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (interactive && audioRef.current) {
-  //     audioRef.current.loop = true;
-  //     audioRef.current.play();
-  //     audioFadeIn(audioRef.current, 0.5);
-  //   }
-  // }, [interactive]);
+  useEffect(() => {
+    if (interactive && audioRef.current) {
+      audioRef.current.loop = true;
+      audioRef.current.play();
+      audioFadeIn(audioRef.current, 0.5);
+    }
+  }, [interactive]);
 
   return (
     <Fragment>
       <UILayout>
         <SoundFxProvider>
           <div
-            className="font-dinpro bg-[#F9F4FA] font-normal antialiased"
+            className="font-dinpro bg-[#e9e9e9] font-normal antialiased"
             onClick={() => {
               setTimeout(() => {
                 setInteractive(true);

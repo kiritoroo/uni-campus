@@ -56,15 +56,15 @@ export const GLCampusScene = memo(() => {
     >
       {config["perf-monitor"] && <Perf position="top-left" />}
       <Lights />
-      <Skydom />
-      <Fog />
+      {/* <Skydom /> */}
+      {/* <Fog /> */}
       <Camera />
       <OrbitControls
         makeDefault
         enableDamping
-        enablePan={false}
-        enableZoom={false}
-        enableRotate={false}
+        enablePan={true}
+        enableZoom={true}
+        enableRotate={true}
       />
       <Environment files={assets.images.ROOITOU_PARK_HDR_PATH} blur={0.5} />
 

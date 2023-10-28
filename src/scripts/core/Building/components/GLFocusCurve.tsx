@@ -391,7 +391,7 @@ export const GLFocusCurve = memo(({ focusPosition }: GLFocusCurveProps) => {
           color: new THREE.Color(0xf50359),
         }),
       );
-      scene.add(objCubicBezierLine.current);
+      // scene.add(objCubicBezierLine.current);
 
       handleUpdateCurveFollowCamera();
       handleUpdateCameraFollowCurve();

@@ -42,7 +42,7 @@ export const GLCampusCamera = memo(() => {
         makeDefault={config["campus-camera"]}
         ref={cameraRef}
         near={0.5}
-        far={1500}
+        far={5000}
         fov={45}
       />
     </group>
