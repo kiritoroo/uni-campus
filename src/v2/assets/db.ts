@@ -1,4 +1,4 @@
-import { ISpaceData, TCambusBuildingData, TSoundEffectData } from "@Types/db.type";
+import { ISpaceData, TCambusBuildingData, TSoundEffectData } from "src/v2/types/db.type";
 import { assets } from "./assets";
 
 export const sounds_effect_data: TSoundEffectData[] = [

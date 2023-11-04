@@ -1,4 +1,4 @@
-import { TCambusBuildingData } from "@Types/db.type";
+import { TCambusBuildingData } from "src/v2/types/db.type";
 import { OrbitControls } from "three-stdlib";
 import { StoreApi } from "zustand";
 

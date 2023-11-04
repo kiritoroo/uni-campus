@@ -1,5 +1,5 @@
 import { sounds_effect_data } from "@Assets/db";
-import { TSoundEffectData } from "@Types/db.type";
+import { TSoundEffectData } from "src/v2/types/db.type";
 import { createContext } from "react";
 import useSound from "use-sound";
 import { PlayFunction } from "use-sound/dist/types";

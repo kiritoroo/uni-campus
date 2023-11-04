@@ -1,6 +1,6 @@
 import { cn, opacityColor } from "@Utils/common.utils";
 import { SPACE_COLOR_MAP } from "@Assets/constants";
-import { ISpaceData } from "@Types/db.type";
+import { ISpaceData } from "src/v2/types/db.type";
 import { useSpaceFilterStoreProxyInContext } from "../hooks/useSpaceFilterStoreProxyInContext";
 import { useSnapshot } from "valtio";
 import { css } from "@emotion/react";

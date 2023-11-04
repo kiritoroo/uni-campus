@@ -1,6 +1,6 @@
 import { GLCampusScene } from "@Scripts/webgl/scene/CampusScene/GLCampusScene";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { SoundFxProvider } from "./global/context/SoundFxContext";
+import { SoundFxProvider } from "../global/context/SoundFxContext";
 import { assets } from "@Assets/assets";
 import { CampusSceneStoreProxyProvider } from "@Scripts/webgl/scene/CampusScene/contexts/CampusSceneStoreProxyContext";
 import { audioFadeIn } from "@Utils/common.utils";
