@@ -1,21 +1,29 @@
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const NavItem = ({ label, href }: { label: string; href: string }) => {
+  return (
+    <div className="bg-[#EAEAEA] px-5 py-2">
+      <Link
+        to={href}
+        className="flex items-center justify-between text-gray-600 group-hover:text-[rgb(41,83,233)]"
+      >
+        <p className="text-sm font-normal">{label}</p>
+        <ChevronRight stroke="#999999" className="ml-10 h-3 w-3 group-hover:stroke-[#2953E9]" />
+      </Link>
+    </div>
+  );
+};
+
 const Navbar = () => {
   return (
-    <div className="px-3">
+    <div className="px-2">
       <ul className="space-y-2">
-        <li className="group flex items-center justify-between hover:cursor-pointer">
-          <Link to={"buildings"} className="font-medium text-[#B6B6B6] group-hover:text-[#2953E9]">
-            Buildings
-          </Link>
-          <ChevronRight stroke="#999999" className="ml-8 h-4 w-4 group-hover:stroke-[#2953E9]" />
+        <li className="group">
+          <NavItem label="Buildings" href="buildings" />
         </li>
-        <li className="group flex items-center justify-between hover:cursor-pointer">
-          <Link to={"spaces"} className="font-medium text-[#B6B6B6] hover:text-[#2953E9]">
-            Spaces
-          </Link>
-          <ChevronRight stroke="#999999" className="ml-8 h-4 w-4 group-hover:stroke-[#2953E9]" />
+        <li className="group">
+          <NavItem label="Spaces" href="spaces" />
         </li>
       </ul>
     </div>
