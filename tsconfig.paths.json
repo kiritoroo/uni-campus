@@ -8,7 +8,8 @@
       "@Scripts/*": ["src/scripts/*"],
       "@Types/*": ["src/types/*"],
       "@Components/*": ["src/components/*"],
-      "@Utils/*": ["src/utils/*"]
+      "@Utils/*": ["src/utils/*"],
+      "@v3/*": ["src/v3/*"]
     }
   }
 }
