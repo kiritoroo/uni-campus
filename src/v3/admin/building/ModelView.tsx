@@ -2,27 +2,63 @@ import { Suspense, useRef } from "react";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage } from "@react-three/drei";
+import { FileBox, ImageDown, Trash } from "lucide-react";
+import saveAs from "file-saver";
 
 const ModelView = () => {
-  const scene = useModelUploadStore().use.scene()!;
+  const modeUploadStore = useModelUploadStore();
+  const scene = modeUploadStore.use.scene()!;
+  const fileName = modeUploadStore.use.fileName();
+  const { resetStore: resetModelUploadStore } = modeUploadStore.use.actions();
+
   const ref = useRef<any>();
 
+  const handleSavePreview = () => {
+    const image = document
+      .getElementsByTagName("canvas")[0]
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+
+    saveAs(image, `${fileName.split(".")[0]}.png`);
+  };
+
   return (
-    <Canvas
-      gl={{ preserveDrawingBuffer: true }}
-      shadows
-      dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 150], fov: 75 }}
-      className="relative h-full w-full border border-gray-300 bg-[#EFEFEF]"
-    >
-      <ambientLight intensity={0.25} />
-      <Suspense fallback={null}>
-        <Stage preset={"rembrandt"} intensity={1} shadows adjustCamera environment={"city"}>
-          <primitive object={scene} />
-        </Stage>
-      </Suspense>
-      <OrbitControls ref={ref} autoRotate={true} />
-    </Canvas>
+    <div className="relative h-full w-full border border-gray-300 bg-[#EFEFEF]">
+      <Canvas
+        gl={{ preserveDrawingBuffer: true }}
+        shadows
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, 150], fov: 75 }}
+      >
+        <ambientLight intensity={0.25} />
+        <Suspense fallback={null}>
+          <Stage preset={"rembrandt"} intensity={1} shadows adjustCamera environment={"city"}>
+            <primitive object={scene} />
+          </Stage>
+        </Suspense>
+        <OrbitControls ref={ref} autoRotate={true} />
+      </Canvas>
+      <div className="absolute bottom-3 left-2 flex justify-start gap-5">
+        <div className="border border-[#EFEFEF] bg-white px-3 py-2">
+          <div className="flex items-center justify-start gap-2">
+            <FileBox className="h-4 w-4 stroke-gray-700" />
+            <p className="text-sm font-medium">{fileName}</p>
+          </div>
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          <button type="button" onClick={resetModelUploadStore}>
+            <div className="bg-white px-3 py-2">
+              <Trash className="h-4 w-4 stroke-gray-700" />
+            </div>
+          </button>
+          <button type="button" onClick={handleSavePreview}>
+            <div className="bg-white px-3 py-2">
+              <ImageDown className="h-4 w-4 stroke-gray-700" />
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

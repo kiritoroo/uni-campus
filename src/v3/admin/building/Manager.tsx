@@ -3,8 +3,8 @@ import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { useCommonStore } from "./hooks/useCommonStore";
 
 const Manager = () => {
-  const showCreateModal = useCommonStore().use.showCreateModal();
   const commonStore = useCommonStore();
+  const showCreateModal = commonStore.use.showCreateModal();
 
   return (
     <section>

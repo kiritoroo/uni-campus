@@ -5,6 +5,7 @@ import { arrayBufferToString } from "@Utils/common.utils";
 
 const DropModel = () => {
   const modelUploadStore = useModelUploadStore();
+
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();

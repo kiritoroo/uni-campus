@@ -3,15 +3,12 @@ import { Link } from "react-router-dom";
 
 const NavItem = ({ label, href }: { label: string; href: string }) => {
   return (
-    <div className="bg-[#EAEAEA] px-5 py-2">
-      <Link
-        to={href}
-        className="flex items-center justify-between text-gray-600 group-hover:text-[rgb(41,83,233)]"
-      >
-        <p className="text-sm font-normal">{label}</p>
+    <Link to={href} className="block bg-[#EAEAEA] px-5 py-2">
+      <div className="flex items-center justify-between text-gray-600">
+        <p className="text-sm font-normal group-hover:text-[rgb(41,83,233)]">{label}</p>
         <ChevronRight stroke="#999999" className="ml-10 h-3 w-3 group-hover:stroke-[#2953E9]" />
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 };
 
