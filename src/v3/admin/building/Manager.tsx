@@ -1,4 +1,5 @@
 import CreateModal from "./CreateModal";
+import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { useCommonStore } from "./hooks/useCommonStore";
 
 const Manager = () => {
@@ -17,7 +18,11 @@ const Manager = () => {
         <p className="text-sm font-medium text-[#2C2B31]">New Building</p>
       </button>
       <div className="p-5">All buildings</div>
-      {showCreateModal && <CreateModal />}
+      {showCreateModal && (
+        <ModelUploadStoreProvider>
+          <CreateModal />
+        </ModelUploadStoreProvider>
+      )}
     </section>
   );
 };

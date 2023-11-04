@@ -1,7 +1,26 @@
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import { useModelUploadStore } from "./hooks/useModelUploadStore";
+import { arrayBufferToString } from "@Utils/common.utils";
 
 const DropModel = () => {
+  const modelUploadStore = useModelUploadStore();
+  const handleOnDrop = useCallback((acceptedFiles: any) => {
+    acceptedFiles.forEach((file: any) => {
+      const reader = new FileReader();
+      reader.onabort = () => console.error("file reading was aborted");
+      reader.onerror = () => console.error("file reading has failed");
+      reader.onload = async () => {
+        const data = reader.result;
+        modelUploadStore.setState({ buffer: data, fileName: file.name });
+        arrayBufferToString(data, (a: any) => modelUploadStore.setState({ textOriginalFile: a }));
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }, []);
+
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+    onDrop: handleOnDrop,
     maxFiles: 1,
     accept: { "3d file formats": [".gltf", ".glb"] },
   });

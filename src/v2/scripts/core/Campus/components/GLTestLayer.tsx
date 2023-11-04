@@ -1,5 +1,5 @@
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { TGLTFReference } from "src/v2/types/three.type";
+import { TGLTFReference } from "@Types/three.type";
 import { useLoader } from "@react-three/fiber";
 import { assets } from "@Assets/assets";
 import * as THREE from "three";

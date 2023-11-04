@@ -1,9 +1,24 @@
 import { X } from "lucide-react";
 import CreateForm from "./CreateForm";
 import { useCommonStore } from "./hooks/useCommonStore";
+import DropModel from "./DropModel";
+import { useModelUploadStore } from "./hooks/useModelUploadStore";
+import ModelView from "./ModelView";
+import { startTransition, useEffect } from "react";
 
 const CreateModal = () => {
   const commonStore = useCommonStore();
+  const buffer = useModelUploadStore().use.buffer();
+  const scene = useModelUploadStore().use.scene();
+  const { loadScene } = useModelUploadStore().use.actions();
+
+  useEffect(() => {
+    if (buffer) {
+      startTransition(() => {
+        loadScene();
+      });
+    }
+  }, [buffer]);
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/10">
@@ -19,8 +34,13 @@ const CreateModal = () => {
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="py-4">
-          <CreateForm />
+        <div className="grid grid-cols-5 gap-8 py-4">
+          <div className="col-span-2">
+            <CreateForm />
+          </div>
+          <div className="col-span-3 h-full w-full grow">
+            {scene ? <ModelView /> : <DropModel />}
+          </div>
         </div>
       </div>
     </div>

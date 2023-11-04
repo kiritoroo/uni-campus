@@ -2,7 +2,7 @@ import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { GLTFLoader, Line2 } from "three-stdlib";
 import * as THREE from "three";
 import { RefObject, memo, useEffect, useMemo, useRef, useState } from "react";
-import { TGLTFReference } from "src/v2/types/three.type";
+import { TGLTFReference } from "@Types/three.type";
 import { assets } from "@Assets/assets";
 import { Line } from "@react-three/drei";
 import { useCampusStoreInContext } from "../hooks/useCampusStoreInContext";
