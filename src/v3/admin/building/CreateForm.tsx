@@ -9,7 +9,7 @@ const CreateForm = () => {
           <FormInput label="Building name" />
           <FormInput label="Space ID" />
           <FormInput label="Uses" />
-          <div className="py-2">
+          <div className="py-1">
             <p className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600">
               Position
             </p>
@@ -19,7 +19,7 @@ const CreateForm = () => {
               <FormInput label="z" dir="hoz" />
             </div>
           </div>
-          <div className="py-2">
+          <div className="py-1">
             <p className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600">
               Rotation
             </p>
@@ -29,7 +29,7 @@ const CreateForm = () => {
               <FormInput label="z" dir="hoz" />
             </div>
           </div>
-          <div className="py-2">
+          <div className="py-1">
             <p className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600">
               Scale
             </p>
@@ -45,7 +45,7 @@ const CreateForm = () => {
         </div>
       </div>
       <div className="py-5">
-        <button type="button" className="w-fit bg-[#e2e2e2] p-3">
+        <button type="submit" className="w-fit bg-[#e2e2e2] p-3">
           <p className="text-sm font-medium text-[#2C2B31]">Create</p>
         </button>
       </div>
