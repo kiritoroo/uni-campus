@@ -5,7 +5,7 @@ import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 
 const CreateForm = () => {
   const previewUploadStore = usePreviewUploadStore();
-  const buffer = previewUploadStore.use.buffer();
+  const base64 = previewUploadStore.use.base64();
 
   return (
     <form className="space-y-2">
@@ -13,7 +13,7 @@ const CreateForm = () => {
         <div className="col-span-2">
           <div className="flex h-full w-full flex-col">
             <p className="w-fit pb-1 text-sm font-medium text-gray-600">Preview</p>
-            {buffer ? <ViewPreview /> : <DropPreview />}
+            {base64 ? <ViewPreview /> : <DropPreview />}
           </div>
         </div>
         <div className="col-span-3">

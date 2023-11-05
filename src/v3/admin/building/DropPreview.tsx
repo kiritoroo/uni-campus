@@ -12,8 +12,9 @@ const DropPreview = () => {
       reader.onabort = () => console.error("file reading was aborted");
       reader.onerror = () => console.error("file reading has failed");
       reader.onload = async () => {
+        previewUploadStore.setState({ fileRaw: file });
         const data = reader.result;
-        previewUploadStore.setState({ buffer: data, fileName: file.name });
+        previewUploadStore.setState({ base64: data, fileName: file.name });
         arrayBufferToString(data, (a: any) => previewUploadStore.setState({ textOriginalFile: a }));
       };
       reader.readAsDataURL(file);

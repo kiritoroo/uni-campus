@@ -2,9 +2,20 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { arrayBufferToString } from "@Utils/common.utils";
+import { startTransition, useEffect } from "react";
 
 const DropModel = () => {
   const modelUploadStore = useModelUploadStore();
+  const buffer = modelUploadStore.use.buffer();
+  const { loadScene } = modelUploadStore.use.actions();
+
+  useEffect(() => {
+    if (buffer) {
+      startTransition(() => {
+        loadScene();
+      });
+    }
+  }, [buffer]);
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
@@ -12,6 +23,7 @@ const DropModel = () => {
       reader.onabort = () => console.error("file reading was aborted");
       reader.onerror = () => console.error("file reading has failed");
       reader.onload = async () => {
+        modelUploadStore.setState({ fileRaw: file });
         const data = reader.result;
         modelUploadStore.setState({ buffer: data, fileName: file.name });
         arrayBufferToString(data, (a: any) => modelUploadStore.setState({ textOriginalFile: a }));

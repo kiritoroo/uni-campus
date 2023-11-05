@@ -4,22 +4,11 @@ import { useCommonStore } from "./hooks/useCommonStore";
 import DropModel from "./DropModel";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import ViewModel from "./ViewModel";
-import { startTransition, useEffect } from "react";
 
 const CreateModal = () => {
   const commonStore = useCommonStore();
   const modelUploadStore = useModelUploadStore();
-  const buffer = modelUploadStore.use.buffer();
   const scene = modelUploadStore.use.scene();
-  const { loadScene } = modelUploadStore.use.actions();
-
-  useEffect(() => {
-    if (buffer) {
-      startTransition(() => {
-        loadScene();
-      });
-    }
-  }, [buffer]);
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/10">

@@ -3,6 +3,7 @@ import { TGLTFReference } from "@Types/three.type";
 import { initializeGLTFLoader } from "@Utils/three.utils";
 
 type TState = {
+  fileRaw: File | null;
   fileName: string;
   buffer: string | ArrayBuffer | null;
   textOriginalFile: string;
@@ -19,6 +20,7 @@ export interface IFileUploadStore extends TState {
 }
 
 const initStore: TState = {
+  fileRaw: null,
   fileName: "",
   buffer: null,
   textOriginalFile: "",
