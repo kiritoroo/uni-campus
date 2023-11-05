@@ -1,14 +1,9 @@
 import { X } from "lucide-react";
 import CreateForm from "./CreateForm";
 import { useCommonStore } from "./hooks/useCommonStore";
-import DropModel from "./DropModel";
-import { useModelUploadStore } from "./hooks/useModelUploadStore";
-import ViewModel from "./ViewModel";
 
 const CreateModal = () => {
   const commonStore = useCommonStore();
-  const modelUploadStore = useModelUploadStore();
-  const scene = modelUploadStore.use.scene();
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/10">
@@ -24,17 +19,7 @@ const CreateModal = () => {
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="grid grid-cols-6 gap-8 py-4">
-          <div className="col-span-3">
-            <CreateForm />
-          </div>
-          <div className="col-span-3 h-full w-full grow">
-            <div className="flex h-full w-full flex-col">
-              <p className="w-fit pb-1 text-sm font-medium text-gray-600">3D Model</p>
-              {scene ? <ViewModel /> : <DropModel />}
-            </div>
-          </div>
-        </div>
+        <CreateForm />
       </div>
     </div>
   );

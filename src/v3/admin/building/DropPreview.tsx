@@ -24,7 +24,7 @@ const DropPreview = () => {
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
     onDrop: handleOnDrop,
     maxFiles: 1,
-    accept: { "Image file formats": [".png", ".jpg", ".webp"] },
+    accept: { "Image file formats": [".webp"] },
   });
 
   return (
@@ -38,12 +38,12 @@ const DropPreview = () => {
           <p className="text-sm font-medium text-[#2953E9]">Drop the files here...</p>
         ) : (
           <p className="text-sm font-medium">
-            Drag <strong className="text-[#2953E9]">JPG</strong> file here
+            Drag <strong className="text-[#2953E9]">WEBP</strong> file here
           </p>
         )}
 
         {fileRejections.length ? (
-          <p className="text-sm font-medium">Only .png, .jpg or .webp files are accepted</p>
+          <p className="text-sm font-medium">Only .webp files are accepted</p>
         ) : null}
       </div>
     </div>

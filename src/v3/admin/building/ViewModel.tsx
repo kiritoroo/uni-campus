@@ -19,7 +19,7 @@ const ViewModel = () => {
       .toDataURL("image/png")
       .replace("image/png", "image/octet-stream");
 
-    saveAs(image, `${fileName.split(".")[0]}.png`);
+    saveAs(image, `${fileName.split(".")[0]}.webp`);
   };
 
   return (

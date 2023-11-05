@@ -4,10 +4,11 @@ import React from "react";
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   dir?: "hoz" | "vez";
+  child?: boolean;
 }
 
 export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ dir = "vez", label, name, className, ...props }, ref) => {
+  ({ dir = "vez", child = false, label, name, required, className, ...props }, ref) => {
     const inputId = `el--input-${name}`;
 
     return (
@@ -20,7 +21,7 @@ export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
           htmlFor={inputId}
           className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600"
         >
-          {label}
+          {label} {required && !child && <span className="text-red-400">*</span>}
         </label>
 
         <input
@@ -31,6 +32,7 @@ export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           name={name}
+          required={required}
           {...props}
         />
       </div>
