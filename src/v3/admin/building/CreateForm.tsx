@@ -3,8 +3,8 @@ import { FormInput } from "./FormInput";
 const CreateForm = () => {
   return (
     <form className="space-y-2">
-      <FormInput label="Building name" />
-      <FormInput label="Space ID" />
+      <FormInput label="Name" />
+      <FormInput label="Space" />
       <FormInput label="Uses" />
       <div className="py-1">
         <p className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600">

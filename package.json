@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
+    "@hookform/resolvers": "^3.3.2",
     "@react-three/drei": "^9.88.4",
     "@react-three/fiber": "^8.14.6",
     "@types/file-saver": "^2.0.6",
@@ -31,6 +32,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-google-maps": "^9.4.5",
+    "react-hook-form": "^7.48.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.17.0",
     "react-spring": "^9.7.3",
@@ -44,6 +46,7 @@
     "use-sound": "^4.0.1",
     "uuid": "^9.0.1",
     "valtio": "^1.11.2",
+    "zod": "^3.22.4",
     "zustand": "^4.4.3"
   },
   "devDependencies": {
