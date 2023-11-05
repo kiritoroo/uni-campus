@@ -1,10 +1,10 @@
 import { useCallback } from "react";
+import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 import { useDropzone } from "react-dropzone";
-import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { arrayBufferToString } from "@Utils/common.utils";
 
-const DropModel = () => {
-  const modelUploadStore = useModelUploadStore();
+const DropPreview = () => {
+  const previewUploadStore = usePreviewUploadStore();
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
@@ -13,17 +13,17 @@ const DropModel = () => {
       reader.onerror = () => console.error("file reading has failed");
       reader.onload = async () => {
         const data = reader.result;
-        modelUploadStore.setState({ buffer: data, fileName: file.name });
-        arrayBufferToString(data, (a: any) => modelUploadStore.setState({ textOriginalFile: a }));
+        previewUploadStore.setState({ buffer: data, fileName: file.name });
+        arrayBufferToString(data, (a: any) => previewUploadStore.setState({ textOriginalFile: a }));
       };
-      reader.readAsArrayBuffer(file);
+      reader.readAsDataURL(file);
     });
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
     onDrop: handleOnDrop,
     maxFiles: 1,
-    accept: { "3d file formats": [".gltf", ".glb"] },
+    accept: { "Image file formats": [".png", ".jpg", ".webp"] },
   });
 
   return (
@@ -37,16 +37,16 @@ const DropModel = () => {
           <p className="text-sm font-medium text-[#2953E9]">Drop the files here...</p>
         ) : (
           <p className="text-sm font-medium">
-            Drag <strong className="text-[#2953E9]">GLTF/GLB</strong> file here
+            Drag <strong className="text-[#2953E9]">JPG</strong> file here
           </p>
         )}
 
         {fileRejections.length ? (
-          <p className="text-sm font-medium">Only .gltf or .glb files are accepted</p>
+          <p className="text-sm font-medium">Only .png, .jpg or .webp files are accepted</p>
         ) : null}
       </div>
     </div>
   );
 };
 
-export default DropModel;
+export default DropPreview;

@@ -21,7 +21,7 @@ const scaleField = z.object({
   z: z.number(),
 });
 
-const createBuildingSchema = z.object({
+const buildingSchema = z.object({
   name: nameField,
   space_id: spaceIDField,
   file_url: fileURLField,
@@ -32,7 +32,7 @@ const createBuildingSchema = z.object({
   scale: scaleField,
 });
 
-type TCreateBuildingSchema = z.infer<typeof createBuildingSchema>;
+type TBuildingSchema = z.infer<typeof buildingSchema>;
 
-export { createBuildingSchema };
-export type { TCreateBuildingSchema };
+export { buildingSchema };
+export type { TBuildingSchema };

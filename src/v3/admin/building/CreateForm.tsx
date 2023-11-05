@@ -1,11 +1,27 @@
+import DropPreview from "./DropPreview";
 import { FormInput } from "./FormInput";
+import ViewPreview from "./ViewPreview";
+import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 
 const CreateForm = () => {
+  const previewUploadStore = usePreviewUploadStore();
+  const buffer = previewUploadStore.use.buffer();
+
   return (
     <form className="space-y-2">
-      <FormInput label="Name" />
-      <FormInput label="Space" />
-      <FormInput label="Uses" />
+      <div className="grid grid-cols-5 gap-5">
+        <div className="col-span-2">
+          <div className="flex h-full w-full flex-col">
+            <p className="w-fit pb-1 text-sm font-medium text-gray-600">Preview</p>
+            {buffer ? <ViewPreview /> : <DropPreview />}
+          </div>
+        </div>
+        <div className="col-span-3">
+          <FormInput label="Name" />
+          <FormInput label="Space" />
+          <FormInput label="Uses" />
+        </div>
+      </div>
       <div className="py-1">
         <p className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600">
           Position

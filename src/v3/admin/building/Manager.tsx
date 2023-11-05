@@ -1,5 +1,6 @@
 import CreateModal from "./CreateModal";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
+import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useCommonStore } from "./hooks/useCommonStore";
 
 const Manager = () => {
@@ -20,7 +21,9 @@ const Manager = () => {
       <div className="p-5">All buildings</div>
       {showCreateModal && (
         <ModelUploadStoreProvider>
-          <CreateModal />
+          <PreviewUploadStoreProvider>
+            <CreateModal />
+          </PreviewUploadStoreProvider>
         </ModelUploadStoreProvider>
       )}
     </section>

@@ -5,7 +5,7 @@ import { OrbitControls, Stage } from "@react-three/drei";
 import { FileBox, ImageDown, Trash } from "lucide-react";
 import saveAs from "file-saver";
 
-const ModelView = () => {
+const ViewModel = () => {
   const modeUploadStore = useModelUploadStore();
   const scene = modeUploadStore.use.scene()!;
   const fileName = modeUploadStore.use.fileName();
@@ -62,4 +62,4 @@ const ModelView = () => {
   );
 };
 
-export default ModelView;
+export default ViewModel;
