@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
   return {
     define: {
       "process.env.GOOGLE_MAP_API_KEY": JSON.stringify(env.GOOGLE_MAP_API_KEY),
+      "process.env.UNI_CAMPUS_API_URL": JSON.stringify(env.UNI_CAMPUS_API_URL),
     },
     plugins: [
       react({

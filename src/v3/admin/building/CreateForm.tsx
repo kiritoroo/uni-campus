@@ -8,6 +8,8 @@ import ViewModel from "./ViewModel";
 import DropModel from "./DropModel";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useBuildingServices from "../hooks/useBuildingServices";
+import { toast } from "react-toastify";
 
 const CreateForm = () => {
   const modelUploadStore = useModelUploadStore();
@@ -39,10 +41,32 @@ const CreateForm = () => {
     },
   });
 
+  const { createBuilding } = useBuildingServices();
+
+  const { mutate } = createBuilding(
+    {
+      ...formMethod.watch(),
+    },
+    {
+      onSuccess: () => {
+        toast.success("Create job success", {
+          theme: "light",
+          autoClose: 2000,
+        });
+      },
+      onError: (error: any) => {
+        toast.error(Error(error).message, {
+          theme: "light",
+          autoClose: 2000,
+        });
+      },
+    },
+  );
+
   const { register, handleSubmit } = formMethod;
 
-  const onSubmitForm = (formDadata: TBuildingCreateSchema) => {
-    console.log(formDadata);
+  const onSubmitForm = () => {
+    mutate();
   };
 
   return (

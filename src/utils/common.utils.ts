@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { type ClassValue, clsx } from "clsx";
+import _ from "lodash";
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -102,4 +103,20 @@ export const arrayBufferToString = (buffer: any, callback: any) => {
     callback(evt.target.result);
   };
   reader.readAsText(blob, "utf-8");
+};
+
+export const objectToFormData = <
+  T extends {
+    [key: string]: any | Blob;
+  },
+>(
+  obj: T,
+) => {
+  const formData = new FormData();
+  Object.entries(obj).forEach(([key, value]) => {
+    const _v = _.isString(value) || value instanceof Blob ? value : JSON.stringify(value);
+    formData.append(key, _v);
+  });
+
+  return formData;
 };
