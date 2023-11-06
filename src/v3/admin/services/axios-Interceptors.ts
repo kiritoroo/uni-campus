@@ -1,7 +1,7 @@
 import { AxiosError, AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from "axios";
 
 const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-  config.baseURL = `${process.env.UNI_CAMPUS_API_URL}`;
+  config.baseURL = `${process.env.UNI_CAMPUS_API_URL}/api`;
   config.headers["Accept"] = "application/json";
 
   console.info(`[⚡ request] [${config.method}:${config.url}]`, config);
