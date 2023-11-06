@@ -6,7 +6,11 @@ const ViewPreview = () => {
 
   return (
     <div className="relative h-full w-full border border-gray-300 bg-[#EFEFEF] p-1">
-      <img src={base64 as string} alt="Image preview" />
+      <img
+        src={base64 as string}
+        alt="Image preview"
+        className="max-h-[152px] w-full object-cover"
+      />
     </div>
   );
 };

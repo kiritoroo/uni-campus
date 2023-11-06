@@ -18,6 +18,8 @@ const scaleField = z.object({
   y: z.coerce.number(),
   z: z.coerce.number(),
 });
+const modelFileField = z.instanceof(File);
+const previewFileField = z.instanceof(File);
 
 const buildingCreateSchema = z.object({
   name: nameField,
@@ -26,6 +28,8 @@ const buildingCreateSchema = z.object({
   position: positionField,
   rotation: rotationField,
   scale: scaleField,
+  model_file: modelFileField,
+  preview_file: previewFileField,
 });
 
 type TBuildingCreateSchema = z.infer<typeof buildingCreateSchema>;

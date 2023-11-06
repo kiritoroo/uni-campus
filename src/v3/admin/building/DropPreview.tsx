@@ -1,10 +1,13 @@
 import { useCallback } from "react";
 import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 import { useDropzone } from "react-dropzone";
-import { arrayBufferToString } from "@Utils/common.utils";
+import { arrayBufferToString, cn } from "@Utils/common.utils";
+import { TBuildingCreateSchema } from "./schemas/create-schema";
+import { useFormContext } from "react-hook-form";
 
 const DropPreview = () => {
   const previewUploadStore = usePreviewUploadStore();
+  const { setValue, formState } = useFormContext<TBuildingCreateSchema>();
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
@@ -13,6 +16,7 @@ const DropPreview = () => {
       reader.onerror = () => console.error("file reading has failed");
       reader.onload = async () => {
         previewUploadStore.setState({ fileRaw: file });
+        setValue("preview_file", file);
         const data = reader.result;
         previewUploadStore.setState({ base64: data, fileName: file.name });
         arrayBufferToString(data, (a: any) => previewUploadStore.setState({ textOriginalFile: a }));
@@ -24,12 +28,14 @@ const DropPreview = () => {
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
     onDrop: handleOnDrop,
     maxFiles: 1,
-    accept: { "Image file formats": [".webp"] },
+    accept: { "image/webp": [".webp"] },
   });
 
   return (
     <div
-      className="relative h-full w-full border border-gray-300 bg-[#EFEFEF] p-4 text-center"
+      className={cn("relative h-full w-full border border-gray-300 bg-[#EFEFEF] p-4 text-center", {
+        "border-2 border-red-400": formState.errors.preview_file,
+      })}
       {...getRootProps()}
     >
       <input {...getInputProps()} />

@@ -1,13 +1,16 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
-import { arrayBufferToString } from "@Utils/common.utils";
+import { arrayBufferToString, cn } from "@Utils/common.utils";
 import { startTransition, useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+import { TBuildingCreateSchema } from "./schemas/create-schema";
 
 const DropModel = () => {
   const modelUploadStore = useModelUploadStore();
   const buffer = modelUploadStore.use.buffer();
   const { loadScene } = modelUploadStore.use.actions();
+  const { setValue, formState } = useFormContext<TBuildingCreateSchema>();
 
   useEffect(() => {
     if (buffer) {
@@ -24,6 +27,7 @@ const DropModel = () => {
       reader.onerror = () => console.error("file reading has failed");
       reader.onload = async () => {
         modelUploadStore.setState({ fileRaw: file });
+        setValue("model_file", file);
         const data = reader.result;
         modelUploadStore.setState({ buffer: data, fileName: file.name });
         arrayBufferToString(data, (a: any) => modelUploadStore.setState({ textOriginalFile: a }));
@@ -35,12 +39,14 @@ const DropModel = () => {
   const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
     onDrop: handleOnDrop,
     maxFiles: 1,
-    accept: { "3d file formats": [".gltf", ".glb"] },
+    accept: { "application/octet-stream": [".gltf", ".glb"] },
   });
 
   return (
     <div
-      className="relative h-full w-full border border-gray-300 bg-[#EFEFEF] p-4 text-center"
+      className={cn("relative h-full w-full border border-gray-300 bg-[#EFEFEF] p-4 text-center", {
+        "border-2 border-red-400": formState.errors.model_file,
+      })}
       {...getRootProps()}
     >
       <input {...getInputProps()} />
