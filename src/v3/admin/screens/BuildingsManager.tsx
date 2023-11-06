@@ -1,5 +1,5 @@
-import Manager from "../building/Manager";
-import { CommonStoreProvider } from "../building/contexts/CommonStoreContext";
+import Manager from "../widgets/building/Manager";
+import { CommonStoreProvider } from "../widgets/building/contexts/CommonStoreContext";
 
 const BuildingsManager = () => {
   return (

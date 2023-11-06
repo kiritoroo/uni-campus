@@ -1,24 +1,29 @@
-import useBuildingServices from "../hooks/useBuildingServices";
-import { TBuildingSchema } from "../schemas/building-schema";
+import { TBuildingSchema } from "@v3/admin/schemas/building-schema";
 import CreateModal from "./CreateModal";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useCommonStore } from "./hooks/useCommonStore";
-import { Clipboard } from "lucide-react";
+import { Clipboard, Trash2 } from "lucide-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "react-tooltip";
+import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 
 const BuildingCard = ({ id, name, preview_url }: TBuildingSchema) => {
   return (
-    <div className="border border-gray-200 bg-white">
-      <img src={`${process.env.UNI_CAMPUS_API_URL}/${preview_url}`} />
+    <div className="relative border border-gray-200 bg-white">
+      <div className="relative">
+        <img src={`${process.env.UNI_CAMPUS_API_URL}/${preview_url}`} />
+        <div className="absolute bottom-2 right-2 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300">
+          <Trash2 className="h-4 w-4 stroke-gray-600" />
+        </div>
+      </div>
       <div className="flex flex-col items-start justify-center gap-2 bg-gray-100 p-4">
-        <div className="text-lg font-bold">{name}</div>
+        <div className="text-lg font-bold text-gray-800">{name}</div>
         <div className="flex w-full items-center justify-between text-sm">
-          <div className="text-blue-600">{id}</div>{" "}
+          <div className="mr-2 overflow-hidden text-blue-600">{id}</div>{" "}
           <CopyToClipboard text={id}>
             <Clipboard
-              className="h-4 w-4 cursor-pointer stroke-gray-600"
+              className="h-4 w-4 shrink-0 cursor-pointer stroke-gray-600"
               data-tooltip-id={`clipboard-${id}`}
               data-tooltip-content="copied"
               data-tooltip-variant="dark"

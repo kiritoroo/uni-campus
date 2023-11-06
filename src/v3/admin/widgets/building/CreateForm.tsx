@@ -8,8 +8,8 @@ import ViewModel from "./ViewModel";
 import DropModel from "./DropModel";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useBuildingServices from "../hooks/useBuildingServices";
 import { toast } from "react-toastify";
+import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 
 const CreateForm = () => {
   const modelUploadStore = useModelUploadStore();
