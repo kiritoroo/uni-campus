@@ -1,6 +1,7 @@
 import { useQuery, useMutation, UseMutationOptions } from "react-query";
-import { TBuildingCreateSchema } from "../building/schemas/create-schema";
-import { getBuildings, postBuilding } from "../services/building-services";
+import { deleteBuilding, getBuildings, postBuilding } from "../services/building-services";
+import { TBuildingCreateSchema } from "../widgets/building/schemas/create-schema";
+import { TBuildingSchema } from "../schemas/building-schema";
 
 export default function useBuildingServices() {
   const listBuildings = () => {
@@ -15,8 +16,13 @@ export default function useBuildingServices() {
     return useMutation(["api/post-building", data], () => postBuilding({ data: data }), option);
   };
 
+  const removeBuilding = (data: Pick<TBuildingSchema, "id">, option?: UseMutationOptions) => {
+    return useMutation(["api/delete-building", data], () => deleteBuilding({ data }), option);
+  };
+
   return {
     listBuildings,
     createBuilding,
+    removeBuilding,
   };
 }

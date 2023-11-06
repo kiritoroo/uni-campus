@@ -49,7 +49,7 @@ const CreateForm = () => {
     },
     {
       onSuccess: () => {
-        toast.success("Create job success", {
+        toast.success("Create building success", {
           theme: "light",
           autoClose: 2000,
         });

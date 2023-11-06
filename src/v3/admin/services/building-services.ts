@@ -1,8 +1,8 @@
-import { TBuildingCreateSchema } from "../building/schemas/create-schema";
 import axios from "axios";
 import { objectToFormData } from "@Utils/common.utils";
 import { setupInterceptorsTo } from "./axios-Interceptors";
 import { TBuildingSchema, buildingSchema } from "../schemas/building-schema";
+import { TBuildingCreateSchema } from "../widgets/building/schemas/create-schema";
 import { z } from "zod";
 
 export const getBuildings = async (): Promise<TBuildingSchema[]> => {
@@ -36,5 +36,22 @@ export const postBuilding = async ({
     return buildingSchema.parse(response.data);
   } catch (error) {
     throw new Error(`Failed to post api/building: ${error}`);
+  }
+};
+
+export const deleteBuilding = async ({
+  data,
+}: {
+  data: Pick<TBuildingSchema, "id">;
+}): Promise<any> => {
+  const path = data.id;
+
+  const axiosInstance = setupInterceptorsTo(axios.create());
+
+  try {
+    const response = await axiosInstance.delete(`/building/${path}`);
+    return response;
+  } catch (error) {
+    throw new Error(`Failed to delete api/building: ${error}`);
   }
 };

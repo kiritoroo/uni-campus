@@ -8,9 +8,46 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "react-tooltip";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 import { useUniDialog } from "@v3/admin/shared/UniDialog";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { produce } from "immer";
 
-const BuildingCard = ({ id, name, preview_url }: TBuildingSchema) => {
+const BuildingCard = ({
+  id,
+  name,
+  preview_url,
+  onDeletedBuilding,
+}: TBuildingSchema & {
+  onDeletedBuilding: ({ id }: Pick<TBuildingSchema, "id">) => void;
+}) => {
   const uniDialog = useUniDialog();
+  const { removeBuilding } = useBuildingServices();
+
+  const { mutate, isLoading, isError, isSuccess } = removeBuilding(
+    {
+      id: id,
+    },
+    {
+      onSuccess: () => {
+        toast.success("Remove building success", {
+          theme: "light",
+          autoClose: 2000,
+        });
+      },
+      onError: (error: any) => {
+        toast.error(Error(error).message, {
+          theme: "light",
+          autoClose: 2000,
+        });
+      },
+    },
+  );
+
+  useEffect(() => {
+    if (!isLoading && !isError && isSuccess) {
+      onDeletedBuilding({ id });
+    }
+  }, [isLoading, isError]);
 
   return (
     <div className="relative border border-gray-200 bg-white">
@@ -25,7 +62,7 @@ const BuildingCard = ({ id, name, preview_url }: TBuildingSchema) => {
                   <div className="flex flex-col items-center justify-center gap-2">
                     <div className="text-lg font-medium">Delete building?</div>
                     <p className="text-center text-sm">
-                      Are you sure you want to delete <strong>"Block f1"</strong> building?. <br />{" "}
+                      Are you sure you want to delete <strong>"{name}"</strong> building?. <br />{" "}
                       You can't undo this action.
                     </p>
                   </div>
@@ -35,6 +72,9 @@ const BuildingCard = ({ id, name, preview_url }: TBuildingSchema) => {
                 <button
                   type="button"
                   className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
+                  onClick={() => {
+                    mutate();
+                  }}
                 >
                   <div className="text-sm font-medium">Delete</div>{" "}
                   <Trash className="h-4 w-4 stroke-gray-700" />
@@ -76,16 +116,36 @@ const BuildingCard = ({ id, name, preview_url }: TBuildingSchema) => {
 
 const BuildingsList = () => {
   const { listBuildings } = useBuildingServices();
+  const { data, isLoading, isError } = listBuildings();
 
-  const { data } = listBuildings();
+  const [displayData, setDisplayData] = useState<TBuildingSchema[]>([]);
+
+  const handleOnDeletedBuilding = ({ id }: Pick<TBuildingSchema, "id">) => {
+    setDisplayData((before) =>
+      produce(before, (draft) => {
+        if (draft) {
+          const indexToRemove = draft.findIndex((building) => building.id === id);
+          if (indexToRemove !== -1) {
+            draft.splice(indexToRemove, 1);
+          }
+        }
+      }),
+    );
+  };
+
+  useEffect(() => {
+    if (!isLoading && !isError && data) {
+      setDisplayData(data);
+    }
+  }, [isLoading, isError, data]);
 
   return (
     <div className="h-full w-full overflow-auto">
       {data && (
-        <ul className="grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10 bg-white">
-          {data.map((building) => (
-            <li key={building.id} className="col-span-4">
-              <BuildingCard {...building} />
+        <ul className="mb-20 grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10 bg-white">
+          {displayData.map((building) => (
+            <li key={building.id} className="col-span-3">
+              <BuildingCard {...building} onDeletedBuilding={handleOnDeletedBuilding} />
             </li>
           ))}
         </ul>
