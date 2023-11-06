@@ -3,19 +3,48 @@ import CreateModal from "./CreateModal";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useCommonStore } from "./hooks/useCommonStore";
-import { Clipboard, Trash2 } from "lucide-react";
+import { Clipboard, Trash, Trash2 } from "lucide-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "react-tooltip";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useUniDialog } from "@v3/admin/shared/UniDialog";
 
 const BuildingCard = ({ id, name, preview_url }: TBuildingSchema) => {
+  const uniDialog = useUniDialog();
+
   return (
     <div className="relative border border-gray-200 bg-white">
       <div className="relative">
         <img src={`${process.env.UNI_CAMPUS_API_URL}/${preview_url}`} />
-        <div className="absolute bottom-2 right-2 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300">
+        <button
+          className="absolute bottom-3 right-3 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300"
+          onClick={() => {
+            uniDialog.addDialog({
+              body: (
+                <div>
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="text-lg font-medium">Delete building?</div>
+                    <p className="text-center text-sm">
+                      Are you sure you want to delete <strong>"Block f1"</strong> building?. <br />{" "}
+                      You can't undo this action.
+                    </p>
+                  </div>
+                </div>
+              ),
+              button: (
+                <button
+                  type="button"
+                  className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
+                >
+                  <div className="text-sm font-medium">Delete</div>{" "}
+                  <Trash className="h-4 w-4 stroke-gray-700" />
+                </button>
+              ),
+            });
+          }}
+        >
           <Trash2 className="h-4 w-4 stroke-gray-600" />
-        </div>
+        </button>
       </div>
       <div className="flex flex-col items-start justify-center gap-2 bg-gray-100 p-4">
         <div className="text-lg font-bold text-gray-800">{name}</div>
@@ -32,7 +61,12 @@ const BuildingCard = ({ id, name, preview_url }: TBuildingSchema) => {
           <Tooltip
             id={`clipboard-${id}`}
             openOnClick
-            globalCloseEvents={{ scroll: true, escape: true, resize: true }}
+            globalCloseEvents={{
+              scroll: true,
+              escape: true,
+              resize: true,
+              clickOutsideAnchor: true,
+            }}
           />
         </div>
       </div>
