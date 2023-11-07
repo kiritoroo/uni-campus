@@ -4,11 +4,15 @@ import ModelScene from "./webgl/ModelScene";
 import { useBuildingStore } from "./hooks/useBuildingStore";
 import ImagePreview from "./ImagePreview";
 import { useCommonStore } from "./hooks/useCommonStore";
+import { useModelUploadStore } from "./hooks/useModelUploadStore";
 
 const DetailForm = () => {
   const commonStore = useCommonStore();
-  const enableEditDetail = commonStore.use.enableEditDetail();
+  const modelUploadStore = useModelUploadStore();
   const buildingStore = useBuildingStore();
+
+  const modelUploadActions = modelUploadStore.use.actions();
+  const enableEditDetail = commonStore.use.enableEditDetail();
   const buildingData = buildingStore.use.buildingData();
 
   return (
@@ -29,6 +33,7 @@ const DetailForm = () => {
               className=" flex items-center justify-around gap-3 bg-gray-100 px-3 py-2"
               onClick={() => {
                 commonStore.setState({ enableEditDetail: false });
+                modelUploadActions.resetStore();
               }}
             >
               <X className="h-4 w-4 stroke-gray-600" />{" "}

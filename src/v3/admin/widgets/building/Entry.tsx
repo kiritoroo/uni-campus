@@ -5,6 +5,7 @@ import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 
 import DetailForm from "./DetailForm";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
+import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 
 const Entry = () => {
   const buildingStore = useBuildingStore();
@@ -30,7 +31,11 @@ const Entry = () => {
         <div className="col-span-7"></div>
         <div className="col-span-5">
           {isLoading && <SpinnerLoading width={50} height={50} />}
-          {data && <DetailForm />}
+          {data && (
+            <ModelUploadStoreProvider>
+              <DetailForm />
+            </ModelUploadStoreProvider>
+          )}
         </div>
       </div>
     </section>

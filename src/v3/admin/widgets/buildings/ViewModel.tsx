@@ -7,10 +7,10 @@ import saveAs from "file-saver";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 
 const ViewModel = () => {
-  const modeUploadStore = useModelUploadStore();
-  const scene = modeUploadStore.use.scene()!;
-  const fileName = modeUploadStore.use.fileName();
-  const { resetStore: resetModelUploadStore } = modeUploadStore.use.actions();
+  const modelUploadStore = useModelUploadStore();
+  const scene = modelUploadStore.use.scene()!;
+  const fileName = modelUploadStore.use.fileName();
+  const { resetStore: resetModelUploadStore } = modelUploadStore.use.actions();
 
   const ref = useRef<any>();
 
