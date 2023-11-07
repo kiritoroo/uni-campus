@@ -46,10 +46,13 @@ const BuildingCard = ({
   }, [isLoading, isError]);
 
   return (
-    <div className="relative border border-gray-200 bg-white">
-      <div className="relative">
-        <Link to={`${id}`}>
-          <img src={`${process.env.UNI_CAMPUS_API_URL}/${preview_img.url}`} />
+    <div className="relative flex h-full w-full flex-col items-center justify-center border border-gray-200 bg-white">
+      <div className="relative w-full grow">
+        <Link to={`${id}`} className="h-full">
+          <img
+            src={`${process.env.UNI_CAMPUS_API_URL}/${preview_img.url}`}
+            className="h-full object-cover"
+          />
         </Link>
         <button
           className="absolute bottom-3 right-3 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300"
@@ -84,7 +87,7 @@ const BuildingCard = ({
           <Trash2 className="h-4 w-4 stroke-gray-600" />
         </button>
       </div>
-      <div className="flex flex-col items-start justify-center gap-2 bg-gray-100 p-4">
+      <div className="flex w-full flex-col items-start justify-center gap-2 bg-gray-100 p-4">
         <div className="text-lg font-bold text-gray-800">{name}</div>
         <div className="flex w-full items-center justify-between text-sm">
           <div className="mr-2 overflow-hidden text-gray-600">{id}</div>{" "}
