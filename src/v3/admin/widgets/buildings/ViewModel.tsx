@@ -1,9 +1,10 @@
 import { Suspense, useRef } from "react";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Stage } from "@react-three/drei";
+import { Html, OrbitControls, Stage } from "@react-three/drei";
 import { FileBox, ImageDown, Trash } from "lucide-react";
 import saveAs from "file-saver";
+import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 
 const ViewModel = () => {
   const modeUploadStore = useModelUploadStore();
@@ -31,7 +32,13 @@ const ViewModel = () => {
         camera={{ position: [0, 0, 150], fov: 75 }}
       >
         <ambientLight intensity={0.25} />
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <Html>
+              <SpinnerLoading width={25} height={25} />
+            </Html>
+          }
+        >
           <Stage preset={"rembrandt"} intensity={1} shadows adjustCamera environment={"city"}>
             <primitive object={scene} />
           </Stage>

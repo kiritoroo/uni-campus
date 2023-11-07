@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import ModelScene from "./ModelScene";
 import { useBuildingStore } from "./hooks/useBuildingStore";
 import { useParams } from "react-router-dom";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+
+import DetailForm from "./DetailForm";
+import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 
 const Entry = () => {
   const buildingStore = useBuildingStore();
@@ -11,7 +13,7 @@ const Entry = () => {
   const { id } = useParams();
   const { detailBuilding } = useBuildingServices();
 
-  const { data } = detailBuilding({ id: id ?? "" });
+  const { data, isLoading } = detailBuilding({ id: id ?? "" });
 
   useEffect(() => {
     if (data && id) {
@@ -24,7 +26,13 @@ const Entry = () => {
 
   return (
     <section className="h-full w-full overflow-hidden">
-      <ModelScene />
+      <div className="grid h-full w-full grid-cols-12 gap-5">
+        <div className="col-span-7"></div>
+        <div className="col-span-5">
+          {isLoading && <SpinnerLoading width={50} height={50} />}
+          {data && <DetailForm />}
+        </div>
+      </div>
     </section>
   );
 };

@@ -1,11 +1,11 @@
 import { createStore } from "zustand";
 
 export interface ICommonStore {
-  tmp: boolean;
+  enableEditDetail: boolean;
 }
 
 export const CommonStore = () => {
   return createStore<ICommonStore>((set, get) => ({
-    tmp: false,
+    enableEditDetail: false,
   }));
 };

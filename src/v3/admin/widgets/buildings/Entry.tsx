@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { produce } from "immer";
 import { Link } from "react-router-dom";
+import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 
 const BuildingCard = ({
   id,
@@ -144,6 +145,7 @@ const BuildingsList = () => {
 
   return (
     <div className="h-full w-full overflow-auto">
+      {isLoading && <SpinnerLoading width={50} height={50} />}
       {data && (
         <ul className="mb-20 grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10 bg-white">
           {displayData.map((building) => (
@@ -172,7 +174,7 @@ const Entry = () => {
       >
         <p className="text-sm font-medium text-[#2C2B31]">New Building</p>
       </button>
-      <div className="ovehi h-full w-full p-5">
+      <div className="h-full w-full p-5">
         <BuildingsList />
       </div>
       {showCreateModal && (
