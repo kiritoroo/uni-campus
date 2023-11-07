@@ -1,12 +1,25 @@
-import { useQuery, useMutation, UseMutationOptions } from "react-query";
-import { deleteBuilding, getBuildings, postBuilding } from "../services/building-services";
-import { TBuildingCreateSchema } from "../widgets/building/schemas/create-schema";
+import { useQuery, useMutation, UseMutationOptions, UseQueryOptions } from "react-query";
+import {
+  deleteBuilding,
+  getBuilding,
+  getBuildings,
+  postBuilding,
+} from "../services/building-services";
 import { TBuildingSchema } from "../schemas/building-schema";
+import { TBuildingCreateSchema } from "../widgets/buildings/schemas/create-schema";
 
 export default function useBuildingServices() {
   const listBuildings = () => {
     return useQuery(["api/get-buildings"], () => getBuildings(), {
       staleTime: 5 * 60 * 1000,
+      keepPreviousData: true,
+      retry: false,
+    });
+  };
+
+  const detailBuilding = (data: Pick<TBuildingSchema, "id">) => {
+    return useQuery(["api/get-building", data], () => getBuilding({ data }), {
+      staleTime: 5 * 60 * 100,
       keepPreviousData: true,
       retry: false,
     });
@@ -22,6 +35,7 @@ export default function useBuildingServices() {
 
   return {
     listBuildings,
+    detailBuilding,
     createBuilding,
     removeBuilding,
   };

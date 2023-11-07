@@ -1,11 +1,11 @@
 import { createStore } from "zustand";
 
 export interface ICommonStore {
-  tmp: boolean;
+  showCreateModal: boolean;
 }
 
 export const CommonStore = () => {
   return createStore<ICommonStore>((set, get) => ({
-    tmp: false,
+    showCreateModal: false,
   }));
 };

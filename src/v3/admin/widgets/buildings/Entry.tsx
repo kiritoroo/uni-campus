@@ -11,6 +11,7 @@ import { useUniDialog } from "@v3/admin/shared/UniDialog";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { produce } from "immer";
+import { Link } from "react-router-dom";
 
 const BuildingCard = ({
   id,
@@ -52,7 +53,9 @@ const BuildingCard = ({
   return (
     <div className="relative border border-gray-200 bg-white">
       <div className="relative">
-        <img src={`${process.env.UNI_CAMPUS_API_URL}/${preview_url}`} />
+        <Link to={`${id}`}>
+          <img src={`${process.env.UNI_CAMPUS_API_URL}/${preview_url}`} />
+        </Link>
         <button
           className="absolute bottom-3 right-3 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300"
           onClick={() => {
@@ -154,7 +157,7 @@ const BuildingsList = () => {
   );
 };
 
-const Manager = () => {
+const Entry = () => {
   const commonStore = useCommonStore();
   const showCreateModal = commonStore.use.showCreateModal();
 
@@ -183,4 +186,4 @@ const Manager = () => {
   );
 };
 
-export default Manager;
+export default Entry;
