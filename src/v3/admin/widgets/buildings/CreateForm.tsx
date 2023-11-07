@@ -1,5 +1,5 @@
 import DropPreview from "./DropPreview";
-import { FormInput } from "./FormInput";
+import { FormInput } from "../../shared/FormInput";
 import ViewPreview from "./ViewPreview";
 import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 import { useForm, FormProvider } from "react-hook-form";
@@ -117,6 +117,7 @@ const CreateForm = () => {
                 child
                 label="x"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
@@ -126,6 +127,7 @@ const CreateForm = () => {
                 child
                 label="y"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
@@ -135,6 +137,7 @@ const CreateForm = () => {
                 child
                 label="z"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
@@ -151,6 +154,7 @@ const CreateForm = () => {
                 child
                 label="x"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
@@ -160,6 +164,7 @@ const CreateForm = () => {
                 child
                 label="y"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
@@ -169,6 +174,7 @@ const CreateForm = () => {
                 child
                 label="z"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
@@ -185,6 +191,7 @@ const CreateForm = () => {
                 child
                 label="x"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
@@ -194,6 +201,7 @@ const CreateForm = () => {
                 child
                 label="y"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
@@ -203,6 +211,7 @@ const CreateForm = () => {
                 child
                 label="z"
                 type="number"
+                step={0.00001}
                 required
                 autoComplete={"on"}
               />
