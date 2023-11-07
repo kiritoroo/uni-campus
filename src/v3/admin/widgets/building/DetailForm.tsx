@@ -6,13 +6,16 @@ import ImagePreview from "./ImagePreview";
 import { useCommonStore } from "./hooks/useCommonStore";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { cn } from "@Utils/common.utils";
+import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 
 const DetailForm = () => {
   const commonStore = useCommonStore();
   const modelUploadStore = useModelUploadStore();
+  const previewUploadStore = usePreviewUploadStore();
   const buildingStore = useBuildingStore();
 
   const modelUploadActions = modelUploadStore.use.actions();
+  const previewUploadActions = previewUploadStore.use.actions();
   const enableEditDetail = commonStore.use.enableEditDetail();
   const buildingData = buildingStore.use.buildingData();
 
@@ -42,6 +45,7 @@ const DetailForm = () => {
               onClick={() => {
                 commonStore.setState({ enableEditDetail: false });
                 modelUploadActions.resetStore();
+                previewUploadActions.resetStore();
               }}
             >
               <X className="h-4 w-4 stroke-gray-600" />{" "}

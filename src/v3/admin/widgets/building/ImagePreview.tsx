@@ -45,7 +45,7 @@ const ImagePreview = () => {
 
       {!base64 && (
         <img
-          src={`${process.env.UNI_CAMPUS_API_URL}/${buildingData?.preview_url}`}
+          src={`${process.env.UNI_CAMPUS_API_URL}/${buildingData?.preview_img.url}`}
           alt="Image preview"
           className="max-h-[152px] w-full object-cover"
         />

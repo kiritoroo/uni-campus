@@ -10,7 +10,7 @@ const GLBuilding = () => {
 
   const model: TGLTFReference = useLoader(
     GLTFLoader,
-    `${process.env.UNI_CAMPUS_API_URL}/${buildingData?.model_url!}`,
+    `${process.env.UNI_CAMPUS_API_URL}/${buildingData?.model_3d.url!}`,
   );
   const scene = useMemo(() => (model ? model.scenes[0] : null), [model]);
 

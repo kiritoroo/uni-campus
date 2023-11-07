@@ -36,7 +36,7 @@ const GLModelScene = () => {
       image,
       enableEditDetail && uploadScene
         ? `${uploadFileName.split(".")[0]}.webp`
-        : `${buildingData?.model_url.split("/")[2].split(".")[0]}.webp`,
+        : `${buildingData?.model_3d.filename.split(".")[0]}.webp`,
     );
   };
 
@@ -151,9 +151,7 @@ const GLModelScene = () => {
         <div className="flex items-center justify-between gap-3 bg-gray-100 px-4 py-2">
           <FileBox className="h-4 w-4 stroke-gray-600" />
           <p className="text-sm">
-            {uploadFileName && enableEditDetail
-              ? uploadFileName
-              : buildingData?.model_url.split("/")[2]}
+            {uploadFileName && enableEditDetail ? uploadFileName : buildingData?.model_3d.filename}
           </p>
         </div>
       </div>

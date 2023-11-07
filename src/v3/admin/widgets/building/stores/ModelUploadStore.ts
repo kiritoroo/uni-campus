@@ -39,7 +39,7 @@ export const ModelUploadStore = () => {
           gltfLoader!.parse(buffer!, "", resolve, reject),
         );
 
-        if (!get().scene) set({ scene: (result as TGLTFReference).scene });
+        set({ scene: (result as TGLTFReference).scene });
       },
       resetStore: () => {
         set({ ...initStore });

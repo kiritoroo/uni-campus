@@ -11,7 +11,7 @@ import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 const BuildingCard = ({
   id,
   name,
-  preview_url,
+  preview_img,
   onDeletedBuilding,
 }: TBuildingSchema & {
   onDeletedBuilding: ({ id }: Pick<TBuildingSchema, "id">) => void;
@@ -49,7 +49,7 @@ const BuildingCard = ({
     <div className="relative border border-gray-200 bg-white">
       <div className="relative">
         <Link to={`${id}`}>
-          <img src={`${process.env.UNI_CAMPUS_API_URL}/${preview_url}`} />
+          <img src={`${process.env.UNI_CAMPUS_API_URL}/${preview_img.url}`} />
         </Link>
         <button
           className="absolute bottom-3 right-3 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300"

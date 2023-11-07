@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fileInfoSchema } from "./fileinfo-schema";
 
 const idField = z.string();
 const nameField = z.string();
@@ -19,8 +20,6 @@ const scaleField = z.object({
   y: z.coerce.number(),
   z: z.coerce.number(),
 });
-const modelURLField = z.string();
-const previewURLField = z.string();
 
 const buildingSchema = z.object({
   id: idField,
@@ -30,8 +29,8 @@ const buildingSchema = z.object({
   position: positionField,
   rotation: rotationField,
   scale: scaleField,
-  model_url: modelURLField,
-  preview_url: previewURLField,
+  model_3d: fileInfoSchema,
+  preview_img: fileInfoSchema,
 });
 
 type TBuildingSchema = z.infer<typeof buildingSchema>;
