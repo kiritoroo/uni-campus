@@ -1,3 +1,4 @@
+import { cn } from "@Utils/common.utils";
 import BuildingsList from "./BuildingList";
 import CreateModal from "./CreateModal";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
@@ -12,7 +13,9 @@ const Entry = () => {
     <section className="h-full w-full overflow-hidden">
       <button
         type="button"
-        className="w-fit bg-[#e2e2e2] p-3"
+        className={cn("w-fit bg-[#e2e2e2] p-3", {
+          "opacity-0": showCreateModal,
+        })}
         onClick={() => {
           commonStore.setState({ showCreateModal: true });
         }}

@@ -1,12 +1,12 @@
 import { Suspense, useRef } from "react";
-import { useModelUploadStore } from "./hooks/useModelUploadStore";
+import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { Canvas } from "@react-three/fiber";
 import { Html, OrbitControls, Stage } from "@react-three/drei";
 import { FileBox, ImageDown, Trash } from "lucide-react";
 import saveAs from "file-saver";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 
-const ViewModel = () => {
+const GLViewModel = () => {
   const modelUploadStore = useModelUploadStore();
   const scene = modelUploadStore.use.scene()!;
   const fileName = modelUploadStore.use.fileName();
@@ -69,4 +69,4 @@ const ViewModel = () => {
   );
 };
 
-export default ViewModel;
+export default GLViewModel;

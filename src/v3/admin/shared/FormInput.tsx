@@ -28,7 +28,7 @@ export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
 
         <input
           className={cn(
-            "h-[32px] w-full border border-[#E5E7EA] bg-[#EFEFEF] px-5 text-[14px] font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500/20 disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
+            "h-[32px] w-full border border-[#E5E7EA] bg-[#EFEFEF] px-5 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500/20 disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
             className,
           )}
           ref={ref}

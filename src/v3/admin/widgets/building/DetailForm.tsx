@@ -1,10 +1,11 @@
 import { Pencil, Save, X } from "lucide-react";
 import { FormInput } from "@v3/admin/shared/FormInput";
-import ModelScene from "./webgl/ModelScene";
+import GLModelScene from "./webgl/GLModelScene";
 import { useBuildingStore } from "./hooks/useBuildingStore";
 import ImagePreview from "./ImagePreview";
 import { useCommonStore } from "./hooks/useCommonStore";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
+import { cn } from "@Utils/common.utils";
 
 const DetailForm = () => {
   const commonStore = useCommonStore();
@@ -16,7 +17,14 @@ const DetailForm = () => {
   const buildingData = buildingStore.use.buildingData();
 
   return (
-    <div className="relative flex h-full flex-col items-center justify-center border border-gray-300">
+    <div
+      className={cn(
+        "relative flex h-full flex-col items-center justify-center border border-gray-300",
+        {
+          "border-blue-300": enableEditDetail,
+        },
+      )}
+    >
       <div className="absolute left-5 top-5 z-[2]">
         {!enableEditDetail ? (
           <button
@@ -50,7 +58,7 @@ const DetailForm = () => {
         )}
       </div>
       <div className="relative z-[1] w-full grow">
-        {buildingData && <ModelScene />}
+        {buildingData && <GLModelScene />}
         {enableEditDetail && (
           <div className="absolute bottom-20 right-5 z-[2]">
             <ImagePreview />

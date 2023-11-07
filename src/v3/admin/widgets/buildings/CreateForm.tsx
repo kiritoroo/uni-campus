@@ -4,7 +4,7 @@ import ViewPreview from "./ViewPreview";
 import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 import { useForm, FormProvider } from "react-hook-form";
 import { TBuildingCreateSchema, buildingCreateSchema } from "./schemas/create-schema";
-import ViewModel from "./ViewModel";
+import GLViewModel from "./webgl/GLViewModel";
 import DropModel from "./DropModel";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -228,7 +228,7 @@ const CreateForm = () => {
             <p className="w-fit pb-1 text-sm font-medium text-gray-600">
               3D Model <span className="text-red-400">*</span>
             </p>
-            {scene ? <ViewModel /> : <DropModel />}
+            {scene ? <GLViewModel /> : <DropModel />}
           </div>
         </div>
       </form>

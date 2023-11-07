@@ -14,7 +14,7 @@ import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { arrayBufferToString } from "@Utils/common.utils";
 import { useDropzone } from "react-dropzone";
 
-const ModelScene = () => {
+const GLModelScene = () => {
   const commonStore = useCommonStore();
   const modelUploadStore = useModelUploadStore();
   const buildingStore = useBuildingStore();
@@ -161,4 +161,4 @@ const ModelScene = () => {
   );
 };
 
-export default ModelScene;
+export default GLModelScene;
