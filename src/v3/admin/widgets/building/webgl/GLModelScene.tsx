@@ -1,4 +1,4 @@
-import { Suspense, startTransition, useCallback, useEffect } from "react";
+import { Suspense, memo, startTransition, useCallback, useEffect } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { Center, Environment, OrbitControls, Stage, Html } from "@react-three/drei";
@@ -14,7 +14,7 @@ import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { arrayBufferToString } from "@Utils/common.utils";
 import { useDropzone } from "react-dropzone";
 
-const GLModelScene = () => {
+const GLModelScene = memo(() => {
   const commonStore = useCommonStore();
   const modelUploadStore = useModelUploadStore();
   const buildingStore = useBuildingStore();
@@ -157,6 +157,6 @@ const GLModelScene = () => {
       </div>
     </ErrorBoundary>
   );
-};
+});
 
 export default GLModelScene;

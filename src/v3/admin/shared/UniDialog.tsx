@@ -97,7 +97,7 @@ export const UniDialog = ({ id, body, button }: TUniDialogProps) => {
 
 export const UniDialogContainer = () => {
   const { dialogs } = useUniDialog();
-  console.log(dialogs);
+
   return (
     <div>
       {dialogs.length > 0 && (
