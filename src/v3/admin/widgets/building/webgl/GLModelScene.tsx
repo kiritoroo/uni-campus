@@ -132,7 +132,7 @@ const GLModelScene = memo(() => {
         />
       </Canvas>
 
-      <div className="absolute bottom-5 left-5 flex justify-start gap-5">
+      <div className="absolute bottom-5 left-5 right-5 flex justify-start gap-5">
         <div className="flex items-center justify-center gap-2">
           {enableEditDetail && (
             <button type="button" {...getRootProps()}>

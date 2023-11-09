@@ -47,6 +47,8 @@ const CreateForm = () => {
     },
   });
 
+  const { register, handleSubmit } = formMethod;
+
   const { createBuilding } = useBuildingServices();
 
   const { mutate } = createBuilding(
@@ -70,8 +72,6 @@ const CreateForm = () => {
       },
     },
   );
-
-  const { register, handleSubmit } = formMethod;
 
   const onSubmitForm = () => {
     mutate();
