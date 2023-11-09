@@ -11,6 +11,8 @@ import { useForm, FormProvider } from "react-hook-form";
 import { TBuildingUpdateSchema, buildingUpdateSchema } from "@v3/admin/schemas/building/update";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { toast } from "react-toastify";
 
 const DetailForm = () => {
   const commonStore = useCommonStore();
@@ -21,6 +23,7 @@ const DetailForm = () => {
   const modelUploadActions = modelUploadStore.use.actions();
   const previewUploadActions = previewUploadStore.use.actions();
   const enableEditDetail = commonStore.use.enableEditDetail();
+  const buildingId = buildingStore.use.buildingId();
   const buildingData = buildingStore.use.buildingData();
 
   const formMethod = useForm<TBuildingUpdateSchema>({
@@ -47,7 +50,39 @@ const DetailForm = () => {
     },
   });
 
-  const { register, setValue, handleSubmit } = formMethod;
+  const { register, setValue, watch, handleSubmit } = formMethod;
+
+  const { updateBuilding } = useBuildingServices();
+
+  const { mutate } = updateBuilding(
+    {
+      id: buildingId!,
+      ...watch(),
+    },
+    {
+      onSuccess: (data) => {
+        modelUploadActions.resetStore();
+        previewUploadActions.resetStore();
+        commonStore.setState({ enableEditDetail: false });
+        buildingStore.setState({ buildingData: data });
+        toast.success("Update building success", {
+          theme: "light",
+          autoClose: 2000,
+        });
+      },
+      onError: (error: any) => {
+        toast.error(Error(error).message, {
+          theme: "light",
+          autoClose: 2000,
+        });
+      },
+    },
+  );
+
+  const onSubmitForm = () => {
+    console.log(watch());
+    mutate();
+  };
 
   useEffect(() => {
     if (buildingData && !enableEditDetail) {
@@ -63,6 +98,7 @@ const DetailForm = () => {
   return (
     <FormProvider {...formMethod}>
       <form
+        onSubmit={handleSubmit(onSubmitForm)}
         className={cn(
           "relative flex h-full flex-col items-center justify-center border border-gray-300",
           {
@@ -74,6 +110,7 @@ const DetailForm = () => {
           {!enableEditDetail ? (
             <button
               className=" bg-gray-100 p-3"
+              type="button"
               onClick={() => {
                 commonStore.setState({ enableEditDetail: true });
               }}
@@ -89,6 +126,7 @@ const DetailForm = () => {
                   modelUploadActions.resetStore();
                   previewUploadActions.resetStore();
                 }}
+                type="button"
               >
                 <X className="h-4 w-4 stroke-gray-600" />{" "}
                 <p className="text-sm font-medium">Cancel</p>
@@ -96,6 +134,7 @@ const DetailForm = () => {
               <button
                 className=" flex items-center justify-around gap-3 bg-gray-100 px-3 py-2"
                 onClick={() => {}}
+                type="submit"
               >
                 <Save className="h-4 w-4 stroke-gray-600" />{" "}
                 <p className="text-sm font-medium">Save</p>

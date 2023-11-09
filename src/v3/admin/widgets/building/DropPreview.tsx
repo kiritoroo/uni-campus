@@ -3,9 +3,12 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Upload } from "lucide-react";
 import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
+import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
+import { useFormContext } from "react-hook-form";
 
 const DropPreview = () => {
   const previewUploadStore = usePreviewUploadStore();
+  const { setValue } = useFormContext<TBuildingUpdateSchema>();
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
@@ -14,6 +17,7 @@ const DropPreview = () => {
       reader.onerror = () => console.error("file reading has failed");
       reader.onload = async () => {
         previewUploadStore.setState({ fileRaw: file });
+        setValue("preview_file", file);
         const data = reader.result;
         previewUploadStore.setState({ base64: data, fileName: file.name });
         arrayBufferToString(data, (a: any) => previewUploadStore.setState({ textOriginalFile: a }));

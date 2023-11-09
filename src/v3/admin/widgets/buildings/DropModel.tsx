@@ -9,7 +9,7 @@ import { TBuildingCreateSchema } from "@v3/admin/schemas/building/create";
 const DropModel = () => {
   const modelUploadStore = useModelUploadStore();
   const buffer = modelUploadStore.use.buffer();
-  const { loadScene } = modelUploadStore.use.actions();
+  const modelUploadActions = modelUploadStore.use.actions();
   const { setValue, formState } = useFormContext<TBuildingCreateSchema>();
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
@@ -37,7 +37,7 @@ const DropModel = () => {
   useEffect(() => {
     if (buffer) {
       startTransition(() => {
-        loadScene();
+        modelUploadActions.loadScene();
       });
     }
   }, [buffer]);

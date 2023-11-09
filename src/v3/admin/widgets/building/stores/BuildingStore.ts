@@ -3,7 +3,7 @@ import { createStore } from "zustand";
 import { computed } from "zustand-computed";
 
 type TState = {
-  buildingId: string | null;
+  buildingId: TBuildingSchema["id"] | null;
   buildingData: TBuildingSchema | null;
 };
 
@@ -14,7 +14,7 @@ type TActions = {
     buildingId,
     buildingData,
   }: {
-    buildingId: string;
+    buildingId: TBuildingSchema["id"];
     buildingData: TBuildingSchema;
   }) => void;
 };

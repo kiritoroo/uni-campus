@@ -1,3 +1,4 @@
+import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
 import axios from "axios";
 import { objectToFormData } from "@Utils/common.utils";
 import { setupInterceptorsTo } from "./axios-Interceptors";
@@ -53,6 +54,30 @@ export const postBuilding = async ({
     return buildingSchema.parse(response.data);
   } catch (error) {
     throw new Error(`Failed to post api/building: ${error}`);
+  }
+};
+
+export const putBuilding = async ({
+  data,
+}: {
+  data: TBuildingUpdateSchema & Pick<TBuildingSchema, "id">;
+}): Promise<TBuildingSchema> => {
+  const path = data.id;
+  const form = objectToFormData<TBuildingUpdateSchema>(data);
+
+  const axiosInstance = setupInterceptorsTo(
+    axios.create({
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  );
+
+  try {
+    const response = await axiosInstance.put(`/building/${path}`, form);
+    return buildingSchema.parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to put api/building: ${error}`);
   }
 };
 

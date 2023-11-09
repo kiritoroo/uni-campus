@@ -4,9 +4,11 @@ import {
   getBuilding,
   getBuildings,
   postBuilding,
+  putBuilding,
 } from "../services/building-services";
 import { TBuildingSchema } from "../schemas/building/base";
 import { TBuildingCreateSchema } from "../schemas/building/create";
+import { TBuildingUpdateSchema } from "../schemas/building/update";
 
 export default function useBuildingServices() {
   const listBuildings = () => {
@@ -32,6 +34,13 @@ export default function useBuildingServices() {
     return useMutation(["api/post-building", data], () => postBuilding({ data: data }), option);
   };
 
+  const updateBuilding = (
+    data: TBuildingUpdateSchema & Pick<TBuildingSchema, "id">,
+    option?: UseMutationOptions<TBuildingSchema>,
+  ) => {
+    return useMutation(["api/put-building", data], () => putBuilding({ data: data }), option);
+  };
+
   const removeBuilding = (data: Pick<TBuildingSchema, "id">, option?: UseMutationOptions) => {
     return useMutation(["api/delete-building", data], () => deleteBuilding({ data }), option);
   };
@@ -40,6 +49,7 @@ export default function useBuildingServices() {
     listBuildings,
     detailBuilding,
     createBuilding,
+    updateBuilding,
     removeBuilding,
   };
 }

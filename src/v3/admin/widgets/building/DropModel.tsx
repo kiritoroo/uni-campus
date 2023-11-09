@@ -3,11 +3,14 @@ import { useDropzone } from "react-dropzone";
 import { arrayBufferToString } from "@Utils/common.utils";
 import { Upload } from "lucide-react";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
+import { useFormContext } from "react-hook-form";
+import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
 
 const DropModel = () => {
   const modelUploadStore = useModelUploadStore();
   const buffer = modelUploadStore.use.buffer();
   const modelUploadActions = modelUploadStore.use.actions();
+  const { setValue } = useFormContext<TBuildingUpdateSchema>();
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
@@ -16,6 +19,7 @@ const DropModel = () => {
       reader.onerror = () => console.error("file reading has failed");
       reader.onload = async () => {
         modelUploadStore.setState({ fileRaw: file });
+        setValue("model_file", file);
         const data = reader.result;
         modelUploadStore.setState({ buffer: data, fileName: file.name });
         arrayBufferToString(data, (a: any) => modelUploadStore.setState({ textOriginalFile: a }));

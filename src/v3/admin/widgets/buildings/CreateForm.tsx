@@ -47,13 +47,13 @@ const CreateForm = () => {
     },
   });
 
-  const { register, handleSubmit } = formMethod;
+  const { register, watch, handleSubmit } = formMethod;
 
   const { createBuilding } = useBuildingServices();
 
   const { mutate } = createBuilding(
     {
-      ...formMethod.watch(),
+      ...watch(),
     },
     {
       onSuccess: (data) => {
@@ -74,6 +74,7 @@ const CreateForm = () => {
   );
 
   const onSubmitForm = () => {
+    console.log(watch());
     mutate();
   };
 

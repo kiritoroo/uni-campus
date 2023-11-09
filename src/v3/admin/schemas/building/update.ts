@@ -18,8 +18,8 @@ const scaleField = z.object({
   y: z.coerce.number(),
   z: z.coerce.number(),
 });
-const modelFileField = z.instanceof(File);
-const previewFileField = z.instanceof(File);
+const modelFileField = z.optional(z.instanceof(File).nullable());
+const previewFileField = z.optional(z.instanceof(File).nullable());
 
 const buildingUpdateSchema = z.object({
   name: nameField,
