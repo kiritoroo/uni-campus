@@ -3,7 +3,7 @@ import { useBuildingStore } from "./hooks/useBuildingStore";
 import { useParams } from "react-router-dom";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 
-import DetailForm from "./DetailForm";
+import DetailForm from "./components/DetailForm";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";

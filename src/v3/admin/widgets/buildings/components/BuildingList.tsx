@@ -1,5 +1,5 @@
 import BuildingCard from "./BuildingCard";
-import { useBuildingsStore } from "./hooks/useBuildingsStore";
+import { useBuildingsStore } from "../hooks/useBuildingsStore";
 
 const BuildingsList = () => {
   const buildingsStore = useBuildingsStore();

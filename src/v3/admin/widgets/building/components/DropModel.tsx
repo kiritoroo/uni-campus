@@ -2,7 +2,7 @@ import { startTransition, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { arrayBufferToString } from "@Utils/common.utils";
 import { Upload } from "lucide-react";
-import { useModelUploadStore } from "./hooks/useModelUploadStore";
+import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { useFormContext } from "react-hook-form";
 import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
 

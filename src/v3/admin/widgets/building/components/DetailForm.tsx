@@ -1,12 +1,12 @@
 import { Pencil, Save, X } from "lucide-react";
 import { FormInput } from "@v3/admin/shared/FormInput";
-import GLModelScene from "./webgl/GLModelScene";
-import { useBuildingStore } from "./hooks/useBuildingStore";
+import GLModelScene from "../webgl/GLModelScene";
+import { useBuildingStore } from "../hooks/useBuildingStore";
 import ImagePreview from "./ImagePreview";
-import { useCommonStore } from "./hooks/useCommonStore";
-import { useModelUploadStore } from "./hooks/useModelUploadStore";
+import { useCommonStore } from "../hooks/useCommonStore";
+import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { cn } from "@Utils/common.utils";
-import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
+import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 import { useForm, FormProvider } from "react-hook-form";
 import { TBuildingUpdateSchema, buildingUpdateSchema } from "@v3/admin/schemas/building/update";
 import { zodResolver } from "@hookform/resolvers/zod";

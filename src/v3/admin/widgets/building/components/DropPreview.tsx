@@ -1,13 +1,14 @@
+import { arrayBufferToString } from "@Utils/common.utils";
 import { useCallback } from "react";
-import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 import { useDropzone } from "react-dropzone";
-import { arrayBufferToString, cn } from "@Utils/common.utils";
+import { Upload } from "lucide-react";
+import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
+import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
 import { useFormContext } from "react-hook-form";
-import { TBuildingCreateSchema } from "@v3/admin/schemas/building/create";
 
 const DropPreview = () => {
   const previewUploadStore = usePreviewUploadStore();
-  const { setValue, formState } = useFormContext<TBuildingCreateSchema>();
+  const { setValue } = useFormContext<TBuildingUpdateSchema>();
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
@@ -25,34 +26,20 @@ const DropPreview = () => {
     });
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleOnDrop,
     maxFiles: 1,
     accept: { "image/webp": [".webp"] },
   });
 
   return (
-    <div
-      className={cn("relative h-full w-full border border-gray-300 bg-[#EFEFEF] p-4 text-center", {
-        "border-2 border-red-400": formState.errors.preview_file,
-      })}
-      {...getRootProps()}
-    >
+    <button type="button" {...getRootProps()}>
       <input {...getInputProps()} />
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        {isDragActive ? (
-          <p className="text-sm font-medium text-[#2953E9]">Drop the files here...</p>
-        ) : (
-          <p className="text-sm font-medium">
-            Drag <strong className="text-[#2953E9]">WEBP</strong> file here
-          </p>
-        )}
 
-        {fileRejections.length ? (
-          <p className="text-sm font-medium">Only .webp files are accepted</p>
-        ) : null}
+      <div className="bg-blue-100 px-3 py-2">
+        <Upload className="h-4 w-4 stroke-gray-700" />
       </div>
-    </div>
+    </button>
   );
 };
 

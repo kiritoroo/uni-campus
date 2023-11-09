@@ -1,6 +1,6 @@
 import DropPreview from "./DropPreview";
-import { useBuildingStore } from "./hooks/useBuildingStore";
-import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
+import { useBuildingStore } from "../hooks/useBuildingStore";
+import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 
 const ImagePreview = () => {
   const buildingStore = useBuildingStore();

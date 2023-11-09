@@ -5,7 +5,7 @@ import { Clipboard, Trash, Trash2 } from "lucide-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "react-tooltip";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
-import { useBuildingsStore } from "./hooks/useBuildingsStore";
+import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { TBuildingSchema } from "@v3/admin/schemas/building/base";
 
 const BuildingCard = ({ id, name, preview_img }: TBuildingSchema & {}) => {

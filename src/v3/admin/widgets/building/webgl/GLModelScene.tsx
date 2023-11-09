@@ -10,7 +10,7 @@ import { useBuildingStore } from "../hooks/useBuildingStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { useCommonStore } from "../hooks/useCommonStore";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
-import DropModel from "../DropModel";
+import DropModel from "../components/DropModel";
 
 const GLModelScene = memo(() => {
   const commonStore = useCommonStore();

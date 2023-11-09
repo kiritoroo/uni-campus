@@ -1,6 +1,6 @@
 import { cn } from "@Utils/common.utils";
-import BuildingsList from "./BuildingList";
-import CreateModal from "./CreateModal";
+import BuildingsList from "./components/BuildingList";
+import CreateModal from "./components/CreateModal";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useCommonStore } from "./hooks/useCommonStore";

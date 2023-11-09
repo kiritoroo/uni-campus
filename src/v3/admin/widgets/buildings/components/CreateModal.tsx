@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import CreateForm from "./CreateForm";
-import { useCommonStore } from "./hooks/useCommonStore";
+import { useCommonStore } from "../hooks/useCommonStore";
 
 const CreateModal = () => {
   const commonStore = useCommonStore();

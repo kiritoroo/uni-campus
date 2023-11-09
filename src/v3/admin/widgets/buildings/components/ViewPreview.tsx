@@ -1,4 +1,4 @@
-import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
+import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 
 const ViewPreview = () => {
   const previewUploadStore = usePreviewUploadStore();
