@@ -76,6 +76,7 @@ const DetailForm = () => {
             <p className="text-sm">Space </p>
             <p className="text-sm">Uses </p>
             <p className="text-sm">Position </p>
+            <p className="text-sm">Rotation </p>
             <p className="text-sm">Scale </p>
           </div>
           <div className="space-y-3">
