@@ -25,7 +25,10 @@ export default function useBuildingServices() {
     });
   };
 
-  const createBuilding = (data: TBuildingCreateSchema, option?: UseMutationOptions) => {
+  const createBuilding = (
+    data: TBuildingCreateSchema,
+    option?: UseMutationOptions<TBuildingSchema>,
+  ) => {
     return useMutation(["api/post-building", data], () => postBuilding({ data: data }), option);
   };
 

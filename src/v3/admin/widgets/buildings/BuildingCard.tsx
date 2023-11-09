@@ -4,27 +4,23 @@ import { toast } from "react-toastify";
 import { Clipboard, Trash, Trash2 } from "lucide-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "react-tooltip";
-import { useEffect } from "react";
 import { TBuildingSchema } from "@v3/admin/schemas/building-schema";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useBuildingsStore } from "./hooks/useBuildingsStore";
 
-const BuildingCard = ({
-  id,
-  name,
-  preview_img,
-  onDeletedBuilding,
-}: TBuildingSchema & {
-  onDeletedBuilding: ({ id }: Pick<TBuildingSchema, "id">) => void;
-}) => {
+const BuildingCard = ({ id, name, preview_img }: TBuildingSchema & {}) => {
+  const buildingsStore = useBuildingsStore();
+  const actions = buildingsStore.use.actions();
   const uniDialog = useUniDialog();
   const { removeBuilding } = useBuildingServices();
 
-  const { mutate, isLoading, isError, isSuccess } = removeBuilding(
+  const { mutate } = removeBuilding(
     {
       id: id,
     },
     {
       onSuccess: () => {
+        actions.removeBuilding({ buildingId: id });
         toast.success("Remove building success", {
           theme: "light",
           autoClose: 2000,
@@ -38,12 +34,6 @@ const BuildingCard = ({
       },
     },
   );
-
-  useEffect(() => {
-    if (!isLoading && !isError && isSuccess) {
-      onDeletedBuilding({ id });
-    }
-  }, [isLoading, isError]);
 
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center border border-gray-200 bg-white">

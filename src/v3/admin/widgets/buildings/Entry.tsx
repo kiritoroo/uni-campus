@@ -4,10 +4,28 @@ import CreateModal from "./CreateModal";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useCommonStore } from "./hooks/useCommonStore";
+import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useBuildingsStore } from "./hooks/useBuildingsStore";
+import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
+import { useEffect } from "react";
 
 const Entry = () => {
   const commonStore = useCommonStore();
+  const buildingsStore = useBuildingsStore();
+
+  const actions = buildingsStore.use.actions();
   const showCreateModal = commonStore.use.showCreateModal();
+
+  const { listBuildings } = useBuildingServices();
+  const { data, isLoading } = listBuildings();
+
+  useEffect(() => {
+    if (data) {
+      actions.initBuildingsData({
+        buildingsData: data,
+      });
+    }
+  }, [data]);
 
   return (
     <section className="h-full w-full overflow-hidden">
@@ -23,7 +41,8 @@ const Entry = () => {
         <p className="text-sm font-medium text-[#2C2B31]">New Building</p>
       </button>
       <div className="h-full w-full p-5">
-        <BuildingsList />
+        {isLoading && <SpinnerLoading width={50} height={50} />}
+        {data && <BuildingsList />}
       </div>
       {showCreateModal && (
         <ModelUploadStoreProvider>

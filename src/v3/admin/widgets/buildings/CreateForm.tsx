@@ -10,10 +10,14 @@ import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useBuildingsStore } from "./hooks/useBuildingsStore";
 
 const CreateForm = () => {
+  const buildingsStore = useBuildingsStore();
   const modelUploadStore = useModelUploadStore();
   const previewUploadStore = usePreviewUploadStore();
+
+  const actions = buildingsStore.use.actions();
   const scene = modelUploadStore.use.scene();
   const base64 = previewUploadStore.use.base64();
 
@@ -48,7 +52,8 @@ const CreateForm = () => {
       ...formMethod.watch(),
     },
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        actions.addBuilding({ buildingData: data });
         toast.success("Create building success", {
           theme: "light",
           autoClose: 2000,
