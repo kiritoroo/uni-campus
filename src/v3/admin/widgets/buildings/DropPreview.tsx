@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 import { useDropzone } from "react-dropzone";
 import { arrayBufferToString, cn } from "@Utils/common.utils";
-import { TBuildingCreateSchema } from "./schemas/create-schema";
 import { useFormContext } from "react-hook-form";
+import { TBuildingCreateSchema } from "@v3/admin/schemas/building/create";
 
 const DropPreview = () => {
   const previewUploadStore = usePreviewUploadStore();

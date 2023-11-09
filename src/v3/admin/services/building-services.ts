@@ -1,9 +1,9 @@
 import axios from "axios";
 import { objectToFormData } from "@Utils/common.utils";
 import { setupInterceptorsTo } from "./axios-Interceptors";
-import { TBuildingSchema, buildingSchema } from "../schemas/building-schema";
 import { z } from "zod";
-import { TBuildingCreateSchema } from "../widgets/buildings/schemas/create-schema";
+import { TBuildingCreateSchema } from "../schemas/building/create";
+import { TBuildingSchema, buildingSchema } from "../schemas/building/base";
 
 export const getBuildings = async (): Promise<TBuildingSchema[]> => {
   const axiosInstance = setupInterceptorsTo(axios.create());

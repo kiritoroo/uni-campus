@@ -1,4 +1,4 @@
-import { TBuildingSchema } from "@v3/admin/schemas/building-schema";
+import { TBuildingSchema } from "@v3/admin/schemas/building/base";
 import { createStore } from "zustand";
 import { computed } from "zustand-computed";
 

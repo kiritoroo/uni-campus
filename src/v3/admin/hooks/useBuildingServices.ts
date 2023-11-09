@@ -1,12 +1,12 @@
-import { useQuery, useMutation, UseMutationOptions, UseQueryOptions } from "react-query";
+import { useQuery, useMutation, UseMutationOptions } from "react-query";
 import {
   deleteBuilding,
   getBuilding,
   getBuildings,
   postBuilding,
 } from "../services/building-services";
-import { TBuildingSchema } from "../schemas/building-schema";
-import { TBuildingCreateSchema } from "../widgets/buildings/schemas/create-schema";
+import { TBuildingSchema } from "../schemas/building/base";
+import { TBuildingCreateSchema } from "../schemas/building/create";
 
 export default function useBuildingServices() {
   const listBuildings = () => {

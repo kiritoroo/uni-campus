@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { fileInfoSchema } from "./fileinfo-schema";
+import { fileInfoSchema } from "../fileinfo-schema";
 
 const idField = z.string();
 const nameField = z.string();

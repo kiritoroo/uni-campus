@@ -4,7 +4,7 @@ import { useModelUploadStore } from "./hooks/useModelUploadStore";
 import { arrayBufferToString, cn } from "@Utils/common.utils";
 import { startTransition, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { TBuildingCreateSchema } from "./schemas/create-schema";
+import { TBuildingCreateSchema } from "@v3/admin/schemas/building/create";
 
 const DropModel = () => {
   const modelUploadStore = useModelUploadStore();

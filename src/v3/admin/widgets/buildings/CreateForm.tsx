@@ -3,7 +3,6 @@ import { FormInput } from "../../shared/FormInput";
 import ViewPreview from "./ViewPreview";
 import { usePreviewUploadStore } from "./hooks/usePreviewUploadStore";
 import { useForm, FormProvider } from "react-hook-form";
-import { TBuildingCreateSchema, buildingCreateSchema } from "./schemas/create-schema";
 import GLViewModel from "./webgl/GLViewModel";
 import DropModel from "./DropModel";
 import { useModelUploadStore } from "./hooks/useModelUploadStore";
@@ -12,6 +11,7 @@ import { toast } from "react-toastify";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "./hooks/useBuildingsStore";
 import { useCommonStore } from "./hooks/useCommonStore";
+import { TBuildingCreateSchema, buildingCreateSchema } from "@v3/admin/schemas/building/create";
 
 const CreateForm = () => {
   const commonStore = useCommonStore();
