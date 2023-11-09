@@ -42,10 +42,7 @@ export const BuildingsStore = () => {
           removeBuilding: ({ buildingId }) => {
             const draft = get().buildingsData;
             if (!draft) return;
-            const indexToRemove = draft.findIndex((building) => building.id === buildingId);
-            if (indexToRemove !== -1) {
-              set({ buildingsData: draft.splice(indexToRemove, 1) });
-            }
+            set({ buildingsData: draft.filter((item) => item.id !== buildingId) });
           },
         },
       }),
