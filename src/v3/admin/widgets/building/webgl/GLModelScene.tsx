@@ -1,28 +1,24 @@
-import { Suspense, memo, startTransition, useCallback, useEffect } from "react";
+import { Suspense, memo } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
-import { Center, Environment, OrbitControls, Stage, Html } from "@react-three/drei";
+import { OrbitControls, Stage, Html } from "@react-three/drei";
 import GLBuilding from "./GLBuilding";
 import { ErrorBoundary } from "react-error-boundary";
 import saveAs from "file-saver";
-import { FileBox, ImageDown, Upload } from "lucide-react";
+import { FileBox, ImageDown } from "lucide-react";
 import { useBuildingStore } from "../hooks/useBuildingStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { useCommonStore } from "../hooks/useCommonStore";
-import { useUniDialog } from "@v3/admin/shared/UniDialog";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
-import { arrayBufferToString } from "@Utils/common.utils";
-import { useDropzone } from "react-dropzone";
+import DropModel from "../DropModel";
 
 const GLModelScene = memo(() => {
   const commonStore = useCommonStore();
   const modelUploadStore = useModelUploadStore();
   const buildingStore = useBuildingStore();
 
-  const buffer = modelUploadStore.use.buffer();
   const uploadScene = modelUploadStore.use.scene();
   const uploadFileName = modelUploadStore.use.fileName();
-  const modelUploadActions = modelUploadStore.use.actions();
   const enableEditDetail = commonStore.use.enableEditDetail();
   const buildingData = buildingStore.use.buildingData();
 
@@ -39,35 +35,6 @@ const GLModelScene = memo(() => {
         : `${buildingData?.model_3d.filename.split(".")[0]}.webp`,
     );
   };
-
-  useEffect(() => {
-    if (buffer) {
-      startTransition(() => {
-        modelUploadActions.loadScene();
-      });
-    }
-  }, [buffer]);
-
-  const handleOnDrop = useCallback((acceptedFiles: any) => {
-    acceptedFiles.forEach((file: any) => {
-      const reader = new FileReader();
-      reader.onabort = () => console.error("file reading was aborted");
-      reader.onerror = () => console.error("file reading has failed");
-      reader.onload = async () => {
-        modelUploadStore.setState({ fileRaw: file });
-        const data = reader.result;
-        modelUploadStore.setState({ buffer: data, fileName: file.name });
-        arrayBufferToString(data, (a: any) => modelUploadStore.setState({ textOriginalFile: a }));
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  }, []);
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop: handleOnDrop,
-    maxFiles: 1,
-    accept: { "application/octet-stream": [".gltf", ".glb"] },
-  });
 
   return (
     <ErrorBoundary
@@ -121,7 +88,6 @@ const GLModelScene = memo(() => {
           </Suspense>
         )}
 
-        {/* <Environment files={"/v3/images/rooitou_park.hdr"} blur={0.5} /> */}
         <OrbitControls
           makeDefault
           enableDamping
@@ -134,14 +100,7 @@ const GLModelScene = memo(() => {
 
       <div className="absolute bottom-5 left-5 right-5 flex justify-start gap-5">
         <div className="flex items-center justify-center gap-2">
-          {enableEditDetail && (
-            <button type="button" {...getRootProps()}>
-              <input {...getInputProps()} />
-              <div className="bg-blue-100 px-3 py-2">
-                <Upload className="h-4 w-4 stroke-gray-700" />
-              </div>
-            </button>
-          )}
+          {enableEditDetail && <DropModel />}
           <button type="button" onClick={handleSavePreview}>
             <div className="bg-gray-100 px-3 py-2">
               <ImageDown className="h-4 w-4 stroke-gray-700" />

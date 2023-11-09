@@ -12,14 +12,6 @@ const DropModel = () => {
   const { loadScene } = modelUploadStore.use.actions();
   const { setValue, formState } = useFormContext<TBuildingCreateSchema>();
 
-  useEffect(() => {
-    if (buffer) {
-      startTransition(() => {
-        loadScene();
-      });
-    }
-  }, [buffer]);
-
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
@@ -41,6 +33,14 @@ const DropModel = () => {
     maxFiles: 1,
     accept: { "application/octet-stream": [".gltf", ".glb"] },
   });
+
+  useEffect(() => {
+    if (buffer) {
+      startTransition(() => {
+        loadScene();
+      });
+    }
+  }, [buffer]);
 
   return (
     <div

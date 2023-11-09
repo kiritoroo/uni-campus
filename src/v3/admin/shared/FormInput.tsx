@@ -22,7 +22,7 @@ export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
             htmlFor={inputId}
             className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600"
           >
-            {label} {required && !child && <span className="text-red-400">*</span>}
+            {label} {required && dir === "vez" && !child && <span className="text-red-400">*</span>}
           </label>
         )}
 

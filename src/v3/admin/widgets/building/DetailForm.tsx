@@ -50,7 +50,7 @@ const DetailForm = () => {
   const { register, setValue, handleSubmit } = formMethod;
 
   useEffect(() => {
-    if (buildingData) {
+    if (buildingData && !enableEditDetail) {
       setValue("name", buildingData.name);
       setValue("space_id", buildingData.space_id);
       setValue("uses", buildingData.uses);
@@ -58,7 +58,7 @@ const DetailForm = () => {
       setValue("rotation", buildingData.rotation);
       setValue("scale", buildingData.scale);
     }
-  }, [buildingData]);
+  }, [buildingData, enableEditDetail]);
 
   return (
     <FormProvider {...formMethod}>
@@ -135,7 +135,6 @@ const DetailForm = () => {
                 required
                 dir="hoz"
                 disabled={!enableEditDetail}
-                value={buildingData?.space_id}
               />
               <FormInput
                 {...register("uses")}
@@ -143,7 +142,6 @@ const DetailForm = () => {
                 required
                 dir="hoz"
                 disabled={!enableEditDetail}
-                value={buildingData?.uses}
               />
               <div className="flex items-center justify-start gap-2">
                 <FormInput
@@ -154,7 +152,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="x"
-                  value={buildingData?.position.x}
                 />
                 <FormInput
                   {...register("position.y", { valueAsNumber: true })}
@@ -164,7 +161,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="y"
-                  value={buildingData?.position.y}
                 />
                 <FormInput
                   {...register("position.z", { valueAsNumber: true })}
@@ -174,7 +170,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="z"
-                  value={buildingData?.position.z}
                 />
               </div>
               <div className="flex items-center justify-start gap-2">
@@ -186,7 +181,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="x"
-                  value={buildingData?.rotation.x}
                 />
                 <FormInput
                   {...register("rotation.y", { valueAsNumber: true })}
@@ -196,7 +190,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="y"
-                  value={buildingData?.rotation.y}
                 />
                 <FormInput
                   {...register("rotation.z", { valueAsNumber: true })}
@@ -206,7 +199,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="z"
-                  value={buildingData?.rotation.z}
                 />
               </div>
               <div className="flex items-center justify-start gap-2">
@@ -218,7 +210,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="x"
-                  value={buildingData?.scale.x}
                 />
                 <FormInput
                   {...register("scale.y", { valueAsNumber: true })}
@@ -228,7 +219,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="y"
-                  value={buildingData?.scale.y}
                 />
                 <FormInput
                   {...register("scale.z", { valueAsNumber: true })}
@@ -238,7 +228,6 @@ const DetailForm = () => {
                   dir="hoz"
                   disabled={!enableEditDetail}
                   label="z"
-                  value={buildingData?.scale.z}
                 />
               </div>
             </div>
