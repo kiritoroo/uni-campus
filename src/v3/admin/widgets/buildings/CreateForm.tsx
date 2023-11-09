@@ -11,8 +11,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "./hooks/useBuildingsStore";
+import { useCommonStore } from "./hooks/useCommonStore";
 
 const CreateForm = () => {
+  const commonStore = useCommonStore();
   const buildingsStore = useBuildingsStore();
   const modelUploadStore = useModelUploadStore();
   const previewUploadStore = usePreviewUploadStore();
@@ -53,6 +55,7 @@ const CreateForm = () => {
     },
     {
       onSuccess: (data) => {
+        commonStore.setState({ showCreateModal: false });
         actions.addBuilding({ buildingData: data });
         toast.success("Create building success", {
           theme: "light",
