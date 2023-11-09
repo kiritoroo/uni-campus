@@ -11,16 +11,16 @@ import { TBuildingCreateSchema } from "../schemas/building/create";
 import { TBuildingUpdateSchema } from "../schemas/building/update";
 
 export default function useBuildingServices() {
-  const listBuildings = () => {
-    return useQuery(["api/get-buildings"], () => getBuildings(), {
+  const listBuildings = (ver: string) => {
+    return useQuery(["api/get-buildings", ver], () => getBuildings(), {
       staleTime: 5 * 60 * 1000,
       keepPreviousData: true,
       retry: false,
     });
   };
 
-  const detailBuilding = (data: Pick<TBuildingSchema, "id">) => {
-    return useQuery(["api/get-building", data], () => getBuilding({ data }), {
+  const detailBuilding = (ver: string, data: Pick<TBuildingSchema, "id">) => {
+    return useQuery(["api/get-building", ver, data], () => getBuilding({ data }), {
       staleTime: 5 * 60 * 100,
       keepPreviousData: true,
       retry: false,

@@ -8,16 +8,19 @@ import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "./hooks/useBuildingsStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { useEffect } from "react";
+import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 
 const Entry = () => {
+  const globalStore = useGlobalStore();
   const commonStore = useCommonStore();
   const buildingsStore = useBuildingsStore();
 
+  const buildingServiceVersion = globalStore.use.buildingServiceVersion();
   const actions = buildingsStore.use.actions();
   const showCreateModal = commonStore.use.showCreateModal();
 
   const { listBuildings } = useBuildingServices();
-  const { data, isLoading } = listBuildings();
+  const { data, isLoading } = listBuildings(buildingServiceVersion);
 
   useEffect(() => {
     if (data) {

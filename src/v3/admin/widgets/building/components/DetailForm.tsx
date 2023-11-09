@@ -13,8 +13,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 import { toast } from "react-toastify";
+import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
+import { v4 as uuidv4 } from "uuid";
 
 const DetailForm = () => {
+  const globalStore = useGlobalStore();
   const commonStore = useCommonStore();
   const modelUploadStore = useModelUploadStore();
   const previewUploadStore = usePreviewUploadStore();
@@ -65,6 +68,7 @@ const DetailForm = () => {
         previewUploadActions.resetStore();
         commonStore.setState({ enableEditDetail: false });
         buildingStore.setState({ buildingData: data });
+        globalStore.setState({ buildingServiceVersion: uuidv4() });
         toast.success("Update building success", {
           theme: "light",
           autoClose: 2000,
