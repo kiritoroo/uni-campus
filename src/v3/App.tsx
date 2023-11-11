@@ -6,7 +6,7 @@ import AdminProvider from "@v3/admin/containers/Provider";
 import BuildingsManager from "@v3/admin/screens/BuildingsManager";
 import BuildingManager from "./admin/screens/BuildingManager";
 import SpacesManager from "./admin/screens/SpacesManager";
-import LoginScreen from "./admin/screens/Login";
+import LoginScreen from "./admin/screens/LoginScreen";
 import { Fragment } from "react";
 
 const App = () => {

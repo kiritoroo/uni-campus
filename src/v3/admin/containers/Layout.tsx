@@ -6,6 +6,7 @@ import { UniDialogContainer, UniDialogProvider } from "../shared/UniDialog";
 import { GlobalStoreProvider } from "../contexts/GlobalStoreContext";
 import { useAuthStore } from "../hooks/useAuthStore";
 import { Navigate } from "react-router-dom";
+import { Fragment } from "react";
 
 const GuardOutlet = () => {
   const authStore = useAuthStore();
@@ -14,7 +15,12 @@ const GuardOutlet = () => {
 
   if (!authenticated) {
     console.log(`[🔒] Unauthorized`);
-    return <Navigate to="login" replace={true} />;
+    return (
+      <Fragment>
+        <Navigate to="login" replace={true} />
+        <Outlet />
+      </Fragment>
+    );
   } else {
     console.log(`[🔓] Authenticated\n`, claims);
   }
@@ -29,7 +35,7 @@ const Layout = () => {
   return (
     <GlobalStoreProvider>
       <UniDialogProvider>
-        <main className="max-w-screen flex h-screen max-h-screen w-screen flex-col flex-nowrap items-center justify-between">
+        <main className="max-w-screen flex h-screen max-h-screen w-screen flex-col flex-nowrap items-center justify-between text-slate-600">
           <Header />
           {authenticated ? (
             <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F2] px-10 py-5">
