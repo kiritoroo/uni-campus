@@ -1,5 +1,5 @@
 import { createContext, useRef } from "react";
-import { CommonStore, ICommonStore } from "../stores/CommonStore";
+import { CommonStore, ICommonStore } from "../stores/common-store";
 import { StoreApi } from "zustand";
 
 export interface ICommonStoreContext extends StoreApi<ICommonStore> {}

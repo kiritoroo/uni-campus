@@ -38,7 +38,7 @@ export const UniDialogContext = createContext<TUniDiaglogStore | undefined>(unde
 export const UniDialogProvider = ({ children }: { children: React.ReactNode }) => {
   const storeRef = useRef<StoreApi<TUniDiaglogStore>>();
   if (!storeRef.current) {
-    storeRef.current = createSelectors(createUniDialogStore());
+    storeRef.current = createUniDialogStore();
   }
   const selectors = createSelectors(storeRef.current);
 

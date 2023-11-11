@@ -1,7 +1,7 @@
 import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
 import axios from "axios";
 import { objectToFormData } from "@Utils/common.utils";
-import { setupInterceptorsTo } from "./axios-Interceptors";
+import { setupInterceptorsTo } from "./axios-interceptors";
 import { z } from "zod";
 import { TBuildingCreateSchema } from "../schemas/building/create";
 import { TBuildingSchema, buildingSchema } from "../schemas/building/base";

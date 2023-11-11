@@ -1,5 +1,5 @@
 import { StoreApi } from "zustand";
-import { GlobalStore, IGlobalStore } from "../stores/GlobalStore";
+import { GlobalStore, IGlobalStore } from "../stores/global-store";
 import { createContext, useRef } from "react";
 
 export interface IGlobalStoreContext extends StoreApi<IGlobalStore> {}

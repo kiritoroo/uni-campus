@@ -1,6 +1,6 @@
 import { StoreApi } from "zustand";
 import { createContext, useRef } from "react";
-import { IPreviewUploadStore, PreviewUploadStore } from "../stores/PreviewUploadStore";
+import { IPreviewUploadStore, PreviewUploadStore } from "../stores/preview-upload-store";
 
 export interface IPreviewUploadStoreContext extends StoreApi<IPreviewUploadStore> {}
 
