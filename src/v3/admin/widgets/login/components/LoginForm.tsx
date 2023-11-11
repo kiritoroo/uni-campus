@@ -8,7 +8,7 @@ const LoginForm = () => {
         <div className="py-2 text-sm font-semibold text-slate-400">Sign in to Uni Campus X </div>
       </div>
       <div className="border-b border-slate-200" />
-      <div className="min-w-[350px] space-y-5 px-6 pb-8 pt-3">
+      <div className="min-w-[380px] space-y-5 px-6 pb-8 pt-5">
         <FormInput
           label="Username"
           type="text"
@@ -23,7 +23,7 @@ const LoginForm = () => {
           placeholder="Password"
           autoComplete={"on"}
         />
-        <button type="submit" className="w-full bg-slate-400 py-2 text-sm font-semibold text-white">
+        <button type="submit" className="w-full bg-blue-400 py-2 text-sm font-semibold text-white">
           Login
         </button>
       </div>

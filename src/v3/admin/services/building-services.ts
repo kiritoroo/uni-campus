@@ -30,7 +30,7 @@ export const getBuilding = async ({
     const response = await axiosInstance.get(`/building/${path}`);
     return buildingSchema.parse(response.data);
   } catch (error) {
-    throw new Error(`Failed to delete api/building: ${error}`);
+    throw new Error(`Failed to get api/building:id: ${error}`);
   }
 };
 
