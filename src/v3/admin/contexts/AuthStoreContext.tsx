@@ -17,6 +17,9 @@ export const AuthStoreProvider = ({ children }: { children: React.ReactNode }) =
   const storeSelectors = createSelectors(storeRef.current);
   const authenticated = storeSelectors.use.authenticated();
   const claims = storeSelectors.use.claims();
+  const accessToken = storeSelectors.use.accessToken();
+  const accessTokenEncrypt = storeSelectors.use.accessTokenEncrypt();
+
   const { init } = storeSelectors.use.actions();
 
   const uniToast = useUniToastify();
@@ -27,10 +30,15 @@ export const AuthStoreProvider = ({ children }: { children: React.ReactNode }) =
 
   useEffect(() => {
     if (authenticated) {
+      console.log(`[🔓] Authenticated\n`, claims);
+      console.log(accessToken);
+      console.log(accessTokenEncrypt);
       uniToast.info({
         title: `Hi ${claims?.nickname}!`,
         desc: `You are ${claims?.role}`,
       });
+    } else {
+      console.log(`[🔒] Unauthorized`);
     }
   }, [authenticated]);
 

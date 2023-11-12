@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
   return {
     define: {
       "process.env.AES_KEY": JSON.stringify(env.AES_KEY),
+      "process.env.CBC_IV": JSON.stringify(env.CBC_IV),
       "process.env.ACCESS_TOKEN_KEY": JSON.stringify(env.ACCESS_TOKEN_KEY),
       "process.env.GOOGLE_MAP_API_KEY": JSON.stringify(env.GOOGLE_MAP_API_KEY),
       "process.env.UNI_CAMPUS_API_URL": JSON.stringify(env.UNI_CAMPUS_API_URL),

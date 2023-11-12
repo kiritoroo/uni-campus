@@ -13,12 +13,10 @@ import { UniToastifyContainer } from "../shared/UniToastify";
 const GuardOutlet = () => {
   const authStore = useAuthStore();
   const authenticated = authStore.use.authenticated();
-  const claims = authStore.use.claims();
 
   const location = useLocation();
 
   if (!authenticated) {
-    console.log(`[🔒] Unauthorized`);
     return (
       <Fragment>
         <Navigate to="login" replace={true} />
@@ -26,7 +24,6 @@ const GuardOutlet = () => {
       </Fragment>
     );
   } else {
-    console.log(`[🔓] Authenticated\n`, claims);
     if (location.pathname === "/x/login") {
       return (
         <Fragment>

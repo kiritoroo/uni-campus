@@ -49,7 +49,11 @@ export const AuthStore = () => {
           })();
 
           if (token && tokenData) {
-            const tokenEncrypt = encrypt(process.env.AES_KEY ?? "x", token);
+            const tokenEncrypt = encrypt(
+              process.env.AES_KEY ?? "x",
+              process.env.CBC_IV ?? "x",
+              token,
+            );
             set({
               authenticated: true,
               accessToken: token,
@@ -70,8 +74,16 @@ export const AuthStore = () => {
         init: () => {
           const { auth } = get().actions;
           const tokenEncrypt = cookies.get(process.env.ACCESS_TOKEN_KEY ?? "x");
-          const tokenDecrypt = decrypt(process.env.AES_KEY ?? "x", tokenEncrypt ?? "");
-          auth(tokenDecrypt);
+          try {
+            const tokenDecrypt = decrypt(
+              process.env.AES_KEY ?? "x",
+              process.env.CBC_IV ?? "x",
+              tokenEncrypt ?? "",
+            );
+            auth(tokenDecrypt);
+          } catch (e) {
+            get().actions.clear();
+          }
         },
         clear: () => {
           cookies.remove(process.env.ACCESS_TOKEN_KEY ?? "x");

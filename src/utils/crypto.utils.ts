@@ -1,17 +1,19 @@
-// import { JSEncrypt } from "jsencrypt";
 import CryptoJS from "crypto-js";
 
-export const encrypt = (key: string, data: string): string => {
-  // const encrypt = new JSEncrypt();
-  // encrypt.setPublicKey(pubkey);
-  // return encrypt.encrypt(data);
-  return CryptoJS.AES.encrypt(data, key).toString();
+export const encrypt = (key: string, iv: string, data: string): string => {
+  const encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(key), {
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+    iv: CryptoJS.enc.Utf8.parse(iv),
+  });
+  return encrypted.toString();
 };
 
-export const decrypt = (key: string, data: string): string => {
-  // const decryptor = new JSEncrypt();
-  // decryptor.setPrivateKey(privKey);
-  // return decryptor.decrypt(encryptedData);
-  const bytes = CryptoJS.AES.decrypt(data, key);
-  return bytes.toString(CryptoJS.enc.Utf8);
+export const decrypt = (key: string, iv: string, data: string): string => {
+  const decrypted = CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(key), {
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+    iv: CryptoJS.enc.Utf8.parse(iv),
+  });
+  return decrypted.toString(CryptoJS.enc.Utf8);
 };

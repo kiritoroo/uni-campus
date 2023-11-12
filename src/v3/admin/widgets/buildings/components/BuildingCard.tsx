@@ -7,14 +7,19 @@ import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { TBuildingSchema } from "@v3/admin/schemas/building/base";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
+import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
+import { v4 as uuidv4 } from "uuid";
 
 const BuildingCard = ({ id, name, preview_img }: TBuildingSchema & {}) => {
+  const globalStore = useGlobalStore();
   const buildingsStore = useBuildingsStore();
-  const actions = buildingsStore.use.actions();
-  const uniDialog = useUniDialog();
-  const { removeBuilding } = useBuildingServices();
 
+  const actions = buildingsStore.use.actions();
+
+  const uniDialog = useUniDialog();
   const uniToast = useUniToastify();
+
+  const { removeBuilding } = useBuildingServices();
 
   const { mutate } = removeBuilding(
     {
@@ -23,6 +28,7 @@ const BuildingCard = ({ id, name, preview_img }: TBuildingSchema & {}) => {
     {
       onSuccess: () => {
         actions.removeBuilding({ buildingId: id });
+        globalStore.setState({ buildingServiceVersion: uuidv4() });
         uniToast.success({ desc: "Remove building success" });
       },
       onError: (error: any) => {
