@@ -6,10 +6,12 @@ import { useUserServices } from "@v3/admin/hooks/useUserServices";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@v3/admin/hooks/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const authStore = useAuthStore();
   const auhStoreActions = authStore.use.actions();
+  const navigate = useNavigate();
 
   const formMethod = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -30,6 +32,7 @@ const LoginForm = () => {
     {
       onSuccess: (data) => {
         auhStoreActions.auth(data.access_token);
+        navigate("/x");
         toast.success("Login success", {
           theme: "light",
           autoClose: 2000,

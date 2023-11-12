@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "@v3/admin/containers/Navbar";
 import Header from "@v3/admin/containers/Header";
 import Footer from "@v3/admin/containers/Footer";
@@ -7,11 +7,14 @@ import { GlobalStoreProvider } from "../contexts/GlobalStoreContext";
 import { useAuthStore } from "../hooks/useAuthStore";
 import { Navigate } from "react-router-dom";
 import { Fragment } from "react";
+import { SpinnerLoading } from "../shared/SpinnerLoading";
 
 const GuardOutlet = () => {
   const authStore = useAuthStore();
   const authenticated = authStore.use.authenticated();
   const claims = authStore.use.claims();
+
+  const location = useLocation();
 
   if (!authenticated) {
     console.log(`[🔒] Unauthorized`);
@@ -23,6 +26,13 @@ const GuardOutlet = () => {
     );
   } else {
     console.log(`[🔓] Authenticated\n`, claims);
+    if (location.pathname === "/x/login") {
+      return (
+        <Fragment>
+          <Navigate to="/x" replace={true} />
+        </Fragment>
+      );
+    }
   }
 
   return <Outlet />;
@@ -37,7 +47,14 @@ const Layout = () => {
       <UniDialogProvider>
         <main className="max-w-screen flex h-screen max-h-screen w-screen flex-col flex-nowrap items-center justify-between text-slate-600">
           <Header />
-          {authenticated ? (
+          {authenticated === undefined && (
+            <div className="w-full flex-1 overflow-hidden bg-[#F2F2F2] px-10 py-5">
+              <div className="h-full w-full bg-[#ffffff] p-5">
+                <SpinnerLoading width={50} height={50} />
+              </div>
+            </div>
+          )}
+          {authenticated && (
             <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F2] px-10 py-5">
               <div className="flex h-full w-full items-center justify-start gap-5">
                 <div className="h-full w-auto bg-[#ffffff] p-5">
@@ -49,7 +66,8 @@ const Layout = () => {
                 </div>
               </div>
             </div>
-          ) : (
+          )}
+          {authenticated === false && (
             <div className="w-full flex-1 overflow-hidden bg-[#F2F2F2] px-10 py-5">
               <div className="h-full w-full bg-[#ffffff] p-5">
                 <GuardOutlet />

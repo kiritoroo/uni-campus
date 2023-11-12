@@ -2,7 +2,7 @@ import { createStore } from "zustand";
 import { TClaimsSchema, claimsSchema } from "../schemas/claims-schema";
 import { jwtDecode } from "jwt-decode";
 import { Cookies } from "react-cookie";
-import { encrypt } from "@Utils/crypto.utils";
+import { decrypt, encrypt } from "@Utils/crypto.utils";
 
 export interface IAuthStore {
   authenticated: boolean | undefined;
@@ -37,16 +37,17 @@ export const AuthStore = () => {
           })();
 
           if (token && tokenData) {
-            const tokenEncrypt = encrypt(process.env.AES_KEY ?? "uni-campus", token);
+            const tokenEncrypt = encrypt(process.env.AES_KEY ?? "x", token);
             set({
               authenticated: true,
               accessToken: token,
               accessTokenEncrypt: tokenEncrypt,
               claims: tokenData,
             });
-            cookies.set(process.env.ACCESS_TOKEN_KEY ?? "_", tokenEncrypt, {
+            cookies.set(process.env.ACCESS_TOKEN_KEY ?? "x", tokenEncrypt, {
               expires: new Date(tokenData?.exp * 1000),
               secure: true,
+              path: "/x",
               httpOnly: false,
               sameSite: "lax",
             });
@@ -54,7 +55,12 @@ export const AuthStore = () => {
             set({ authenticated: false });
           }
         },
-        init: () => {},
+        init: () => {
+          const { auth } = get().actions;
+          const tokenEncrypt = cookies.get(process.env.ACCESS_TOKEN_KEY ?? "x");
+          const tokenDecrypt = decrypt(process.env.AES_KEY ?? "x", tokenEncrypt ?? "");
+          auth(tokenDecrypt);
+        },
         clear: () => {},
       },
     };
