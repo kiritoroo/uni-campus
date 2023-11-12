@@ -12,9 +12,9 @@ import { TBuildingUpdateSchema, buildingUpdateSchema } from "@v3/admin/schemas/b
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
-import { toast } from "react-toastify";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { v4 as uuidv4 } from "uuid";
+import { useUniToastify } from "@v3/admin/shared/UniToastify";
 
 const DetailForm = () => {
   const globalStore = useGlobalStore();
@@ -28,6 +28,8 @@ const DetailForm = () => {
   const enableEditDetail = commonStore.use.enableEditDetail();
   const buildingId = buildingStore.use.buildingId();
   const buildingData = buildingStore.use.buildingData();
+
+  const uniToast = useUniToastify();
 
   const formMethod = useForm<TBuildingUpdateSchema>({
     resolver: zodResolver(buildingUpdateSchema),
@@ -69,15 +71,13 @@ const DetailForm = () => {
         commonStore.setState({ enableEditDetail: false });
         buildingStore.setState({ buildingData: data });
         globalStore.setState({ buildingServiceVersion: uuidv4() });
-        toast.success("Update building success", {
-          theme: "light",
-          autoClose: 2000,
+        uniToast.success({
+          desc: "Update building success",
         });
       },
       onError: (error: any) => {
-        toast.error(Error(error).message, {
-          theme: "light",
-          autoClose: 2000,
+        uniToast.error({
+          desc: Error(error).message,
         });
       },
     },

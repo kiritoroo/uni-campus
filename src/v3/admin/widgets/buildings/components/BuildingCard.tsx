@@ -1,18 +1,20 @@
 import { Link } from "react-router-dom";
 import { useUniDialog } from "@v3/admin/shared/UniDialog";
-import { toast } from "react-toastify";
 import { Clipboard, Trash, Trash2 } from "lucide-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "react-tooltip";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { TBuildingSchema } from "@v3/admin/schemas/building/base";
+import { useUniToastify } from "@v3/admin/shared/UniToastify";
 
 const BuildingCard = ({ id, name, preview_img }: TBuildingSchema & {}) => {
   const buildingsStore = useBuildingsStore();
   const actions = buildingsStore.use.actions();
   const uniDialog = useUniDialog();
   const { removeBuilding } = useBuildingServices();
+
+  const uniToast = useUniToastify();
 
   const { mutate } = removeBuilding(
     {
@@ -21,16 +23,10 @@ const BuildingCard = ({ id, name, preview_img }: TBuildingSchema & {}) => {
     {
       onSuccess: () => {
         actions.removeBuilding({ buildingId: id });
-        toast.success("Remove building success", {
-          theme: "light",
-          autoClose: 2000,
-        });
+        uniToast.success({ desc: "Remove building success" });
       },
       onError: (error: any) => {
-        toast.error(Error(error).message, {
-          theme: "light",
-          autoClose: 2000,
-        });
+        uniToast.error({ desc: Error(error).message });
       },
     },
   );

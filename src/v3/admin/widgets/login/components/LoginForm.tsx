@@ -3,16 +3,18 @@ import { FormInput } from "./FormInput";
 import { TLoginSchema, loginSchema } from "@v3/admin/schemas/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserServices } from "@v3/admin/hooks/useUserServices";
-import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@v3/admin/hooks/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import { AtSign, Lock } from "lucide-react";
+import { useUniToastify } from "@v3/admin/shared/UniToastify";
 
 const LoginForm = () => {
   const authStore = useAuthStore();
   const auhStoreActions = authStore.use.actions();
   const navigate = useNavigate();
+
+  const uniToast = useUniToastify();
 
   const formMethod = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -34,15 +36,13 @@ const LoginForm = () => {
       onSuccess: (data) => {
         auhStoreActions.auth(data.access_token);
         navigate("/x");
-        toast.success("Login success", {
-          theme: "light",
-          autoClose: 2000,
+        uniToast.success({
+          desc: "Login success",
         });
       },
       onError: (error: any) => {
-        toast.error(Error(error).message, {
-          theme: "light",
-          autoClose: 2000,
+        uniToast.error({
+          desc: Error(error).message,
         });
       },
     },

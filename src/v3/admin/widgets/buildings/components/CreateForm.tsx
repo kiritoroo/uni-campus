@@ -7,11 +7,11 @@ import GLViewModel from "../webgl/GLViewModel";
 import DropModel from "./DropModel";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
 import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { useCommonStore } from "../hooks/useCommonStore";
 import { TBuildingCreateSchema, buildingCreateSchema } from "@v3/admin/schemas/building/create";
+import { useUniToastify } from "@v3/admin/shared/UniToastify";
 
 const CreateForm = () => {
   const commonStore = useCommonStore();
@@ -22,6 +22,8 @@ const CreateForm = () => {
   const actions = buildingsStore.use.actions();
   const scene = modelUploadStore.use.scene();
   const base64 = previewUploadStore.use.base64();
+
+  const uniToast = useUniToastify();
 
   const formMethod = useForm<TBuildingCreateSchema>({
     resolver: zodResolver(buildingCreateSchema),
@@ -59,15 +61,13 @@ const CreateForm = () => {
       onSuccess: (data) => {
         commonStore.setState({ showCreateModal: false });
         actions.addBuilding({ buildingData: data });
-        toast.success("Create building success", {
-          theme: "light",
-          autoClose: 2000,
+        uniToast.success({
+          desc: "Create building success",
         });
       },
       onError: (error: any) => {
-        toast.error(Error(error).message, {
-          theme: "light",
-          autoClose: 2000,
+        uniToast.error({
+          desc: Error(error).message,
         });
       },
     },

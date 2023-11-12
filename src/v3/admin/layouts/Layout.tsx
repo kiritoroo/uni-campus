@@ -8,6 +8,7 @@ import { useAuthStore } from "../hooks/useAuthStore";
 import { Navigate } from "react-router-dom";
 import { Fragment } from "react";
 import { SpinnerLoading } from "../shared/SpinnerLoading";
+import { UniToastifyContainer } from "../shared/UniToastify";
 
 const GuardOutlet = () => {
   const authStore = useAuthStore();
@@ -46,6 +47,7 @@ const Layout = () => {
     <GlobalStoreProvider>
       <UniDialogProvider>
         <main className="max-w-screen flex h-screen max-h-screen w-screen flex-col flex-nowrap items-center justify-between text-slate-600">
+          <UniToastifyContainer />
           <Header />
           {authenticated === undefined && (
             <div className="w-full flex-1 overflow-hidden bg-[#F2F2F2] px-10 py-5">

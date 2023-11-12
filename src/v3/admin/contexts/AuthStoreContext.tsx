@@ -2,6 +2,7 @@ import { StoreApi } from "zustand";
 import { AuthStore, IAuthStore } from "../stores/auth-store";
 import { createContext, useEffect, useRef } from "react";
 import { createSelectors } from "@Utils/zustand.utils";
+import { useUniToastify } from "../shared/UniToastify";
 
 export interface IAuthStoreContext extends StoreApi<IAuthStore> {}
 
@@ -14,11 +15,24 @@ export const AuthStoreProvider = ({ children }: { children: React.ReactNode }) =
   }
 
   const storeSelectors = createSelectors(storeRef.current);
+  const authenticated = storeSelectors.use.authenticated();
+  const claims = storeSelectors.use.claims();
   const { init } = storeSelectors.use.actions();
+
+  const uniToast = useUniToastify();
 
   useEffect(() => {
     init();
   }, []);
+
+  useEffect(() => {
+    if (authenticated) {
+      uniToast.info({
+        title: `Hi ${claims?.nickname}!`,
+        desc: `You are ${claims?.role}`,
+      });
+    }
+  }, [authenticated]);
 
   return <AuthStoreContext.Provider value={storeRef.current}>{children}</AuthStoreContext.Provider>;
 };
