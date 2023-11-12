@@ -4,17 +4,29 @@ import { jwtDecode } from "jwt-decode";
 import { Cookies } from "react-cookie";
 import { decrypt, encrypt } from "@Utils/crypto.utils";
 
-export interface IAuthStore {
+type TState = {
   authenticated: boolean | undefined;
   accessToken: string | undefined;
   accessTokenEncrypt: string | undefined;
   claims: TClaimsSchema | undefined;
-  actions: {
-    auth: (token: string | undefined) => void;
-    init: () => void;
-    clear: () => void;
-  };
+};
+
+type TActions = {
+  auth: (token: string | undefined) => void;
+  init: () => void;
+  clear: () => void;
+};
+
+export interface IAuthStore extends TState {
+  actions: TActions;
 }
+
+const initStore: TState = {
+  authenticated: undefined,
+  accessToken: undefined,
+  accessTokenEncrypt: undefined,
+  claims: undefined,
+};
 
 export const AuthStore = () => {
   return createStore<IAuthStore>((set, get) => {
@@ -61,7 +73,10 @@ export const AuthStore = () => {
           const tokenDecrypt = decrypt(process.env.AES_KEY ?? "x", tokenEncrypt ?? "");
           auth(tokenDecrypt);
         },
-        clear: () => {},
+        clear: () => {
+          cookies.remove(process.env.ACCESS_TOKEN_KEY ?? "x");
+          set({ ...initStore, authenticated: false });
+        },
       },
     };
   });

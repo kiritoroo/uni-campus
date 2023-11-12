@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
-import AdminLayout from "@v3/admin/containers/Layout";
-import AdminProvider from "@v3/admin/containers/Provider";
+import AdminLayout from "@v3/admin/layouts/Layout";
+import AdminProvider from "@v3/admin/layouts/Provider";
 
 import BuildingsManager from "@v3/admin/screens/BuildingsManager";
 import BuildingManager from "./admin/screens/BuildingManager";

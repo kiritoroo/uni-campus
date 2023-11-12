@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "@v3/admin/containers/Navbar";
-import Header from "@v3/admin/containers/Header";
-import Footer from "@v3/admin/containers/Footer";
+import Navbar from "@v3/admin/layouts/Navbar";
+import Header from "@v3/admin/layouts/Header";
+import Footer from "@v3/admin/layouts/Footer";
 import { UniDialogContainer, UniDialogProvider } from "../shared/UniDialog";
 import { GlobalStoreProvider } from "../contexts/GlobalStoreContext";
 import { useAuthStore } from "../hooks/useAuthStore";
