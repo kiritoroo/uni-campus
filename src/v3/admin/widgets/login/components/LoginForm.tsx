@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@v3/admin/hooks/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import { AtSign, Lock } from "lucide-react";
 
 const LoginForm = () => {
   const authStore = useAuthStore();
@@ -66,6 +67,7 @@ const LoginForm = () => {
         <FormInput
           {...register("username")}
           label="Username"
+          icon={<AtSign className="h-4 w-4 stroke-slate-600" />}
           type="text"
           required
           placeholder="example@uni.x"
@@ -74,6 +76,7 @@ const LoginForm = () => {
         <FormInput
           {...register("plain_pwd")}
           label="Password"
+          icon={<Lock className="h-4 w-4 stroke-slate-600" />}
           type="password"
           required
           placeholder="Password"

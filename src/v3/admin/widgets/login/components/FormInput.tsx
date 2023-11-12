@@ -5,10 +5,11 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string;
   dir?: "hoz" | "vez";
   child?: boolean;
+  icon?: React.ReactElement;
 }
 
 export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ dir = "vez", child = false, label, name, required, className, ...props }, ref) => {
+  ({ dir = "vez", child = false, icon, label, name, required, className, ...props }, ref) => {
     const inputId = `el--input-${name}`;
 
     return (
@@ -26,17 +27,22 @@ export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
 
-        <input
-          className={cn(
-            "h-[36px] w-full border border-slate-300 bg-white px-3 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500/20 disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
-            className,
-          )}
-          ref={ref}
-          id={inputId}
-          name={name}
-          required={required}
-          {...props}
-        />
+        <div className="flex items-stretch justify-center border border-slate-300">
+          <div className="flex items-center justify-center border-r border-slate-300 bg-white p-3">
+            {icon && icon}
+          </div>
+          <input
+            className={cn(
+              "h-auto w-full bg-white px-3 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500/20 disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
+              className,
+            )}
+            ref={ref}
+            id={inputId}
+            name={name}
+            required={required}
+            {...props}
+          />
+        </div>
       </div>
     );
   },
