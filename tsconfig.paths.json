@@ -7,9 +7,10 @@
       "@Styles/*": ["src/styles/*"],
       "@Scripts/*": ["src/scripts/*"],
       "@Types/*": ["src/types/*"],
+      "@Hooks/*": ["src/hooks/*"],
       "@Components/*": ["src/components/*"],
       "@Utils/*": ["src/utils/*"],
-      "@v3/*": ["src/v3/*"]
+      "@v3/*": ["src/v3/*"],
     }
   }
 }
