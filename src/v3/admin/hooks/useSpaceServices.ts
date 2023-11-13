@@ -4,7 +4,7 @@ import { TSpaceSchema } from "../schemas/space/base";
 import { TSpaceCreateSchema } from "../schemas/space/create";
 import { TSpaceUpdateSchema } from "../schemas/space/update";
 
-export const useSpaceSErvices = () => {
+export const useSpaceServices = () => {
   const listSpaces = (ver: string) => {
     return useQuery(["api/get-spaces", ver], () => getSpaces(), {
       staleTime: 5 * 60 * 1000,
