@@ -1,16 +1,16 @@
 import { useQuery, useMutation, UseMutationOptions } from "react-query";
 import {
-  deleteBuilding,
-  getBuilding,
   getBuildings,
+  getBuilding,
   postBuilding,
   putBuilding,
+  deleteBuilding,
 } from "../services/building-services";
 import { TBuildingSchema } from "../schemas/building/base";
 import { TBuildingCreateSchema } from "../schemas/building/create";
 import { TBuildingUpdateSchema } from "../schemas/building/update";
 
-export default function useBuildingServices() {
+export const useBuildingServices = () => {
   const listBuildings = (ver: string) => {
     return useQuery(["api/get-buildings", ver], () => getBuildings(), {
       staleTime: 5 * 60 * 1000,
@@ -52,4 +52,4 @@ export default function useBuildingServices() {
     updateBuilding,
     removeBuilding,
   };
-}
+};

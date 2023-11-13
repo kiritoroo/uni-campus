@@ -4,7 +4,7 @@ import CreateModal from "./components/CreateModal";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useCommonStore } from "./hooks/useCommonStore";
-import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "./hooks/useBuildingsStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { useEffect } from "react";

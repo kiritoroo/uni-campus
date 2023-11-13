@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useBuildingStore } from "./hooks/useBuildingStore";
 import { useParams } from "react-router-dom";
-import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 
 import DetailForm from "./components/DetailForm";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";

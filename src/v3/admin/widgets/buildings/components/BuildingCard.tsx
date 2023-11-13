@@ -3,7 +3,7 @@ import { useUniDialog } from "@v3/admin/shared/UniDialog";
 import { Clipboard, Trash, Trash2 } from "lucide-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Tooltip } from "react-tooltip";
-import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { TBuildingSchema } from "@v3/admin/schemas/building/base";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";

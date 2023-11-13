@@ -11,7 +11,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { TBuildingUpdateSchema, buildingUpdateSchema } from "@v3/admin/schemas/building/update";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { v4 as uuidv4 } from "uuid";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";

@@ -7,7 +7,7 @@ import GLViewModel from "../webgl/GLViewModel";
 import DropModel from "./DropModel";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useBuildingServices from "@v3/admin/hooks/useBuildingServices";
+import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { useCommonStore } from "../hooks/useCommonStore";
 import { TBuildingCreateSchema, buildingCreateSchema } from "@v3/admin/schemas/building/create";
