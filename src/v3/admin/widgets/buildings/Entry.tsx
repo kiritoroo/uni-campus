@@ -9,6 +9,7 @@ import { useBuildingsStore } from "./hooks/useBuildingsStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { useEffect } from "react";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
+import CreateButton from "./components/CreateButton";
 
 const Entry = () => {
   const globalStore = useGlobalStore();
@@ -16,7 +17,7 @@ const Entry = () => {
   const buildingsStore = useBuildingsStore();
 
   const buildingServiceVersion = globalStore.use.buildingServiceVersion();
-  const actions = buildingsStore.use.actions();
+  const buildingsActions = buildingsStore.use.actions();
   const showCreateModal = commonStore.use.showCreateModal();
 
   const { listBuildings } = useBuildingServices();
@@ -24,7 +25,7 @@ const Entry = () => {
 
   useEffect(() => {
     if (data) {
-      actions.initBuildingsData({
+      buildingsActions.initBuildingsData({
         buildingsData: data,
       });
     }
@@ -32,17 +33,7 @@ const Entry = () => {
 
   return (
     <section className="h-full w-full overflow-hidden">
-      <button
-        type="button"
-        className={cn("w-fit bg-[#e2e2e2] p-3", {
-          "opacity-0": showCreateModal,
-        })}
-        onClick={() => {
-          commonStore.setState({ showCreateModal: true });
-        }}
-      >
-        <p className="text-sm font-medium text-[#2C2B31]">New Building</p>
-      </button>
+      <CreateButton />
       <div className="h-full w-full p-5">
         {isLoading && <SpinnerLoading width={50} height={50} />}
         {data && <BuildingsList />}
