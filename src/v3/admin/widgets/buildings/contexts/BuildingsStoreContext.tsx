@@ -1,5 +1,5 @@
 import { StoreApi } from "zustand";
-import { BuildingsStore, IBuildingsStore } from "../stores/BuildingsStore";
+import { BuildingsStore, IBuildingsStore } from "../stores/buildings-store";
 import { createContext, useRef } from "react";
 
 export interface IBuildingsStoreContext extends StoreApi<IBuildingsStore> {}

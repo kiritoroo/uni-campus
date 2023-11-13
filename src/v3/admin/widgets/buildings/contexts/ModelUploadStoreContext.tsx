@@ -1,5 +1,5 @@
 import { StoreApi } from "zustand";
-import { ModelUploadStore, IFileUploadStore } from "../stores/ModelUploadStore";
+import { ModelUploadStore, IFileUploadStore } from "../stores/model-upload-store";
 import { createContext, useRef } from "react";
 
 export interface IFileUploadStoreContext extends StoreApi<IFileUploadStore> {}

@@ -1,5 +1,5 @@
 const Entry = () => {
-  return <div>aa</div>;
+  return <section className="h-full w-full overflow-hidden"></section>;
 };
 
 export default Entry;
