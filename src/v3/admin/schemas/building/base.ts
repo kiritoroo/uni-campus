@@ -20,6 +20,8 @@ const scaleField = z.object({
   y: z.coerce.number(),
   z: z.coerce.number(),
 });
+const createdAtField = z.string().transform((v) => new Date(v));
+const updatedAtField = z.string().transform((v) => new Date(v));
 
 const buildingSchema = z.object({
   id: idField,
@@ -31,6 +33,8 @@ const buildingSchema = z.object({
   scale: scaleField,
   model_3d: fileInfoSchema,
   preview_img: fileInfoSchema,
+  created_at: createdAtField,
+  updated_at: updatedAtField,
 });
 
 type TBuildingSchema = z.infer<typeof buildingSchema>;
