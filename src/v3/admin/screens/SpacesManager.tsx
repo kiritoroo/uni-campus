@@ -1,5 +1,11 @@
+import Entry from "../widgets/spaces/Entry";
+
 const SpacesManager = () => {
-  return <div>SpacesManager</div>;
+  return (
+    <div>
+      <Entry />
+    </div>
+  );
 };
 
 export default SpacesManager;

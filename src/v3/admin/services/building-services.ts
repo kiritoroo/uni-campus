@@ -1,10 +1,10 @@
-import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
-import axios from "axios";
 import { objectToFormData } from "@Utils/common.utils";
 import { setupInterceptorsTo } from "./axios-interceptors";
-import { z } from "zod";
 import { TBuildingCreateSchema } from "../schemas/building/create";
 import { TBuildingSchema, buildingSchema } from "../schemas/building/base";
+import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
+import axios from "axios";
+import { z } from "zod";
 
 export const getBuildings = async (): Promise<TBuildingSchema[]> => {
   const axiosInstance = setupInterceptorsTo(axios.create());
