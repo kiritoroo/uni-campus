@@ -1,5 +1,5 @@
 import DropPreview from "./DropPreview";
-import { FormInput } from "../../../shared/FormInput";
+import { FormInput } from "@v3/admin/shared/FormInput";
 import ViewPreview from "./ViewPreview";
 import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 import { useForm, FormProvider } from "react-hook-form";
@@ -12,6 +12,7 @@ import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { useCommonStore } from "../hooks/useCommonStore";
 import { TBuildingCreateSchema, buildingCreateSchema } from "@v3/admin/schemas/building/create";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
+import { Loader2 } from "lucide-react";
 
 const CreateForm = () => {
   const commonStore = useCommonStore();
@@ -53,7 +54,7 @@ const CreateForm = () => {
 
   const { createBuilding } = useBuildingServices();
 
-  const { mutate } = createBuilding(
+  const { mutate, isLoading } = createBuilding(
     {
       ...watch(),
     },
@@ -227,7 +228,11 @@ const CreateForm = () => {
             </div>
           </div>
           <div className="py-5">
-            <button type="submit" className="w-fit bg-[#e2e2e2] p-3">
+            <button
+              type="submit"
+              className="inline-flex w-fit items-center justify-center bg-[#e2e2e2] p-3"
+            >
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin stroke-slate-500" />}
               <p className="text-sm font-medium text-[#2C2B31]">Create</p>
             </button>
           </div>

@@ -1,4 +1,3 @@
-import { cn } from "@Utils/common.utils";
 import BuildingsList from "./components/BuildingList";
 import CreateModal from "./components/CreateModal";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";

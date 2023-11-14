@@ -1,0 +1,62 @@
+import { useCallback } from "react";
+import { useIconUploadStore } from "../hooks/useIconUploadStore";
+import { useDropzone } from "react-dropzone";
+import { arrayBufferToString, cn } from "@Utils/common.utils";
+import { useFormContext } from "react-hook-form";
+import { TSpaceCreateSchema } from "@v3/admin/schemas/space/create";
+
+const DropIcon = () => {
+  const iconUploadStore = useIconUploadStore();
+  const { setValue, formState } = useFormContext<TSpaceCreateSchema>();
+
+  const handleOnDrop = useCallback((acceptedFiles: any) => {
+    acceptedFiles.forEach((file: any) => {
+      const reader = new FileReader();
+      reader.onabort = () => console.error("file reading was aborted");
+      reader.onerror = () => console.error("file reading has failed");
+      reader.onload = async () => {
+        iconUploadStore.setState({ fileRaw: file });
+        setValue("icon_file", file);
+        const data = reader.result;
+        iconUploadStore.setState({ base64: data, fileName: file.name });
+        arrayBufferToString(data, (a: any) => iconUploadStore.setState({ textOriginalFile: a }));
+      };
+      reader.readAsDataURL(file);
+    });
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+    onDrop: handleOnDrop,
+    maxFiles: 1,
+    accept: { "image/webp": [".webp"] },
+  });
+
+  return (
+    <div
+      className={cn(
+        "relative aspect-square h-full w-full border border-gray-300 bg-[#EFEFEF] p-4 text-center",
+        {
+          "border-2 border-red-400": formState.errors.icon_file,
+        },
+      )}
+      {...getRootProps()}
+    >
+      <input {...getInputProps()} />
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        {isDragActive ? (
+          <p className="text-sm font-medium text-[#2953E9]">Drop the files here...</p>
+        ) : (
+          <p className="text-sm font-medium">
+            Drag <strong className="text-[#2953E9]">WEBP</strong> file here
+          </p>
+        )}
+
+        {fileRejections.length ? (
+          <p className="text-sm font-medium">Only .webp files are accepted</p>
+        ) : null}
+      </div>
+    </div>
+  );
+};
+
+export default DropIcon;

@@ -4,13 +4,18 @@ import { useSpacesStore } from "./hooks/useSpacesStore";
 import { useEffect } from "react";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import CreateButton from "./components/CreateButton";
+import { useCommonStore } from "./hooks/useCommonStore";
+import { IconUploadStoreProvider } from "./contexts/IconUploadStoreContext";
+import CreateModal from "./components/CreateModal";
 
 const Entry = () => {
   const globalStore = useGlobalStore();
+  const commonStore = useCommonStore();
   const spacesStore = useSpacesStore();
 
   const spaceServiceVersion = globalStore.use.spaceServicesVersion();
   const spacesActions = spacesStore.use.actions();
+  const showCreateModal = commonStore.use.showCreateModal();
 
   const { listSpaces } = useSpaceServices();
   const { data, isLoading } = listSpaces(spaceServiceVersion);
@@ -34,6 +39,11 @@ const Entry = () => {
               <div key={space.id}>{space.name}</div>
             ))}
           </div>
+        )}
+        {showCreateModal && (
+          <IconUploadStoreProvider>
+            <CreateModal />
+          </IconUploadStoreProvider>
         )}
       </div>
     </section>
