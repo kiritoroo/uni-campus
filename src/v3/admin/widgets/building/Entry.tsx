@@ -10,13 +10,14 @@ import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 
 const Entry = () => {
+  const { id } = useParams();
+
   const globalStore = useGlobalStore();
   const buildingStore = useBuildingStore();
 
   const buildingServiceVersion = globalStore.use.buildingServiceVersion();
   const actions = buildingStore.use.actions();
 
-  const { id } = useParams();
   const { detailBuilding } = useBuildingServices();
 
   const { data, isLoading } = detailBuilding(buildingServiceVersion, { id: id ?? "" });

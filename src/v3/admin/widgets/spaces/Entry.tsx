@@ -10,6 +10,7 @@ import CreateModal from "./components/CreateModal";
 import { cn } from "@Utils/common.utils";
 import { css } from "@emotion/react";
 import SpacesList from "./components/SpacesList";
+import { Outlet } from "react-router-dom";
 
 const Entry = () => {
   const globalStore = useGlobalStore();
@@ -41,7 +42,9 @@ const Entry = () => {
             <div className="col-span-7 h-full w-full overflow-auto">
               <SpacesList />
             </div>
-            <div className="col-span-5"></div>
+            <div className="col-span-5">
+              <Outlet />
+            </div>
           </div>
         )}
       </div>

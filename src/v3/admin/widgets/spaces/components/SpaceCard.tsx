@@ -8,12 +8,16 @@ import { useUniDialog } from "@v3/admin/shared/UniDialog";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
 import { useSpaceServices } from "@v3/admin/hooks/useSpaceServices";
 import { v4 as uuidv4 } from "uuid";
+import { Link } from "react-router-dom";
+import { useCommonStore } from "../hooks/useCommonStore";
 
 const SpaceCard = ({ id, color, name, icon }: TSpaceSchema) => {
   const globalStore = useGlobalStore();
+  const commonStore = useCommonStore();
   const spacesStore = useSpacesStore();
 
   const actions = spacesStore.use.actions();
+  const pickedSpaceID = commonStore.use.pickedSpaceId();
 
   const uniDialog = useUniDialog();
   const uniToast = useUniToastify();
@@ -37,27 +41,43 @@ const SpaceCard = ({ id, color, name, icon }: TSpaceSchema) => {
   );
 
   return (
-    <div className="relative flex cursor-pointer items-stretch justify-start border border-gray-200">
-      <div className="px-4 py-2">
-        <img
-          className="h-full w-14 object-contain"
-          src={`${process.env.UNI_CAMPUS_API_URL}/${icon.url!}`}
-        />
-      </div>
-      <div className="relative grow bg-gray-100 px-3 py-5">
-        <div className="flex items-stretch justify-start gap-x-3 pl-2">
-          <div
-            className={cn("w-1")}
-            css={css`
-              background-color: ${color};
-            `}
+    <div
+      className={cn("relative border border-gray-200", { "border-blue-400": pickedSpaceID === id })}
+    >
+      <Link
+        to={pickedSpaceID === id ? "" : id}
+        onClick={() => {
+          pickedSpaceID === id
+            ? commonStore.setState({ pickedSpaceId: null })
+            : commonStore.setState({ pickedSpaceId: id });
+        }}
+        className="flex cursor-pointer items-stretch justify-start "
+      >
+        <div className="px-4 py-2">
+          <img
+            className="h-full w-14 object-contain"
+            src={`${process.env.UNI_CAMPUS_API_URL}/${icon.url!}`}
           />
-          <div>
-            <div className="font-semibold">{name}</div>
-            <div className="text-sm font-normal">{id}</div>
+        </div>
+        <div
+          className={cn("relative grow bg-gray-100 px-3 py-5", {
+            "bg-blue-50": pickedSpaceID === id,
+          })}
+        >
+          <div className="flex items-stretch justify-start gap-x-3 pl-2">
+            <div
+              className={cn("w-1")}
+              css={css`
+                background-color: ${color};
+              `}
+            />
+            <div>
+              <div className="font-semibold">{name}</div>
+              <div className="text-sm font-normal">{id}</div>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
 
       <button
         className="absolute bottom-3 right-3 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300"

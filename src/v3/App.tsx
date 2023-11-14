@@ -7,6 +7,7 @@ import BuildingManager from "@v3/admin/screens/BuildingManager";
 import SpacesManager from "@v3/admin/screens/SpacesManager";
 import LoginScreen from "@v3/admin/screens/LoginScreen";
 import { Fragment } from "react";
+import SpaceManager from "./admin/screens/SpaceManager";
 
 const App = () => {
   return (
@@ -17,7 +18,9 @@ const App = () => {
             <Route path="login" element={<LoginScreen />} />
             <Route path="buildings" element={<BuildingsManager />} />
             <Route path="buildings/:id" element={<BuildingManager />} />
-            <Route path="spaces" element={<SpacesManager />} />
+            <Route path="spaces" element={<SpacesManager />}>
+              <Route path=":id" element={<SpaceManager />} />
+            </Route>
           </Route>
         </Routes>
       </AdminProvider>
