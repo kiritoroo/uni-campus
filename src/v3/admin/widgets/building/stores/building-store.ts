@@ -35,8 +35,7 @@ export const BuildingStore = () => {
         ...initStore,
         actions: {
           initBuildingData: ({ buildingId, buildingData }) => {
-            set({ buildingId });
-            set({ buildingData });
+            set({ buildingId, buildingData });
           },
         },
       }),

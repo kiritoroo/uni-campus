@@ -72,7 +72,7 @@ const SpaceCard = ({ id, color, name, icon }: TSpaceSchema) => {
               `}
             />
             <div>
-              <div className="font-semibold">{name}</div>
+              <div className="pb-1 text-lg font-semibold">{name}</div>
               <div className="text-sm font-normal">{id}</div>
             </div>
           </div>
