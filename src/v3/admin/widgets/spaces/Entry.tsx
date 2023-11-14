@@ -7,6 +7,9 @@ import CreateButton from "./components/CreateButton";
 import { useCommonStore } from "./hooks/useCommonStore";
 import { IconUploadStoreProvider } from "./contexts/IconUploadStoreContext";
 import CreateModal from "./components/CreateModal";
+import { cn } from "@Utils/common.utils";
+import { css } from "@emotion/react";
+import SpacesList from "./components/SpacesList";
 
 const Entry = () => {
   const globalStore = useGlobalStore();
@@ -34,18 +37,19 @@ const Entry = () => {
       <div className="h-full w-full p-5">
         {isLoading && <SpinnerLoading width={50} height={50} />}
         {data && (
-          <div>
-            {data.map((space) => (
-              <div key={space.id}>{space.name}</div>
-            ))}
+          <div className="grid h-full w-full grid-cols-12 gap-x-10">
+            <div className="col-span-7 h-full w-full overflow-auto">
+              <SpacesList />
+            </div>
+            <div className="col-span-5"></div>
           </div>
         )}
-        {showCreateModal && (
-          <IconUploadStoreProvider>
-            <CreateModal />
-          </IconUploadStoreProvider>
-        )}
       </div>
+      {showCreateModal && (
+        <IconUploadStoreProvider>
+          <CreateModal />
+        </IconUploadStoreProvider>
+      )}
     </section>
   );
 };
