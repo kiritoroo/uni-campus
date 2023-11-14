@@ -1,20 +1,21 @@
 import { cn } from "@Utils/common.utils";
-import React, { useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { css } from "@emotion/react";
 import { useClickOutside } from "@Hooks/useClickOutside";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  initColor: string;
   label?: string;
 }
 
 export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, required, className, disabled, ...props }, ref) => {
+  ({ initColor, label, required, className, disabled, onChange, ...props }, ref) => {
     const inputId = `el--input-color-${Math.round(Math.random() * 1000)}`;
 
     const pickerRef = useRef<any>(undefined);
-    const [color, setColor] = useState("#ffffff");
-    const [tmpColor, setTmpColor] = useState(color);
+    const [color, setColor] = useState(initColor);
+    const [tmpColor, setTmpColor] = useState(initColor);
     const [showPicker, setShowPicker] = useState(false);
 
     useClickOutside(
@@ -30,6 +31,10 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
     const handleOnPickColor = (color: string) => {
       setColor(color);
       setTmpColor(color);
+      onChange &&
+        onChange({
+          target: { value: color },
+        } as ChangeEvent<HTMLInputElement>);
     };
 
     return (
@@ -57,9 +62,10 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
               value={tmpColor}
               onChange={(e) => {
                 const v = e.target.value;
-                setTmpColor(v);
                 if (/^#[0-9A-F]{6}$/i.test(v)) {
-                  setColor(v);
+                  handleOnPickColor(v);
+                } else {
+                  setTmpColor(v);
                 }
               }}
               {...props}
