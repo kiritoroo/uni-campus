@@ -66,9 +66,9 @@ const SpaceCard = ({ id, color, name, icon }: TSpaceSchema) => {
             body: (
               <div>
                 <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="text-lg font-medium">Delete building?</div>
+                  <div className="text-lg font-medium">Delete space?</div>
                   <p className="text-center text-sm">
-                    Are you sure you want to delete <strong>"{name}"</strong> building?. <br /> You
+                    Are you sure you want to delete <strong>"{name}"</strong> space?. <br /> You
                     can't undo this action.
                   </p>
                 </div>
