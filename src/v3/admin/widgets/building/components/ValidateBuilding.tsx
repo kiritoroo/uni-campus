@@ -2,6 +2,7 @@ import SelfBoundings from "./SelfBoundings";
 import BlocksBounding from "./BlocksBounding";
 import { useBuildingStore } from "../hooks/useBuildingStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
+import PublicForm from "./PublicForm";
 
 const ValidateBuilding = () => {
   const buildingStore = useBuildingStore();
@@ -20,7 +21,10 @@ const ValidateBuilding = () => {
             {!canSetPublic ? (
               <div className="font-medium">Building can't public</div>
             ) : (
-              <div className="font-medium">Building can be public</div>
+              <div className="flex items-center justify-between">
+                <div className="font-medium">Building can be public</div>
+                <PublicForm />
+              </div>
             )}
           </div>
           <div className="px-5 py-2">
