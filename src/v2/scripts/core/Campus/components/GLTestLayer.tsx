@@ -10,7 +10,7 @@ export const GLTestLayer = memo(() => {
   const gltf: TGLTFReference = useLoader(GLTFLoader, "test-bake.glb");
   const model = useMemo(() => gltf.scenes[0], []);
   // const texture = useTexture("/test-bake.png");
-  console.log(model);
+
   const objGroundMergeProperty = useMemo<{
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;

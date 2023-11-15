@@ -6,8 +6,7 @@ import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 const ValidateBuilding = () => {
   const buildingStore = useBuildingStore();
   const glBuildingObjects = buildingStore.use.glBuildingObjects();
-  const glSelfBoundings = buildingStore.use.glSelfBoundings();
-  const glBlocksBounding = buildingStore.use.glBlocksBounding();
+  const canSetPublic = buildingStore.use.canSetPublic();
 
   return (
     <div className="border border-slate-300">
@@ -18,9 +17,7 @@ const ValidateBuilding = () => {
       ) : (
         <>
           <div className="border-b border-b-slate-300 bg-gray-100 px-5 py-2 text-[14px]">
-            {!glSelfBoundings.arround &&
-            !glSelfBoundings.effect &&
-            glBlocksBounding?.length === 0 ? (
+            {!canSetPublic ? (
               <div className="font-medium">Building can't public</div>
             ) : (
               <div className="font-medium">Building can be public</div>

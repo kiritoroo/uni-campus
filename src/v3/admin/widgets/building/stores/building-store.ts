@@ -2,15 +2,18 @@ import { TBuildingSchema } from "@v3/admin/schemas/building/base";
 import { createStore } from "zustand";
 import { computed } from "zustand-computed";
 import * as THREE from "three";
-import { produce } from "immer";
 
 type TState = {
   buildingId: TBuildingSchema["id"] | null;
   buildingData: TBuildingSchema | null;
-  glBuildingObjects: THREE.Mesh[] | null;
+  glBuildingObjects: (THREE.Object3D | THREE.Mesh)[] | null;
+  glShowSelfBoundingEffect: boolean;
+  glShowSelfBoundingArround: boolean;
+  glShowBlocksBoundings: boolean;
 };
 
 type TComputedState = {
+  canSetPublic: undefined | boolean;
   glSelfBoundings: {
     arround: THREE.Mesh | null;
     effect: THREE.Mesh | null;
@@ -35,12 +38,16 @@ export interface IBuildingStore extends TState, TComputedState {
 const initStore: TState & TComputedState = {
   buildingId: null,
   buildingData: null,
+  canSetPublic: undefined,
   glBuildingObjects: null,
   glSelfBoundings: {
     arround: null,
     effect: null,
   },
   glBlocksBounding: null,
+  glShowSelfBoundingEffect: true,
+  glShowSelfBoundingArround: true,
+  glShowBlocksBoundings: true,
 };
 
 export const BuildingStore = () => {
@@ -55,15 +62,15 @@ export const BuildingStore = () => {
         },
       }),
       (state) => {
-        function getBoundingArround() {
+        const boundingArround = (function getBoundingArround() {
           return state.glBuildingObjects?.find((obj) => obj.name === "bounding-around") ?? null;
-        }
+        })() as THREE.Mesh;
 
-        function getBoundingEffect() {
+        const boundingEffect = (function getBoundingEffect() {
           return state.glBuildingObjects?.find((obj) => obj.name === "bounding-effect") ?? null;
-        }
+        })() as THREE.Mesh;
 
-        function getBlocksBounding() {
+        const blocksBounding = (function getBlocksBounding() {
           if (state.glBuildingObjects) {
             return (
               state.glBuildingObjects?.filter((obj) => obj.name.includes("_bounding-box")) ?? []
@@ -71,13 +78,20 @@ export const BuildingStore = () => {
           } else {
             return null;
           }
+        })() as THREE.Mesh[] | null;
+
+        function getCanSetPublic() {
+          return [
+            state.glBuildingObjects && boundingArround && boundingEffect && blocksBounding,
+          ].every((x) => x);
         }
 
         return {
-          glBlocksBounding: getBlocksBounding(),
+          canSetPublic: getCanSetPublic(),
+          glBlocksBounding: blocksBounding,
           glSelfBoundings: {
-            arround: getBoundingArround(),
-            effect: getBoundingEffect(),
+            arround: boundingArround,
+            effect: boundingEffect,
           },
         };
       },
