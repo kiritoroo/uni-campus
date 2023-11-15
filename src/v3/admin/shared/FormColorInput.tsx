@@ -1,5 +1,5 @@
 import { cn } from "@Utils/common.utils";
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { css } from "@emotion/react";
 import { useClickOutside } from "@Hooks/useClickOutside";
@@ -14,8 +14,8 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
     const inputId = `el--input-color-${Math.round(Math.random() * 1000)}`;
 
     const pickerRef = useRef<any>(undefined);
-    const [color, setColor] = useState(initColor);
-    const [tmpColor, setTmpColor] = useState(initColor);
+    const [color, setColor] = useState("#ffffff");
+    const [tmpColor, setTmpColor] = useState("#ffffff");
     const [showPicker, setShowPicker] = useState(false);
 
     useClickOutside(
@@ -27,6 +27,11 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
         exclude: [`${inputId}-preview`],
       },
     );
+
+    useEffect(() => {
+      setColor(initColor);
+      setTmpColor(initColor);
+    }, [initColor]);
 
     const handleOnPickColor = (color: string) => {
       setColor(color);
@@ -85,7 +90,10 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
           </div>
         </div>
         {showPicker && (
-          <div ref={pickerRef} className="absolute left-[50%] top-[100%] mt-2 -translate-x-1/2">
+          <div
+            ref={pickerRef}
+            className="absolute left-[50%] top-[100%] z-[99999] mt-2 -translate-x-1/2"
+          >
             <HexColorPicker color={color} onChange={handleOnPickColor} />
           </div>
         )}

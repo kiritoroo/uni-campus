@@ -7,12 +7,12 @@ import CreateButton from "./components/CreateButton";
 import { useCommonStore } from "./hooks/useCommonStore";
 import { IconUploadStoreProvider } from "./contexts/IconUploadStoreContext";
 import CreateModal from "./components/CreateModal";
-import { cn } from "@Utils/common.utils";
-import { css } from "@emotion/react";
 import SpacesList from "./components/SpacesList";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 
 const Entry = () => {
+  const { id } = useParams();
+
   const globalStore = useGlobalStore();
   const commonStore = useCommonStore();
   const spacesStore = useSpacesStore();
@@ -32,6 +32,10 @@ const Entry = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    id && commonStore.setState({ pickedSpaceId: id });
+  }, [id]);
+
   return (
     <section className="h-full w-full overflow-hidden">
       <CreateButton />
@@ -43,7 +47,7 @@ const Entry = () => {
               <SpacesList />
             </div>
             <div className="col-span-5">
-              <Outlet />
+              <Outlet key={id ?? ""} />
             </div>
           </div>
         )}

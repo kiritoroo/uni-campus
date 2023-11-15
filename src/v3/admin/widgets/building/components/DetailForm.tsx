@@ -156,7 +156,7 @@ const DetailForm = () => {
         </div>
         <div className="flex w-full flex-col items-start justify-center gap-2 border-t border-gray-300 bg-gray-50 px-8 py-4">
           <div className="flex flex-row items-stretch justify-start gap-x-8">
-            <div className="flex h-full flex-col items-start justify-between py-1">
+            <div className="flex h-auto flex-col items-start justify-between py-1">
               <p className="text-sm">Name </p>
               <p className="text-sm">Space </p>
               <p className="text-sm">Uses </p>
