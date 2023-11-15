@@ -1,13 +1,22 @@
 import { TBuildingSchema } from "@v3/admin/schemas/building/base";
 import { createStore } from "zustand";
 import { computed } from "zustand-computed";
+import * as THREE from "three";
+import { produce } from "immer";
 
 type TState = {
   buildingId: TBuildingSchema["id"] | null;
   buildingData: TBuildingSchema | null;
+  glBuildingObjects: THREE.Mesh[] | null;
 };
 
-type TComputedState = {};
+type TComputedState = {
+  glSelfBoundings: {
+    arround: THREE.Mesh | null;
+    effect: THREE.Mesh | null;
+  };
+  glBlocksBounding: THREE.Mesh[] | null;
+};
 
 type TActions = {
   initBuildingData: ({
@@ -26,6 +35,12 @@ export interface IBuildingStore extends TState, TComputedState {
 const initStore: TState & TComputedState = {
   buildingId: null,
   buildingData: null,
+  glBuildingObjects: null,
+  glSelfBoundings: {
+    arround: null,
+    effect: null,
+  },
+  glBlocksBounding: null,
 };
 
 export const BuildingStore = () => {
@@ -39,7 +54,33 @@ export const BuildingStore = () => {
           },
         },
       }),
-      (state) => ({}),
+      (state) => {
+        function getBoundingArround() {
+          return state.glBuildingObjects?.find((obj) => obj.name === "bounding-around") ?? null;
+        }
+
+        function getBoundingEffect() {
+          return state.glBuildingObjects?.find((obj) => obj.name === "bounding-effect") ?? null;
+        }
+
+        function getBlocksBounding() {
+          if (state.glBuildingObjects) {
+            return (
+              state.glBuildingObjects?.filter((obj) => obj.name.includes("_bounding-box")) ?? []
+            );
+          } else {
+            return null;
+          }
+        }
+
+        return {
+          glBlocksBounding: getBlocksBounding(),
+          glSelfBoundings: {
+            arround: getBoundingArround(),
+            effect: getBoundingEffect(),
+          },
+        };
+      },
     ),
   );
 };

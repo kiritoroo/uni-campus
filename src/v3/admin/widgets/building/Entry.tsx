@@ -8,6 +8,9 @@ import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
+import SelfBoundings from "./components/SelfBoundings";
+import BlocksBounding from "./components/BlocksBounding";
+import ValidateBuilding from "./components/ValidateBuilding";
 
 const Entry = () => {
   const { id } = useParams();
@@ -33,19 +36,21 @@ const Entry = () => {
 
   return (
     <section className="h-full w-full overflow-hidden">
-      <div className="grid h-full w-full grid-cols-12 gap-5">
-        <div className="col-span-7"></div>
-        <div className="col-span-5">
-          {isLoading && <SpinnerLoading width={50} height={50} />}
-          {data && (
+      {isLoading && <SpinnerLoading width={50} height={50} />}
+      {data && (
+        <div className="grid h-full w-full grid-cols-12 gap-5">
+          <div className="col-span-7">
+            <ValidateBuilding />
+          </div>
+          <div className="col-span-5">
             <ModelUploadStoreProvider>
               <PreviewUploadStoreProvider>
                 <DetailForm />
               </PreviewUploadStoreProvider>
             </ModelUploadStoreProvider>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };
