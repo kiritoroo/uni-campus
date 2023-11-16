@@ -2,11 +2,7 @@ import { MeshProps, useFrame } from "@react-three/fiber";
 import { forwardRef, memo, useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export type TGLBoundingEffectRef = {
-  object: THREE.Mesh;
-  onPointerEnterBuilding: () => void;
-  onPointerLeaveBuilding: () => void;
-};
+export type TGLBoundingEffectRef = {};
 
 interface IGLBoundingEffectProps extends MeshProps {
   geometry: THREE.BufferGeometry;

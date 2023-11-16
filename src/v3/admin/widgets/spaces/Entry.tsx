@@ -9,6 +9,7 @@ import { IconUploadStoreProvider } from "./contexts/IconUploadStoreContext";
 import CreateModal from "./components/CreateModal";
 import SpacesList from "./components/SpacesList";
 import { Outlet, useParams } from "react-router-dom";
+import EmptyOutlet from "./components/EmptyOutlet";
 
 const Entry = () => {
   const { id } = useParams();
@@ -48,6 +49,7 @@ const Entry = () => {
             </div>
             <div className="col-span-5">
               <Outlet key={id ?? ""} />
+              {!id && <EmptyOutlet />}
             </div>
           </div>
         )}

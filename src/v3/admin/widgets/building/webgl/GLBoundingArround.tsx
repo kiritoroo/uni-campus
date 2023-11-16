@@ -2,11 +2,7 @@ import { MeshProps } from "@react-three/fiber";
 import { forwardRef, memo, useRef } from "react";
 import * as THREE from "three";
 
-export type TGLBoundingAroundRef = {
-  object: THREE.Mesh;
-  onPointerEnterBuilding: () => void;
-  onPointerLeaveBuilding: () => void;
-};
+export type TGLBoundingAroundRef = {};
 
 interface IGlBoundingArroundProps extends MeshProps {
   position: THREE.Vector3;

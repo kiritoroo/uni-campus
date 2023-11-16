@@ -35,11 +35,25 @@ const UnValidObject = ({ message }: { message: string }) => {
 const SelfBoundings = () => {
   const buildingStore = useBuildingStore();
   const glSelfBoundings = buildingStore.use.glSelfBoundings();
+  const glShowSelfBoundingBox = buildingStore.use.glShowSelfBoundingBox();
   const glShowSelfBoundingEffect = buildingStore.use.glShowSelfBoundingEffect();
   const glShowSelfBoundingArround = buildingStore.use.glShowSelfBoundingArround();
 
   return (
     <div className="relative space-y-2">
+      <div className="text-sm font-normal">
+        {glSelfBoundings.box ? (
+          <ValidObject
+            message="Building Object has 'bounding-box'"
+            isShow={glShowSelfBoundingBox}
+            toggleShow={() => {
+              buildingStore.setState({ glShowSelfBoundingBox: !glShowSelfBoundingBox });
+            }}
+          />
+        ) : (
+          <UnValidObject message="Building Object missing 'bounding-box'" />
+        )}
+      </div>
       <div className="text-sm font-normal">
         {glSelfBoundings.effect ? (
           <ValidObject
@@ -50,7 +64,7 @@ const SelfBoundings = () => {
             }}
           />
         ) : (
-          <UnValidObject message="Building Object missing 'bounding-effect'<" />
+          <UnValidObject message="Building Object missing 'bounding-effect'" />
         )}
       </div>
       <div className="text-sm font-normal">

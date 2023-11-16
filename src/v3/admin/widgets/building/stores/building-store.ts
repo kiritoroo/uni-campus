@@ -48,7 +48,7 @@ const initStore: TState & TComputedState = {
     effect: null,
   },
   glBlocksBounding: null,
-  glShowSelfBoundingBox: false,
+  glShowSelfBoundingBox: true,
   glShowSelfBoundingEffect: true,
   glShowSelfBoundingArround: true,
   glShowBlocksBoundings: true,
