@@ -52,7 +52,7 @@ const GLBuilding = memo(() => {
 
   return (
     <group>
-      {scene && <primitive object={scene} />}
+      {/* {scene && <primitive object={scene} />} */}
       {objBoundingArroundProperty && (
         <GLBoundingAround
           geometry={objBoundingArroundProperty.geometry}

@@ -7,6 +7,7 @@ type TState = {
   buildingId: TBuildingSchema["id"] | null;
   buildingData: TBuildingSchema | null;
   glBuildingObjects: (THREE.Object3D | THREE.Mesh)[] | null;
+  glShowSelfBoundingBox: boolean;
   glShowSelfBoundingEffect: boolean;
   glShowSelfBoundingArround: boolean;
   glShowBlocksBoundings: boolean;
@@ -15,6 +16,7 @@ type TState = {
 type TComputedState = {
   canSetPublic: undefined | boolean;
   glSelfBoundings: {
+    box: THREE.Mesh | null;
     arround: THREE.Mesh | null;
     effect: THREE.Mesh | null;
   };
@@ -41,10 +43,12 @@ const initStore: TState & TComputedState = {
   canSetPublic: undefined,
   glBuildingObjects: null,
   glSelfBoundings: {
+    box: null,
     arround: null,
     effect: null,
   },
   glBlocksBounding: null,
+  glShowSelfBoundingBox: false,
   glShowSelfBoundingEffect: true,
   glShowSelfBoundingArround: true,
   glShowBlocksBoundings: true,
@@ -62,6 +66,10 @@ export const BuildingStore = () => {
         },
       }),
       (state) => {
+        const boundingBox = (function getBoundingBox() {
+          return state.glBuildingObjects?.find((obj) => obj.name === "bounding-box") ?? null;
+        })() as THREE.Mesh;
+
         const boundingArround = (function getBoundingArround() {
           return state.glBuildingObjects?.find((obj) => obj.name === "bounding-around") ?? null;
         })() as THREE.Mesh;
@@ -90,6 +98,7 @@ export const BuildingStore = () => {
           canSetPublic: getCanSetPublic(),
           glBlocksBounding: blocksBounding,
           glSelfBoundings: {
+            box: boundingBox,
             arround: boundingArround,
             effect: boundingEffect,
           },

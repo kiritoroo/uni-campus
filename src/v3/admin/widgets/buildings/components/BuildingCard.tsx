@@ -10,7 +10,7 @@ import { useUniToastify } from "@v3/admin/shared/UniToastify";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { v4 as uuidv4 } from "uuid";
 
-const BuildingCard = ({ id, name, preview_img }: TBuildingSchema & {}) => {
+const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}) => {
   const globalStore = useGlobalStore();
   const buildingsStore = useBuildingsStore();
 
@@ -46,38 +46,45 @@ const BuildingCard = ({ id, name, preview_img }: TBuildingSchema & {}) => {
             className="h-full object-cover"
           />
         </Link>
-        <button
-          className="absolute bottom-3 right-3 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300"
-          onClick={() => {
-            uniDialog.addDialog({
-              body: (
-                <div>
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <div className="text-lg font-medium">Delete building?</div>
-                    <p className="text-center text-sm">
-                      Are you sure you want to delete <strong>"{name}"</strong> building?. <br />{" "}
-                      You can't undo this action.
-                    </p>
+        <div className="absolute bottom-3 right-3 flex items-center justify-center gap-2">
+          {is_public && (
+            <div className="rounded-sm bg-green-100 px-2 py-1 text-[14px] font-medium text-green-600">
+              Public
+            </div>
+          )}
+          <button
+            className="cursor-pointer bg-gray-200 p-2 hover:bg-gray-300"
+            onClick={() => {
+              uniDialog.addDialog({
+                body: (
+                  <div>
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="text-lg font-medium">Delete building?</div>
+                      <p className="text-center text-sm">
+                        Are you sure you want to delete <strong>"{name}"</strong> building?. <br />{" "}
+                        You can't undo this action.
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ),
-              button: (
-                <button
-                  type="button"
-                  className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
-                  onClick={() => {
-                    mutate();
-                  }}
-                >
-                  <div className="text-sm font-medium">Delete</div>{" "}
-                  <Trash className="h-4 w-4 stroke-gray-700" />
-                </button>
-              ),
-            });
-          }}
-        >
-          <Trash2 className="h-4 w-4 stroke-gray-600" />
-        </button>
+                ),
+                button: (
+                  <button
+                    type="button"
+                    className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
+                    onClick={() => {
+                      mutate();
+                    }}
+                  >
+                    <div className="text-sm font-medium">Delete</div>{" "}
+                    <Trash className="h-4 w-4 stroke-gray-700" />
+                  </button>
+                ),
+              });
+            }}
+          >
+            <Trash2 className="h-4 w-4 stroke-gray-600" />
+          </button>
+        </div>
       </div>
       <div className="flex w-full flex-col items-start justify-center gap-2 bg-gray-100 p-4">
         <div className="text-lg font-bold text-gray-800">{name}</div>

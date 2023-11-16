@@ -67,7 +67,7 @@ const PublicForm = () => {
       <button
         type="button"
         className={cn("flex items-center justify-center gap-2 bg-gray-200 px-3 py-2", {
-          "bg-gray-200": buildingData?.is_public,
+          "bg-green-100": buildingData?.is_public,
         })}
         onClick={() => {
           setValue("is_public", !buildingData?.is_public);
@@ -76,8 +76,8 @@ const PublicForm = () => {
         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin stroke-slate-500" />}
         {buildingData?.is_public && (
           <>
-            <div className="text-sm font-medium text-gray-500">Public</div>{" "}
-            <BookCheck className="h-4 w-4 stroke-gray-500" />
+            <div className="text-sm font-medium text-green-600">Public</div>{" "}
+            <BookCheck className="h-4 w-4 stroke-green-600" />
           </>
         )}
         {!buildingData?.is_public && (
