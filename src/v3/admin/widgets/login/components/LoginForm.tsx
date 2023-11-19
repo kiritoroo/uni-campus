@@ -97,7 +97,7 @@ const LoginForm = () => {
       <div className="border-t border-t-gray-300 bg-[#FAFAFA] px-6 py-4">
         <button
           type="submit"
-          className="bg-gem-onyx relative inline-flex w-full items-center justify-center rounded-md py-[10px] text-base font-medium text-white"
+          className="bg-gem-onyx hover:bg-gem-onyx/90 active:bg-gem-onyx relative inline-flex w-full items-center justify-center rounded-md py-[10px] text-base font-semibold text-white transition-colors duration-200"
         >
           <div className={cn("relative")}>
             <span className={cn({ "opacity-0": isLoading })}>Login</span>
