@@ -173,7 +173,7 @@ export const UniToastifyContainer = () => {
   return (
     <div>
       {toasts.length > 0 && (
-        <div className="absolute left-1/2 right-0 top-[20px] z-[99999] w-fit -translate-x-1/2">
+        <div className="absolute bottom-[50px] left-[95%] right-0 z-[99999] w-fit -translate-x-[100%]">
           <div className="flex flex-col items-center justify-center space-y-4">
             {toasts.map((toast) => (
               <UniToastify key={toast.id} {...toast} />
