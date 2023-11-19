@@ -118,11 +118,12 @@ export const ToastifyVariants: {
 export const UniToastify = ({ id, type, title, desc }: TUniToastifyProps) => {
   const toastVariant = ToastifyVariants[type];
   const { Icon, color, defaultTitle } = toastVariant;
+  const timeoutId = useRef<any>();
 
   const uniToast = useUniToastify();
 
   useEffect(() => {
-    setTimeout(() => {
+    timeoutId.current = setTimeout(() => {
       uniToast.deleteToastify(id);
     }, 2500);
   }, []);
@@ -131,6 +132,14 @@ export const UniToastify = ({ id, type, title, desc }: TUniToastifyProps) => {
     <div
       id={id}
       className="animate-[fadein_200ms_linear] overflow-hidden rounded-lg border border-gray-300 bg-white shadow-sm"
+      onMouseEnter={() => {
+        clearTimeout(timeoutId.current);
+      }}
+      onMouseLeave={() => {
+        timeoutId.current = setTimeout(() => {
+          uniToast.deleteToastify(id);
+        }, 2500);
+      }}
     >
       <div className="flex items-stretch justify-start">
         <div className="flex items-center justify-center py-3 pl-8 pr-5">
