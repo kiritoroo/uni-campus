@@ -54,13 +54,13 @@ const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}
       button: (
         <button
           type="button"
-          className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
+          className="bg-gem-onyx border-gem-onyx hover:text-gem-onyx active:bg-gem-onyx/20 group flex items-center justify-around gap-2 rounded-lg border px-4 py-3 text-white transition-colors duration-200 hover:bg-white"
           onClick={() => {
             mutate();
           }}
         >
           <div className="text-sm font-medium">Delete</div>{" "}
-          <Trash className="h-4 w-4 stroke-gray-700" />
+          <Trash className="group-hover:stroke-gem-onyx h-4 w-4 stroke-white transition-colors duration-200" />
         </button>
       ),
     });

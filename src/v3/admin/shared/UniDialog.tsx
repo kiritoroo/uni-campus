@@ -68,19 +68,22 @@ export const UniDialog = ({ id, body, button }: TUniDialogProps) => {
   const { deleteDialog } = useUniDialog();
 
   return (
-    <div id={id} className="min-w-[350px] bg-white">
+    <div
+      id={id}
+      className="min-w-[350px] overflow-hidden rounded-lg border border-gray-300 bg-white"
+    >
       <div className="flex flex-col items-start justify-center">
         <div className="bg-white px-10 py-8">{body}</div>
-        <div className="flex w-full items-center justify-between bg-gray-50 px-10 py-3">
+        <div className="flex w-full items-center justify-between border-t border-t-gray-300 bg-[#FAFAFA] px-10 py-3">
           <button
             type="button"
-            className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
+            className="bg-gem-onyx border-gem-onyx hover:text-gem-onyx active:bg-gem-onyx/20 group flex items-center justify-around gap-2 rounded-lg border px-4 py-3 text-white transition-colors duration-200 hover:bg-white"
             onClick={() => {
               deleteDialog(id);
             }}
           >
-            <div className="text-sm font-medium">Cancel</div>{" "}
-            <X className="h-4 w-4 stroke-gray-700" />
+            <div className="text-sm font-semibold">Cancel</div>{" "}
+            <X className="group-hover:stroke-gem-onyx h-4 w-4 stroke-white transition-colors duration-200" />
           </button>
           <div
             onClick={() => {
@@ -101,7 +104,7 @@ export const UniDialogContainer = () => {
   return (
     <div>
       {dialogs.length > 0 && (
-        <div className="absolute inset-0 z-[99999] flex items-center justify-center bg-black/10">
+        <div className="absolute inset-0 z-[99999] flex items-center justify-center bg-black/10 backdrop-blur-[2px]">
           {dialogs?.map((dialog) => <UniDialog key={dialog.id} {...dialog} />)}
         </div>
       )}
