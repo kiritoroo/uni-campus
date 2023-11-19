@@ -21,19 +21,19 @@ export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block w-fit cursor-pointer pb-1 text-sm font-semibold text-slate-400"
+            className="text-gem-onyx/80 block w-fit cursor-pointer pb-1 text-sm font-semibold"
           >
-            {label} {required && dir === "vez" && !child && <span className="text-red-400">*</span>}
+            {label}{" "}
           </label>
         )}
 
-        <div className="flex items-stretch justify-center border border-slate-300">
-          <div className="flex items-center justify-center border-r border-slate-300 bg-white p-3">
+        <div className="flex items-stretch justify-center rounded-lg border border-gray-300">
+          <div className="flex items-center justify-center rounded-l-lg border-r border-gray-300 bg-[#F5F5F5] px-4 py-3">
             {icon && icon}
           </div>
           <input
             className={cn(
-              "h-auto w-full bg-white px-3 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500/20 disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
+              "text-gem-onyx/80 focus:focus:outline-gem-onyx/80 h-auto w-full rounded-r-lg bg-[#FAFAFA] px-3 text-sm font-semibold focus:outline-2  disabled:cursor-not-allowed disabled:opacity-50",
               className,
             )}
             ref={ref}

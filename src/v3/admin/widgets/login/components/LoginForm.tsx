@@ -3,11 +3,13 @@ import { FormInput } from "./FormInput";
 import { TLoginSchema, loginSchema } from "@v3/admin/schemas/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUserServices } from "@v3/admin/hooks/useUserServices";
-import { Loader2 } from "lucide-react";
+import { Box, Loader2 } from "lucide-react";
 import { useAuthStore } from "@v3/admin/hooks/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import { AtSign, Lock } from "lucide-react";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
+import DotFlashing from "@v3/admin/shared/DotFlashing";
+import { cn } from "@Utils/common.utils";
 
 const LoginForm = () => {
   const authStore = useAuthStore();
@@ -56,18 +58,27 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmitForm)}
-      className="h-fit w-fit border border-slate-300 bg-slate-50"
+      className="h-fit w-fit overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md"
     >
       <div className="px-6 pb-3 pt-8">
-        <div className="text-xl font-semibold uppercase">Login</div>
-        <div className="py-2 text-sm font-semibold text-slate-400">Sign in to Uni Campus X </div>
+        <div className="pb-4">
+          <div className="flex w-full items-center justify-center pb-3">
+            <div className="bg-gem-onyx h-fit w-fit rounded-full p-2">
+              <Box className="block stroke-white" />
+            </div>
+          </div>
+          <div className="text-center text-2xl font-black">Uni Campus X</div>
+          <div className="text-center text-sm font-medium">
+            Manager Uni Campus, the behind the scene.
+          </div>
+        </div>
       </div>
-      <div className="border-b border-slate-200" />
-      <div className="min-w-[380px] space-y-5 px-6 pb-8 pt-5">
+      <div className="min-w-[400px] space-y-5 px-6 pb-8 pt-2">
+        <div className="text-center text-lg font-semibold">Sign in</div>
         <FormInput
           {...register("username")}
           label="Username"
-          icon={<AtSign className="h-4 w-4 stroke-slate-600" />}
+          icon={<AtSign className="stroke-gem-onyx h-4 w-4" />}
           type="text"
           required
           placeholder="example@uni.x"
@@ -76,18 +87,26 @@ const LoginForm = () => {
         <FormInput
           {...register("plain_pwd")}
           label="Password"
-          icon={<Lock className="h-4 w-4 stroke-slate-600" />}
+          icon={<Lock className="stroke-gem-onyx h-4 w-4" />}
           type="password"
           required
           placeholder="Password"
           autoComplete={"on"}
         />
+      </div>
+      <div className="border-t border-t-gray-300 bg-[#FAFAFA] px-6 py-4">
         <button
           type="submit"
-          className="inline-flex w-full items-center justify-center bg-blue-400 py-2 text-sm font-semibold text-white"
+          className="bg-gem-onyx relative inline-flex w-full items-center justify-center rounded-md py-[10px] text-base font-medium text-white"
         >
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Login
+          <div className={cn("relative")}>
+            <span className={cn({ "opacity-0": isLoading })}>Login</span>
+            {isLoading && (
+              <div className="absolute inset-0 z-[1] h-full w-full">
+                <DotFlashing />
+              </div>
+            )}
+          </div>
         </button>
       </div>
     </form>
