@@ -101,7 +101,7 @@ export const UniDialogContainer = () => {
   return (
     <div>
       {dialogs.length > 0 && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+        <div className="absolute inset-0 z-[99999] flex items-center justify-center bg-black/10">
           {dialogs?.map((dialog) => <UniDialog key={dialog.id} {...dialog} />)}
         </div>
       )}

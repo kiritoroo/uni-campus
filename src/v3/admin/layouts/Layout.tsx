@@ -10,6 +10,7 @@ import { SpinnerLoading } from "../shared/SpinnerLoading";
 import { UniToastifyContainer } from "../shared/UniToastify";
 import Provider from "./Provider";
 import Sidebar from "./Sidebar";
+import PuffLoader from "react-spinners/PuffLoader";
 
 const GuardOutlet = () => {
   const authStore = useAuthStore();
@@ -18,7 +19,11 @@ const GuardOutlet = () => {
   const location = useLocation();
 
   if (authenticated === undefined) {
-    return <SpinnerLoading width={50} height={50} />;
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <PuffLoader size={100} loading={true} color="#323234" />
+      </div>
+    );
   }
 
   if (authenticated === false) {
@@ -37,10 +42,13 @@ const GuardOutlet = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
+    <div className="flex h-screen w-screen items-start justify-center">
       <Sidebar />
-      <div className="grow">
-        <Outlet />
+      <div className="relative h-screen grow">
+        <UniDialogContainer />
+        <div className="h-screen overflow-scroll">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
@@ -51,8 +59,6 @@ const Layout = () => {
     <Provider>
       <main className="font-lato text-gem-onyx bg-white antialiased">
         <UniToastifyContainer />
-        <UniDialogContainer />
-
         <GuardOutlet />
       </main>
     </Provider>

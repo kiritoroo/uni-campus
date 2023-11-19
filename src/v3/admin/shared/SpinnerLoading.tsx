@@ -4,7 +4,7 @@ export const SpinnerLoading = ({ width, height }: { width: number; height: numbe
       <div className="flex h-full w-full items-center justify-center">
         <div
           style={{ width: width, height: height }}
-          className=" border-nat-white animate-spin rounded-full border-4 border-y-blue-400 border-r-blue-400"
+          className=" border-nat-white border-y-gem-onyx border-r-gem-onyx animate-spin rounded-full border-4"
         />
       </div>
     </div>

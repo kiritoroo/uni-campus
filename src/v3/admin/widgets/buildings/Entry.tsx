@@ -30,13 +30,21 @@ const Entry = () => {
     }
   }, [data]);
 
-  return (
-    <section className="h-full w-full overflow-hidden">
-      <CreateButton />
-      <div className="h-full w-full p-5">
-        {isLoading && <SpinnerLoading width={50} height={50} />}
-        {data && <BuildingsList />}
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full">
+        <SpinnerLoading width={50} height={50} />
       </div>
+    );
+  }
+
+  return (
+    <section className="h-auto w-full p-8">
+      <div className="flex items-center justify-between pr-20">
+        <div className="text-2xl font-black">All Buildings</div>
+        <CreateButton />
+      </div>
+      {data && <BuildingsList />}
       {showCreateModal && (
         <ModelUploadStoreProvider>
           <PreviewUploadStoreProvider>

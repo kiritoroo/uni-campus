@@ -8,14 +8,17 @@ const CreateButton = () => {
   return (
     <button
       type="button"
-      className={cn("w-fit bg-[#e2e2e2] p-3", {
-        "opacity-0": showCreateModal,
-      })}
+      className={cn(
+        "bg-gem-onyx active:bg-gem-onyx/20 hover:text-gem-onyx border-gem-onyx w-fit rounded-lg border px-4 py-2 text-white transition-colors duration-200 hover:bg-white",
+        {
+          "opacity-0": showCreateModal,
+        },
+      )}
       onClick={() => {
         commonStore.setState({ showCreateModal: true });
       }}
     >
-      <p className="text-sm font-medium text-[#2C2B31]">New Building</p>
+      <p className="text-sm font-semibold">New Building</p>
     </button>
   );
 };
