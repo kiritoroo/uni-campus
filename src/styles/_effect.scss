@@ -16,6 +16,16 @@
   }
 }
 
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .animate__pulse {
   animation-name: pulse;
   animation-timing-function: ease-in-out;

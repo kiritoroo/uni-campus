@@ -128,25 +128,30 @@ export const UniToastify = ({ id, type, title, desc }: TUniToastifyProps) => {
   }, []);
 
   return (
-    <div id={id} className="border border-slate-200 bg-white shadow-sm">
+    <div
+      id={id}
+      className="animate-[fadein_200ms_linear] overflow-hidden rounded-lg border border-gray-300 bg-white shadow-sm"
+    >
       <div className="flex items-stretch justify-start">
         <div className="flex items-center justify-center py-3 pl-8 pr-5">
           <Icon className="h-8 w-8" style={{ stroke: color }} />
         </div>
         <div className="py-3 pl-2 pr-8">
-          <div className="text-lg font-semibold">{title ? title : defaultTitle}</div>
-          <div className="w-[250px] text-base text-slate-500">
+          <div className="text-gem-onyx text-base font-semibold">
+            {title ? title : defaultTitle}
+          </div>
+          <div className="text-gem-onyx/80 w-[200px] text-sm">
             <TextTruncate line={2} element="div" truncateText="..." text={desc} />
           </div>
         </div>
         <button
           type="button"
-          className="flex items-center justify-center border-l border-slate-200 px-5 py-3 hover:bg-slate-200"
+          className="hover:bg-gem-onyx flex items-center justify-center border-l border-gray-300 px-5 py-3 transition-colors duration-200 hover:text-white"
           onClick={() => {
             uniToast.deleteToastify(id);
           }}
         >
-          <div className="text-base font-semibold uppercase">OK</div>
+          <div className="text-sm font-semibold uppercase">OK</div>
         </button>
       </div>
     </div>
