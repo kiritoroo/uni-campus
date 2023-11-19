@@ -2,13 +2,14 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "@v3/admin/layouts/Navbar";
 import Header from "@v3/admin/layouts/Header";
 import Footer from "@v3/admin/layouts/Footer";
-import { UniDialogContainer, UniDialogProvider } from "../shared/UniDialog";
-import { GlobalStoreProvider } from "../contexts/GlobalStoreContext";
+import { UniDialogContainer } from "../shared/UniDialog";
 import { useAuthStore } from "../hooks/useAuthStore";
 import { Navigate } from "react-router-dom";
 import { Fragment } from "react";
 import { SpinnerLoading } from "../shared/SpinnerLoading";
 import { UniToastifyContainer } from "../shared/UniToastify";
+import Provider from "./Provider";
+import Sidebar from "./Sidebar";
 
 const GuardOutlet = () => {
   const authStore = useAuthStore();
@@ -16,38 +17,45 @@ const GuardOutlet = () => {
 
   const location = useLocation();
 
-  if (!authenticated) {
+  if (authenticated === undefined) {
+    return <SpinnerLoading width={50} height={50} />;
+  }
+
+  if (authenticated === false) {
     return (
       <>
         <Navigate to="login" replace={true} />
         <Outlet />
       </>
     );
-  } else {
+  }
+
+  if (authenticated) {
     if (location.pathname === "/x/login") {
       return <Navigate to="/x" replace={true} />;
     }
   }
 
-  return <Outlet />;
+  return (
+    <div className="flex h-screen w-screen items-center justify-center">
+      <Sidebar />
+      <div className="grow">
+        <Outlet />
+      </div>
+    </div>
+  );
 };
 
 const Layout = () => {
-  const authStore = useAuthStore();
-  const authenticated = authStore.use.authenticated();
-
   return (
-    <GlobalStoreProvider>
-      <UniDialogProvider>
-        <main className="font-lato text-gem-onyx bg-white antialiased">
-          <UniToastifyContainer />
-          <UniDialogContainer />
-          {authenticated === undefined && <SpinnerLoading width={50} height={50} />}
-          {authenticated && <GuardOutlet />}
-          {authenticated === false && <GuardOutlet />}
-        </main>
-      </UniDialogProvider>
-    </GlobalStoreProvider>
+    <Provider>
+      <main className="font-lato text-gem-onyx bg-white antialiased">
+        <UniToastifyContainer />
+        <UniDialogContainer />
+
+        <GuardOutlet />
+      </main>
+    </Provider>
   );
 };
 
