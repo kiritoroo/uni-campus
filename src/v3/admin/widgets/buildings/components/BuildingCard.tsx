@@ -43,7 +43,7 @@ const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}
       body: (
         <div>
           <div className="flex flex-col items-center justify-center gap-2">
-            <div className="text-lg font-medium">Delete building?</div>
+            <div className="text-lg font-bold">Delete building?</div>
             <p className="text-center text-sm">
               Are you sure you want to delete <strong>"{name}"</strong> building?. <br /> You can't
               undo this action.

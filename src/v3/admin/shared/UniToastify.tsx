@@ -131,7 +131,7 @@ export const UniToastify = ({ id, type, title, desc }: TUniToastifyProps) => {
   return (
     <div
       id={id}
-      className="animate-[fadein_200ms_linear] overflow-hidden rounded-lg border border-gray-300 bg-white shadow-sm"
+      className="animate-[fadein_200ms_linear] overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md"
       onMouseEnter={() => {
         clearTimeout(timeoutId.current);
       }}
