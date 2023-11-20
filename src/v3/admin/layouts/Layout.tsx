@@ -43,8 +43,10 @@ const GuardOutlet = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen items-start justify-center">
-      <Sidebar />
+    <div className="flex h-screen w-screen items-start justify-start">
+      <div className="h-full shrink-0 grow-0">
+        <Sidebar />
+      </div>
       <div className="relative h-screen grow">
         <UniDialogContainer />
         <div className="h-screen overflow-scroll">

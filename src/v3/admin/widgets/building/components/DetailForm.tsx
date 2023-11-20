@@ -15,6 +15,7 @@ import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { v4 as uuidv4 } from "uuid";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
+import DetailField from "./DetailField";
 
 const DetailForm = () => {
   const globalStore = useGlobalStore();
@@ -101,10 +102,17 @@ const DetailForm = () => {
 
   return (
     <FormProvider {...formMethod}>
+      <div className="space-y-5">
+        <DetailField
+          label="Building Name"
+          desc="The name field represents the unique identifier or label for a building. It serves as a
+          concise and recognizable name for the building within the system."
+        />
+      </div>
       <form
         onSubmit={handleSubmit(onSubmitForm)}
         className={cn(
-          "relative flex h-full flex-col items-center justify-center border border-gray-300",
+          "relative my-12 flex h-full flex-col items-center justify-center border border-gray-300",
           {
             "border-blue-300": enableEditDetail,
           },

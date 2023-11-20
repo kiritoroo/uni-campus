@@ -4,20 +4,20 @@ import { Tooltip } from "react-tooltip";
 import { v4 as uuidv4 } from "uuid";
 
 const Copied = ({ value }: { value: string }) => {
-  const id = `clipboard-${uuidv4()}`;
+  const elId = `clipboard-${uuidv4()}`;
 
   return (
     <>
       <CopyToClipboard text={value}>
         <Clipboard
           className="h-4 w-4 shrink-0 cursor-pointer stroke-gray-600"
-          data-tooltip-id={id}
+          data-tooltip-id={elId}
           data-tooltip-content="copied"
           data-tooltip-variant="dark"
         />
       </CopyToClipboard>
       <Tooltip
-        id={id}
+        id={elId}
         openOnClick
         globalCloseEvents={{
           scroll: true,

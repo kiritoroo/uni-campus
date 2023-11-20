@@ -3,15 +3,12 @@ import { useBuildingStore } from "./hooks/useBuildingStore";
 import { useParams } from "react-router-dom";
 import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 import DetailForm from "./components/DetailForm";
-import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
-import ValidateBuilding from "./components/ValidateBuilding";
 import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
 import LoadingScreen from "@v3/admin/shared/LoadingScreen";
 import Copied from "@v3/admin/shared/Copied";
-import DetailField from "./components/DetailField";
 
 const Entry = () => {
   const { id } = useParams();
@@ -56,7 +53,6 @@ const Entry = () => {
           {/* <div className="col-span-7">
             <ValidateBuilding />
           </div> */}
-          <DetailField />
           <ModelUploadStoreProvider>
             <PreviewUploadStoreProvider>
               <DetailForm />
