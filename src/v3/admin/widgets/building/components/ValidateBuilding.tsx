@@ -3,6 +3,7 @@ import BlocksBounding from "./BlocksBounding";
 import { useBuildingStore } from "../hooks/useBuildingStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import PublicForm from "./PublicForm";
+import GroupMerge from "./GroupMerge";
 
 const ValidateBuilding = () => {
   const buildingStore = useBuildingStore();
@@ -28,6 +29,7 @@ const ValidateBuilding = () => {
             )}
           </div>
           <div className="px-5 py-2">
+            <GroupMerge />
             <SelfBoundings />
             <BlocksBounding />
           </div>

@@ -34,7 +34,7 @@ export const GLBoundingAround = memo(
           position={position}
           geometry={geometry}
           material={material.current}
-          scale={[0.8, 1, 0.8]}
+          scale={[1, 1, 1]}
           renderOrder={999}
           {...props}
         />

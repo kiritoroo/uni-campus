@@ -11,7 +11,9 @@ import { GLBoundingEffect } from "./GLBoundingEffect";
 const GLBuilding = memo(() => {
   const buildingStore = useBuildingStore();
   const buildingData = buildingStore.use.buildingData();
+  const glGroupMerge = buildingStore.use.glGroupMerge();
   const glSelfBoundings = buildingStore.use.glSelfBoundings();
+  const glShowGroupMerge = buildingStore.use.glShowGroupMerge();
   const glShowSelfBoundingBox = buildingStore.use.glShowSelfBoundingBox();
   const glShowSelfBoundingArround = buildingStore.use.glShowSelfBoundingArround();
   const glShowSelfBoundingEffect = buildingStore.use.glShowSelfBoundingEffect();
@@ -60,12 +62,17 @@ const GLBuilding = memo(() => {
       buildingStore.setState({
         glBuildingObjects: scene.clone().children,
       });
+      console.log(scene.children);
     }
   }, [scene]);
 
   return (
     <group>
-      {/* {scene && <primitive object={scene} />} */}
+      {glGroupMerge && (
+        <group visible={glShowGroupMerge}>
+          <primitive object={glGroupMerge} />
+        </group>
+      )}
       {objBoundingBoxProperty && (
         <GLBoundingBox
           geometry={objBoundingBoxProperty.geometry}

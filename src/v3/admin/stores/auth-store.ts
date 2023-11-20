@@ -62,7 +62,7 @@ export const AuthStore = () => {
             });
             cookies.set(process.env.ACCESS_TOKEN_KEY ?? "x", tokenEncrypt, {
               expires: new Date(tokenData?.exp * 1000),
-              secure: true,
+              secure: false,
               path: "/x",
               httpOnly: false,
               sameSite: "lax",

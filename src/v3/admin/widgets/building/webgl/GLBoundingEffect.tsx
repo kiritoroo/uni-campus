@@ -40,11 +40,14 @@ export const GLBoundingEffect = memo(
         ${shader.fragmentShader}`.replace(
             `#include <color_fragment>`,
             `#include <color_fragment>
-        float t = -uTime;
-        float mainWave = sin((vUv.y - t * 0.2) * 2.5 * PI2) * 0.5 + 0.9;
-        mainWave = mainWave * 0.25 + 0.25;
-        mainWave *= (sin(t * PI2 * 1.) * 0.5 + 0.5) * 0.25 + 0.75;
-        float fadeOut = pow(vUv.y, 2.7);
+        float t = uTime;
+        float waveLength = 0.5;
+        float pulseSpeed = 0.5;
+        float fallSpeed = -0.5;
+        float mainWave = tan((vUv.x + t * fallSpeed) * waveLength * PI2) * 0.1 + 0.9;
+        mainWave = mainWave * 0.5 + 0.2;
+        mainWave *= (sin(t * PI2 * 1.) * pulseSpeed + 0.5) * 0.25 + 0.75;
+        float fadeOut = pow(vUv.x, 2.2);
         
         float a = 0.;
         a = max(a, mainWave);
@@ -68,7 +71,7 @@ export const GLBoundingEffect = memo(
           position={position}
           geometry={geometry}
           material={material.current}
-          scale={[1, 2, 1]}
+          scale={[1, 1, 1]}
           renderOrder={1000}
           {...props}
         />

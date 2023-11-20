@@ -7,6 +7,7 @@ type TState = {
   buildingId: TBuildingSchema["id"] | null;
   buildingData: TBuildingSchema | null;
   glBuildingObjects: (THREE.Object3D | THREE.Mesh)[] | null;
+  glShowGroupMerge: boolean;
   glShowSelfBoundingBox: boolean;
   glShowSelfBoundingEffect: boolean;
   glShowSelfBoundingArround: boolean;
@@ -15,6 +16,7 @@ type TState = {
 
 type TComputedState = {
   canSetPublic: undefined | boolean;
+  glGroupMerge: THREE.Group | null;
   glSelfBoundings: {
     box: THREE.Mesh | null;
     arround: THREE.Mesh | null;
@@ -42,12 +44,14 @@ const initStore: TState & TComputedState = {
   buildingData: null,
   canSetPublic: undefined,
   glBuildingObjects: null,
+  glGroupMerge: null,
   glSelfBoundings: {
     box: null,
     arround: null,
     effect: null,
   },
   glBlocksBounding: null,
+  glShowGroupMerge: true,
   glShowSelfBoundingBox: true,
   glShowSelfBoundingEffect: true,
   glShowSelfBoundingArround: true,
@@ -66,6 +70,10 @@ export const BuildingStore = () => {
         },
       }),
       (state) => {
+        const groupMerge = (function getGroupMerge() {
+          return state.glBuildingObjects?.find((obj) => obj.name === "group-merge") ?? null;
+        })() as THREE.Group;
+
         const boundingBox = (function getBoundingBox() {
           return state.glBuildingObjects?.find((obj) => obj.name === "bounding-box") ?? null;
         })() as THREE.Mesh;
@@ -96,12 +104,13 @@ export const BuildingStore = () => {
 
         return {
           canSetPublic: getCanSetPublic(),
-          glBlocksBounding: blocksBounding,
+          glGroupMerge: groupMerge,
           glSelfBoundings: {
             box: boundingBox,
             arround: boundingArround,
             effect: boundingEffect,
           },
+          glBlocksBounding: blocksBounding,
         };
       },
     ),
