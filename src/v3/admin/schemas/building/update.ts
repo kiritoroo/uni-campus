@@ -1,8 +1,6 @@
 import z from "zod";
 
 const nameField = z.optional(z.string()).nullable();
-const spaceIDField = z.optional(z.string()).nullable();
-const usesField = z.optional(z.string()).nullable();
 const positionField = z
   .optional(
     z.object({
@@ -36,8 +34,6 @@ const isPublicField = z.optional(z.boolean()).nullable();
 
 const buildingUpdateSchema = z.object({
   name: nameField,
-  space_id: spaceIDField,
-  uses: usesField,
   position: positionField,
   rotation: rotationField,
   scale: scaleField,

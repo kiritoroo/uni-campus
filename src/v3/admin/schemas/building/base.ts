@@ -3,8 +3,6 @@ import { fileInfoSchema } from "../fileinfo-schema";
 
 const idField = z.string();
 const nameField = z.string();
-const spaceIDField = z.string();
-const usesField = z.string();
 const positionField = z.object({
   x: z.coerce.number(),
   y: z.coerce.number(),
@@ -27,8 +25,6 @@ const updatedAtField = z.string().transform((v) => new Date(v));
 const buildingSchema = z.object({
   id: idField,
   name: nameField,
-  space_id: spaceIDField,
-  uses: usesField,
   position: positionField,
   rotation: rotationField,
   scale: scaleField,

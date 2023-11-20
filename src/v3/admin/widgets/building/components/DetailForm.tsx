@@ -36,8 +36,6 @@ const DetailForm = () => {
     resolver: zodResolver(buildingUpdateSchema),
     defaultValues: {
       name: "",
-      space_id: "",
-      uses: "",
       position: {
         x: 0,
         y: 0,
@@ -92,8 +90,6 @@ const DetailForm = () => {
   useEffect(() => {
     if (buildingData && !enableEditDetail) {
       setValue("name", buildingData.name);
-      setValue("space_id", buildingData.space_id);
-      setValue("uses", buildingData.uses);
       setValue("position", buildingData.position);
       setValue("rotation", buildingData.rotation);
       setValue("scale", buildingData.scale);
@@ -166,8 +162,6 @@ const DetailForm = () => {
           <div className="flex flex-row items-stretch justify-start gap-x-8">
             <div className="flex h-auto flex-col items-start justify-between py-1">
               <p className="text-sm">Name </p>
-              <p className="text-sm">Space </p>
-              <p className="text-sm">Uses </p>
               <p className="text-sm">Position </p>
               <p className="text-sm">Rotation </p>
               <p className="text-sm">Scale </p>
@@ -175,20 +169,6 @@ const DetailForm = () => {
             <div className="space-y-3">
               <FormInput
                 {...register("name")}
-                type="string"
-                required
-                dir="hoz"
-                disabled={!enableEditDetail}
-              />
-              <FormInput
-                {...register("space_id")}
-                type="string"
-                required
-                dir="hoz"
-                disabled={!enableEditDetail}
-              />
-              <FormInput
-                {...register("uses")}
                 type="string"
                 required
                 dir="hoz"

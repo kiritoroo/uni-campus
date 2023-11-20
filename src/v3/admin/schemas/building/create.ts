@@ -1,8 +1,6 @@
 import z from "zod";
 
 const nameField = z.string();
-const spaceIDField = z.string();
-const usesField = z.string();
 const positionField = z.object({
   x: z.coerce.number(),
   y: z.coerce.number(),
@@ -23,8 +21,6 @@ const previewFileField = z.instanceof(File);
 
 const buildingCreateSchema = z.object({
   name: nameField,
-  space_id: spaceIDField,
-  uses: usesField,
   position: positionField,
   rotation: rotationField,
   scale: scaleField,
