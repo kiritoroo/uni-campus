@@ -9,6 +9,8 @@ import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { useEffect } from "react";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import CreateButton from "./components/CreateButton";
+import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
+import LoadingScreen from "@v3/admin/shared/LoadingScreen";
 
 const Entry = () => {
   const globalStore = useGlobalStore();
@@ -31,19 +33,15 @@ const Entry = () => {
   }, [data]);
 
   if (isLoading) {
-    return (
-      <div className="h-screen w-full">
-        <SpinnerLoading width={50} height={50} />
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (
-    <section className="h-auto w-full p-8">
-      <div className="flex items-center justify-between pr-20">
-        <div className="text-2xl font-black">All Buildings</div>
+    <WidgetSection>
+      <FlexRow className="mb-5 justify-between pr-20">
+        <WidgetTitle>All Buildings</WidgetTitle>
         <CreateButton />
-      </div>
+      </FlexRow>
       {data && <BuildingsList />}
       {showCreateModal && (
         <ModelUploadStoreProvider>
@@ -52,7 +50,7 @@ const Entry = () => {
           </PreviewUploadStoreProvider>
         </ModelUploadStoreProvider>
       )}
-    </section>
+    </WidgetSection>
   );
 };
 

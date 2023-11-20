@@ -10,6 +10,7 @@ import { useUniToastify } from "@v3/admin/shared/UniToastify";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { v4 as uuidv4 } from "uuid";
 import { cn } from "@Utils/common.utils";
+import Copied from "@v3/admin/shared/Copied";
 
 const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}) => {
   const globalStore = useGlobalStore();
@@ -89,24 +90,7 @@ const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}
         <div className="text-gem-onyx text-lg font-black">{name}</div>
         <div className="flex w-full items-center justify-between">
           <div className="text-gem-onyx/80 mr-2 overflow-hidden text-sm font-medium">{id}</div>
-          <CopyToClipboard text={id}>
-            <Clipboard
-              className="h-4 w-4 shrink-0 cursor-pointer stroke-gray-600"
-              data-tooltip-id={`clipboard-${id}`}
-              data-tooltip-content="copied"
-              data-tooltip-variant="dark"
-            />
-          </CopyToClipboard>
-          <Tooltip
-            id={`clipboard-${id}`}
-            openOnClick
-            globalCloseEvents={{
-              scroll: true,
-              escape: true,
-              resize: true,
-              clickOutsideAnchor: true,
-            }}
-          />
+          <Copied value={id} />
         </div>
         <div className="flex w-full items-center justify-between pt-1">
           <div

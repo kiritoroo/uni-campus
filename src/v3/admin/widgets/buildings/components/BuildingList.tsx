@@ -6,7 +6,7 @@ const BuildingsList = () => {
   const buildingsData = buildingsStore.use.buildingsData();
 
   return (
-    <ul className="my-5 grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10 bg-white">
+    <ul className="grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10 bg-white">
       {buildingsData?.map((building) => (
         <li key={building.id} className="col-span-4">
           <BuildingCard {...building} />

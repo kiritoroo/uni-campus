@@ -2,15 +2,15 @@ import { useEffect } from "react";
 import { useBuildingStore } from "./hooks/useBuildingStore";
 import { useParams } from "react-router-dom";
 import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
-
 import DetailForm from "./components/DetailForm";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { ModelUploadStoreProvider } from "./contexts/ModelUploadStoreContext";
 import { PreviewUploadStoreProvider } from "./contexts/PreviewUploadStoreContext";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
-import SelfBoundings from "./components/SelfBoundings";
-import BlocksBounding from "./components/BlocksBounding";
 import ValidateBuilding from "./components/ValidateBuilding";
+import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
+import LoadingScreen from "@v3/admin/shared/LoadingScreen";
+import Copied from "@v3/admin/shared/Copied";
 
 const Entry = () => {
   const { id } = useParams();
@@ -19,6 +19,7 @@ const Entry = () => {
   const buildingStore = useBuildingStore();
 
   const buildingServiceVersion = globalStore.use.buildingServiceVersion();
+  const buildingId = buildingStore.use.buildingId();
   const actions = buildingStore.use.actions();
 
   const { detailBuilding } = useBuildingServices();
@@ -34,9 +35,21 @@ const Entry = () => {
     }
   }, [data]);
 
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
-    <section className="h-full w-full overflow-hidden">
-      {isLoading && <SpinnerLoading width={50} height={50} />}
+    <WidgetSection>
+      <FlexRow className="mb-5 items-end justify-start">
+        <WidgetTitle>Building Details</WidgetTitle>
+        {buildingId && (
+          <FlexRow className="ml-8">
+            <div className="text-gem-onyx/80 mr-2 text-base font-medium">{buildingId}</div>
+            <Copied value={buildingId} />
+          </FlexRow>
+        )}
+      </FlexRow>
       {data && (
         <div className="grid h-full w-full grid-cols-12 gap-5">
           <div className="col-span-7">
@@ -51,7 +64,7 @@ const Entry = () => {
           </div>
         </div>
       )}
-    </section>
+    </WidgetSection>
   );
 };
 
