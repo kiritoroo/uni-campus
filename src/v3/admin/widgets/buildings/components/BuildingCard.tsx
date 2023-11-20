@@ -87,14 +87,14 @@ const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}
         <div className="to-gem-onyx/20 pointer-events-none absolute bottom-0 left-0 right-0 h-20 w-full select-none bg-gradient-to-b from-transparent" />
       </div>
       <div className="flex w-full flex-col items-start justify-center gap-2 border-t border-gray-300 bg-white p-4">
-        <div className="text-gem-onyx text-lg font-black">{name}</div>
+        <div className="text-gem-onyx text-lg font-bold">{name}</div>
         <div className="flex w-full items-center justify-between">
           <div className="text-gem-onyx/80 mr-2 overflow-hidden text-sm font-medium">{id}</div>
           <Copied value={id} />
         </div>
         <div className="flex w-full items-center justify-between pt-1">
           <div
-            className={cn("rounded-md px-3 py-[2px] text-sm font-semibold", {
+            className={cn("rounded-md px-3 py-[2px] text-sm font-medium", {
               " bg-green-100 text-green-700 ": is_public,
               " text-gem-onyx/80 bg-gray-200 ": !is_public,
             })}

@@ -82,7 +82,7 @@ export const UniDialog = ({ id, body, button }: TUniDialogProps) => {
               deleteDialog(id);
             }}
           >
-            <div className="text-sm font-semibold">Cancel</div>{" "}
+            <div className="text-sm font-medium">Cancel</div>{" "}
             <X className="group-hover:stroke-gem-onyx h-4 w-4 stroke-white transition-colors duration-200" />
           </button>
           <div

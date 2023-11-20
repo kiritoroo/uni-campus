@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
         lato: ["Lato", "sans-serif"],
+        geist: ["Geist", "sans-serif"],
       },
       colors: {
         "gem-onyx": "#323234",

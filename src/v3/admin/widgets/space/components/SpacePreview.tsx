@@ -24,7 +24,7 @@ const SpacePreview = () => {
           `}
           className="flex h-auto w-fit items-center justify-center px-3 py-2"
         >
-          <div className="text-sm font-semibold">{spaceData?.name}</div>
+          <div className="text-sm font-medium">{spaceData?.name}</div>
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import ValidateBuilding from "./components/ValidateBuilding";
 import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
 import LoadingScreen from "@v3/admin/shared/LoadingScreen";
 import Copied from "@v3/admin/shared/Copied";
+import DetailField from "./components/DetailField";
 
 const Entry = () => {
   const { id } = useParams();
@@ -51,17 +52,16 @@ const Entry = () => {
         )}
       </FlexRow>
       {data && (
-        <div className="grid h-full w-full grid-cols-12 gap-5">
-          <div className="col-span-7">
+        <div>
+          {/* <div className="col-span-7">
             <ValidateBuilding />
-          </div>
-          <div className="col-span-5">
-            <ModelUploadStoreProvider>
-              <PreviewUploadStoreProvider>
-                <DetailForm />
-              </PreviewUploadStoreProvider>
-            </ModelUploadStoreProvider>
-          </div>
+          </div> */}
+          <DetailField />
+          <ModelUploadStoreProvider>
+            <PreviewUploadStoreProvider>
+              <DetailForm />
+            </PreviewUploadStoreProvider>
+          </ModelUploadStoreProvider>
         </div>
       )}
     </WidgetSection>

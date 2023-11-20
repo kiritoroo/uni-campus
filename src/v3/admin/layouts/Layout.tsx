@@ -11,6 +11,7 @@ import { UniToastifyContainer } from "../shared/UniToastify";
 import Provider from "./Provider";
 import Sidebar from "./Sidebar";
 import PuffLoader from "react-spinners/PuffLoader";
+import { cn } from "@Utils/common.utils";
 
 const GuardOutlet = () => {
   const authStore = useAuthStore();
@@ -57,7 +58,7 @@ const GuardOutlet = () => {
 const Layout = () => {
   return (
     <Provider>
-      <main className="font-lato text-gem-onyx bg-white antialiased">
+      <main className={cn("font-geist text-gem-onyx bg-white antialiased")}>
         <UniToastifyContainer />
         <GuardOutlet />
       </main>

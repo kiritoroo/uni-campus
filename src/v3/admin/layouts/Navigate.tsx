@@ -73,9 +73,7 @@ const Navigate = () => {
         <div className="group/nav relative">
           <div className="flex cursor-pointer items-center justify-center gap-x-2">
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-slate-100 to-slate-300">
-              <span className="text-[12px] font-semibold text-slate-500">
-                {claims?.nickname[0]}
-              </span>
+              <span className="text-[12px] font-medium text-slate-500">{claims?.nickname[0]}</span>
             </div>
             <div className="text-sm font-medium">{claims?.nickname}</div>
           </div>

@@ -146,9 +146,7 @@ export const UniToastify = ({ id, type, title, desc }: TUniToastifyProps) => {
           <Icon className="h-8 w-8" style={{ stroke: color }} />
         </div>
         <div className="py-3 pl-2 pr-8">
-          <div className="text-gem-onyx text-base font-semibold">
-            {title ? title : defaultTitle}
-          </div>
+          <div className="text-gem-onyx text-base font-medium">{title ? title : defaultTitle}</div>
           <div className="text-gem-onyx/80 w-[200px] text-sm">
             <TextTruncate line={2} element="div" truncateText="..." text={desc} />
           </div>
@@ -160,7 +158,7 @@ export const UniToastify = ({ id, type, title, desc }: TUniToastifyProps) => {
             uniToast.deleteToastify(id);
           }}
         >
-          <div className="text-sm font-semibold uppercase">OK</div>
+          <div className="text-sm font-medium uppercase">OK</div>
         </button>
       </div>
     </div>

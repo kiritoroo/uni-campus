@@ -18,7 +18,7 @@ const CreateButton = () => {
         commonStore.setState({ showCreateModal: true });
       }}
     >
-      <p className="text-sm font-semibold">New Building</p>
+      <p className="text-sm font-medium">New Building</p>
     </button>
   );
 };

@@ -67,14 +67,14 @@ const LoginForm = () => {
               <Box className="block stroke-white" />
             </div>
           </div>
-          <div className="text-center text-2xl font-black">Uni Campus X</div>
+          <div className="text-center text-2xl font-bold">Uni Campus X</div>
           <div className="text-center text-sm font-medium">
             Manager Uni Campus, the behind the scene.
           </div>
         </div>
       </div>
       <div className="min-w-[400px] space-y-5 px-6 pb-8 pt-2">
-        <div className="text-center text-lg font-semibold">Sign in</div>
+        <div className="text-center text-lg font-medium">Sign in</div>
         <FormInput
           {...register("username")}
           label="Username"
@@ -97,7 +97,7 @@ const LoginForm = () => {
       <div className="border-t border-t-gray-300 bg-[#FAFAFA] px-6 py-4">
         <button
           type="submit"
-          className="bg-gem-onyx hover:bg-gem-onyx/90 active:bg-gem-onyx relative inline-flex w-full items-center justify-center rounded-md py-[10px] text-base font-semibold text-white transition-colors duration-200 disabled:opacity-80"
+          className="bg-gem-onyx hover:bg-gem-onyx/90 active:bg-gem-onyx relative inline-flex w-full items-center justify-center rounded-md py-[10px] text-base font-medium text-white transition-colors duration-200 disabled:opacity-80"
           disabled={isLoading}
         >
           <div className={cn("relative")}>

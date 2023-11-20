@@ -6,7 +6,7 @@ export const WidgetSection = ({ className, children }: HTMLProps<HTMLDivElement>
 };
 
 export const WidgetTitle = ({ className, children }: HTMLProps<HTMLDivElement>) => {
-  return <div className={cn("text-2xl font-black", className)}>{children}</div>;
+  return <div className={cn("text-2xl font-bold", className)}>{children}</div>;
 };
 
 export const FlexRow = ({ className, children, ...props }: HTMLProps<HTMLDivElement>) => {

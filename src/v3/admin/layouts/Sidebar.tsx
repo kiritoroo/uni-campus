@@ -33,7 +33,7 @@ const NavItem = ({
       )}
     >
       <Icon className="stroke-gem-onyx mr-3 h-4 w-4" />
-      <div className="text-sm font-semibold">{title}</div>
+      <div className="text-sm font-medium">{title}</div>
     </Link>
   );
 };
@@ -46,7 +46,7 @@ const NavItem2 = ({ Icon, title, href }: { Icon: LucideIcon; title: string; href
     >
       <div className="flex items-center justify-start">
         <Icon className="stroke-gem-onyx mr-3 h-4 w-4" />
-        <div className="text-gem-onyx text-sm font-semibold">{title}</div>
+        <div className="text-gem-onyx text-sm font-medium">{title}</div>
       </div>
       <ArrowUpRight className="stroke-gem-onyx h-4 w-4" />
     </Link>
@@ -109,11 +109,11 @@ const Sidebar = () => {
             <div>
               <div className="flex items-center justify-center gap-x-3">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-gray-200 to-gray-300">
-                  <span className="text-gem-onyx text-[12px] font-semibold">
+                  <span className="text-gem-onyx text-[12px] font-medium">
                     {claims?.nickname[0]}
                   </span>
                 </div>
-                <div className="text-sm font-semibold">{claims?.nickname}</div>
+                <div className="text-sm font-medium">{claims?.nickname}</div>
               </div>
             </div>
             <div>
