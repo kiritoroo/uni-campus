@@ -28,17 +28,19 @@ export const useBuildingServices = () => {
   };
 
   const createBuilding = (
-    data: TBuildingCreateSchema,
-    option?: UseMutationOptions<TBuildingSchema>,
+    option?: UseMutationOptions<TBuildingSchema, any, TBuildingCreateSchema>,
   ) => {
-    return useMutation(["api/post-building", data], () => postBuilding({ data: data }), option);
+    return useMutation(["api/post-building"], (data) => postBuilding({ data: data }), option);
   };
 
   const updateBuilding = (
-    data: TBuildingUpdateSchema & Pick<TBuildingSchema, "id">,
-    option?: UseMutationOptions<TBuildingSchema>,
+    option?: UseMutationOptions<
+      TBuildingSchema,
+      any,
+      TBuildingUpdateSchema & Pick<TBuildingSchema, "id">
+    >,
   ) => {
-    return useMutation(["api/put-building", data], () => putBuilding({ data: data }), option);
+    return useMutation(["api/put-building"], (data) => putBuilding({ data: data }), option);
   };
 
   const removeBuilding = (data: Pick<TBuildingSchema, "id">, option?: UseMutationOptions) => {

@@ -1,5 +1,6 @@
 import { cn } from "@Utils/common.utils";
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -9,7 +10,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
   ({ dir = "vez", child = false, label, name, required, className, ...props }, ref) => {
-    const inputId = `el--input-${name}`;
+    const elId = `el--input-${uuidv4()}`;
 
     return (
       <div
@@ -18,21 +19,18 @@ export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
         })}
       >
         {label && (
-          <label
-            htmlFor={inputId}
-            className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600"
-          >
-            {label} {required && dir === "vez" && !child && <span className="text-red-400">*</span>}
+          <label htmlFor={elId} className="block w-fit cursor-pointer pb-1 text-sm font-medium">
+            {label}
           </label>
         )}
 
         <input
           className={cn(
-            "h-[32px] w-full border border-[#E5E7EA] bg-[#EFEFEF] px-3 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500/20 disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
+            "h-[32px] w-full rounded-md rounded-r-lg border border-gray-300 bg-white px-3 text-sm font-medium text-gem-onyx/80 focus:outline-2 focus:focus:outline-gem-onyx/80 disabled:cursor-not-allowed disabled:opacity-80",
             className,
           )}
           ref={ref}
-          id={inputId}
+          id={elId}
           name={name}
           required={required}
           {...props}

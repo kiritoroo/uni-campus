@@ -30,8 +30,6 @@ const CreateForm = () => {
     resolver: zodResolver(buildingCreateSchema),
     defaultValues: {
       name: "",
-      space_id: "",
-      uses: "",
       position: {
         x: 0,
         y: 0,
@@ -54,29 +52,24 @@ const CreateForm = () => {
 
   const { createBuilding } = useBuildingServices();
 
-  const { mutate, isLoading } = createBuilding(
-    {
-      ...watch(),
+  const { mutate, isLoading } = createBuilding({
+    onSuccess: (data) => {
+      commonStore.setState({ showCreateModal: false });
+      actions.addBuilding({ buildingData: data });
+      uniToast.success({
+        desc: "Create building success",
+      });
     },
-    {
-      onSuccess: (data) => {
-        commonStore.setState({ showCreateModal: false });
-        actions.addBuilding({ buildingData: data });
-        uniToast.success({
-          desc: "Create building success",
-        });
-      },
-      onError: (error: any) => {
-        uniToast.error({
-          desc: Error(error).message,
-        });
-      },
+    onError: (error: any) => {
+      uniToast.error({
+        desc: Error(error).message,
+      });
     },
-  );
+  });
 
   const onSubmitForm = () => {
     console.log(watch());
-    mutate();
+    mutate({ ...watch() });
   };
 
   return (
@@ -96,20 +89,6 @@ const CreateForm = () => {
               <FormInput
                 {...register("name")}
                 label="Name"
-                type="text"
-                required
-                autoComplete={"on"}
-              />
-              <FormInput
-                {...register("space_id")}
-                label="Space"
-                type="text"
-                required
-                autoComplete={"on"}
-              />
-              <FormInput
-                {...register("uses")}
-                label="Uses"
                 type="text"
                 required
                 autoComplete={"on"}

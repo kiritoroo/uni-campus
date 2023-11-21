@@ -8,9 +8,9 @@ import { useBuildingsStore } from "./hooks/useBuildingsStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { useEffect } from "react";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
-import CreateButton from "./components/CreateButton";
 import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
 import LoadingScreen from "@v3/admin/shared/LoadingScreen";
+import Button from "@v3/admin/shared/Button";
 
 const Entry = () => {
   const globalStore = useGlobalStore();
@@ -40,7 +40,13 @@ const Entry = () => {
     <WidgetSection>
       <FlexRow className="mb-5 justify-between pr-20">
         <WidgetTitle>All Buildings</WidgetTitle>
-        <CreateButton />
+        <Button
+          onClick={() => {
+            commonStore.setState({ showCreateModal: true });
+          }}
+        >
+          New Building
+        </Button>
       </FlexRow>
       {data && <BuildingsList />}
       {showCreateModal && (

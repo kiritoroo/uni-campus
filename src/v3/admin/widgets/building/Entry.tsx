@@ -9,6 +9,8 @@ import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
 import LoadingScreen from "@v3/admin/shared/LoadingScreen";
 import Copied from "@v3/admin/shared/Copied";
+import Button from "@v3/admin/shared/Button";
+import { Pencil } from "lucide-react";
 
 const Entry = () => {
   const { id } = useParams();
@@ -43,16 +45,21 @@ const Entry = () => {
         <WidgetTitle>Building Details</WidgetTitle>
         {buildingId && (
           <FlexRow className="ml-8">
-            <div className="text-gem-onyx/80 mr-2 text-base font-medium">{buildingId}</div>
+            <div className="mr-2 text-base font-medium text-gem-onyx/80">{buildingId}</div>
             <Copied value={buildingId} />
           </FlexRow>
         )}
       </FlexRow>
+      <FlexRow>
+        <Button>
+          <FlexRow>
+            <Pencil className="h-4 w-4" />
+            <div className="ml-2">Edit</div>
+          </FlexRow>
+        </Button>
+      </FlexRow>
       {data && (
         <div>
-          {/* <div className="col-span-7">
-            <ValidateBuilding />
-          </div> */}
           <ModelUploadStoreProvider>
             <PreviewUploadStoreProvider>
               <DetailForm />
