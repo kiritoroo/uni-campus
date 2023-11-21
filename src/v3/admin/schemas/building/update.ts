@@ -30,7 +30,7 @@ const scaleField = z
   .nullable();
 const modelFileField = z.optional(z.instanceof(File).nullable());
 const previewFileField = z.optional(z.instanceof(File).nullable());
-const isPublicField = z.optional(z.boolean()).nullable();
+const isPublishField = z.optional(z.boolean()).nullable();
 
 const buildingUpdateSchema = z.object({
   name: nameField,
@@ -39,7 +39,7 @@ const buildingUpdateSchema = z.object({
   scale: scaleField,
   model_file: modelFileField,
   preview_file: previewFileField,
-  is_public: isPublicField,
+  is_publish: isPublishField,
 });
 
 type TBuildingUpdateSchema = z.infer<typeof buildingUpdateSchema>;

@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { cn } from "@Utils/common.utils";
 import Copied from "@v3/admin/shared/Copied";
 
-const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}) => {
+const BuildingCard = ({ id, name, preview_img, is_publish }: TBuildingSchema & {}) => {
   const globalStore = useGlobalStore();
   const buildingsStore = useBuildingsStore();
 
@@ -96,11 +96,11 @@ const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}
         <div className="flex w-full items-center justify-between pt-1">
           <div
             className={cn("rounded-md px-3 py-[2px] text-sm font-medium", {
-              " bg-green-100 text-green-700 ": is_public,
-              " bg-gray-200 text-gem-onyx/80 ": !is_public,
+              " bg-green-100 text-green-700 ": is_publish,
+              " bg-gray-200 text-gem-onyx/80 ": !is_publish,
             })}
           >
-            {is_public ? <span>Public</span> : <span>Draft</span>}
+            {is_publish ? <span>Publish</span> : <span>Draft</span>}
           </div>
         </div>
       </div>

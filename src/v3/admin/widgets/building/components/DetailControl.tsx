@@ -11,7 +11,7 @@ import { useBuildingStore } from "../hooks/useBuildingStore";
 import { useNavigate } from "react-router-dom";
 import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
-import PublicForm from "./PublicForm";
+import PublishForm from "./PublishForm";
 
 const DetailControl = () => {
   const globalStore = useGlobalStore();
@@ -104,7 +104,7 @@ const DetailControl = () => {
         </Button>
       </FlexRow>
 
-      <PublicForm />
+      <PublishForm />
     </FlexRow>
   );
 };

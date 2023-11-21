@@ -15,7 +15,7 @@ type TState = {
 };
 
 type TComputedState = {
-  canSetPublic: undefined | boolean;
+  canSetPublish: undefined | boolean;
   glGroupMerge: THREE.Group | null;
   glSelfBoundings: {
     box: THREE.Mesh | null;
@@ -42,7 +42,7 @@ export interface IBuildingStore extends TState, TComputedState {
 const initStore: TState & TComputedState = {
   buildingId: null,
   buildingData: null,
-  canSetPublic: undefined,
+  canSetPublish: undefined,
   glBuildingObjects: null,
   glGroupMerge: null,
   glSelfBoundings: {
@@ -96,14 +96,14 @@ export const BuildingStore = () => {
           }
         })() as THREE.Mesh[] | null;
 
-        function getCanSetPublic() {
+        function getCanSetPublish() {
           return [
             state.glBuildingObjects && boundingArround && boundingEffect && blocksBounding,
           ].every((x) => x);
         }
 
         return {
-          canSetPublic: getCanSetPublic(),
+          canSetPublish: getCanSetPublish(),
           glGroupMerge: groupMerge,
           glSelfBoundings: {
             box: boundingBox,
