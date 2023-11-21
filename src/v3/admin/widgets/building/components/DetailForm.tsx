@@ -15,6 +15,7 @@ import DetailField from "./DetailField";
 import { FlexRow } from "@v3/admin/shared/Wrapper";
 import ImagePreview from "./ImagePreview";
 import DropPreview from "./DropPreview";
+import GLModelScene from "../webgl/GLModelScene";
 
 const DetailForm = () => {
   const globalStore = useGlobalStore();
@@ -103,6 +104,20 @@ const DetailForm = () => {
           label="Building ID"
           desc="The unique identifier assigned to the building, enabling precise identification within the system."
           editable={false}
+        />
+        <DetailField
+          label="Building Model"
+          desc="This 3D model is a digital representation that allows for a more immersive and detailed exploration of the building's design."
+          fieldKey={"model_file"}
+          customInput={() => (
+            <div className="relative my-2 aspect-[4/2] h-auto w-2/4 overflow-hidden rounded-md border border-gray-300">
+              <GLModelScene />
+            </div>
+          )}
+          editDesc="Supported 3d model format .gltf, glb"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "model_file"}
         />
         <DetailField
           label="Building Preview"

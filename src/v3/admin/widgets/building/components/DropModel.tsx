@@ -1,7 +1,7 @@
 import { startTransition, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { arrayBufferToString } from "@Utils/common.utils";
-import { Upload } from "lucide-react";
+import { Box, Upload } from "lucide-react";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { useFormContext } from "react-hook-form";
 import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
@@ -43,12 +43,16 @@ const DropModel = () => {
   }, [buffer]);
 
   return (
-    <button type="button" {...getRootProps()}>
+    <div className="relative h-full w-full cursor-pointer" {...getRootProps()}>
       <input {...getInputProps()} />
-      <div className="bg-blue-100 px-3 py-2">
-        <Upload className="h-4 w-4 stroke-gray-700" />
+
+      <div className="flex h-full w-full flex-col items-center justify-center backdrop-blur-[2px]">
+        <Box className="h-24 w-24 rounded-full border-2 border-dashed border-gray-300 bg-[#EDEDED] stroke-gray-300 p-5" />
+        <div className="pt-5 font-medium text-gem-onyx/60">
+          Upload building model <span className="font-semibold text-gem-onyx/80">.gltf, .glb</span>
+        </div>
       </div>
-    </button>
+    </div>
   );
 };
 

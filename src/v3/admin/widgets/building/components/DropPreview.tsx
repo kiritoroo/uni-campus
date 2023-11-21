@@ -50,8 +50,8 @@ const DropPreview = () => {
         />
       ) : (
         <div className="relative h-full w-full">
-          <div className="relative z-[2] flex h-full w-full flex-col items-center justify-center">
-            <ImagePlus className="h-24 w-24 rounded-full border-2 border-dashed border-gray-300 bg-[#EDEDED]/80 stroke-gray-300 p-5" />
+          <div className="relative z-[2] flex h-full w-full flex-col items-center justify-center backdrop-blur-[2px]">
+            <ImagePlus className="h-24 w-24 rounded-full border-2 border-dashed border-gray-300 bg-[#EDEDED] stroke-gray-300 p-5" />
             <div className="pt-5 font-medium text-gem-onyx/60">
               Upload building image <span className="font-semibold text-gem-onyx/80">.webp</span>
             </div>

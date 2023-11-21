@@ -5,11 +5,12 @@ import { OrbitControls, Stage, Html } from "@react-three/drei";
 import GLBuilding from "./GLBuilding";
 import { ErrorBoundary } from "react-error-boundary";
 import saveAs from "file-saver";
-import { FileBox, ImageDown } from "lucide-react";
+import { Box, FileDown, ImageDown } from "lucide-react";
 import { useBuildingStore } from "../hooks/useBuildingStore";
 import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import { useCommonStore } from "../hooks/useCommonStore";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
+import { cn } from "@Utils/common.utils";
 import DropModel from "../components/DropModel";
 
 const GLModelScene = memo(() => {
@@ -36,11 +37,16 @@ const GLModelScene = memo(() => {
     );
   };
 
+  const handleSaveModel = () => {
+    const model = `${process.env.UNI_CAMPUS_API_URL}/${buildingData?.model_3d.url}`;
+    saveAs(model, buildingData?.model_3d.filename);
+  };
+
   return (
     <ErrorBoundary
       fallback={
         <div className="flex h-full w-full items-center justify-center">
-          <div className="bg-red-100 px-5 py-2 text-sm font-medium text-red-700">
+          <div className="rounded-md bg-gray-100 px-5 py-2 text-sm font-medium text-gem-onyx">
             Something went wrong
           </div>
         </div>
@@ -48,6 +54,7 @@ const GLModelScene = memo(() => {
     >
       <Canvas
         shadows="soft"
+        className={cn("relative z-[1] h-full w-full ", { "bg-[#F5F5F5]": enableEditDetail })}
         dpr={[1, 2]}
         gl={{
           antialias: true,
@@ -64,7 +71,7 @@ const GLModelScene = memo(() => {
           <Suspense
             fallback={
               <Html>
-                <SpinnerLoading width={25} height={25} />
+                <SpinnerLoading width={35} height={35} />
               </Html>
             }
           >
@@ -91,29 +98,37 @@ const GLModelScene = memo(() => {
         <OrbitControls
           makeDefault
           enableDamping
-          enablePan={true}
+          enablePan={false}
           enableZoom={true}
           enableRotate={true}
           autoRotate
         />
       </Canvas>
 
-      <div className="absolute bottom-5 left-5 right-5 flex justify-start gap-5">
-        <div className="flex items-center justify-center gap-2">
-          {enableEditDetail && <DropModel />}
-          <button type="button" onClick={handleSavePreview}>
-            <div className="bg-gray-100 px-3 py-2">
-              <ImageDown className="h-4 w-4 stroke-gray-700" />
-            </div>
+      {!enableEditDetail && (
+        <div className="absolute bottom-3 right-3 z-[2] flex items-center justify-center gap-3">
+          <button
+            type="button"
+            className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
+            onClick={handleSaveModel}
+          >
+            <FileDown className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
+          </button>
+          <button
+            type="button"
+            className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
+            onClick={handleSavePreview}
+          >
+            <ImageDown className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
           </button>
         </div>
-        <div className="flex grow items-center justify-start gap-3 bg-gray-100 px-4 py-2">
-          <FileBox className="h-4 w-4 stroke-gray-600" />
-          <p className="text-sm">
-            {uploadFileName && enableEditDetail ? uploadFileName : buildingData?.model_3d.filename}
-          </p>
+      )}
+
+      {enableEditDetail && (
+        <div className="absolute inset-0 z-[2] h-full w-full">
+          <DropModel />
         </div>
-      </div>
+      )}
     </ErrorBoundary>
   );
 });
