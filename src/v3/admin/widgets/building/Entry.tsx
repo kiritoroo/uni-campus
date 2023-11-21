@@ -45,25 +45,25 @@ const Entry = () => {
 
   return (
     <WidgetSection>
-      <FlexRow className="mb-5 items-end justify-start">
-        <WidgetTitle>Building Details</WidgetTitle>
-        {buildingId && (
-          <FlexRow className="ml-8">
-            <div className="mr-2 text-base font-medium text-gem-onyx/80">{buildingId}</div>
-            <Copied value={buildingId} />
+      <ModelUploadStoreProvider>
+        <PreviewUploadStoreProvider>
+          <FlexRow className="mb-5 items-end justify-start">
+            <WidgetTitle>Building Details</WidgetTitle>
+            {buildingId && (
+              <FlexRow className="ml-8">
+                <div className="mr-2 text-base font-medium text-gem-onyx/80">{buildingId}</div>
+                <Copied value={buildingId} />
+              </FlexRow>
+            )}
           </FlexRow>
-        )}
-      </FlexRow>
-      <DetailControl />
-      {data && (
-        <div>
-          <ModelUploadStoreProvider>
-            <PreviewUploadStoreProvider>
+          <DetailControl />
+          {data && (
+            <div>
               <DetailForm />
-            </PreviewUploadStoreProvider>
-          </ModelUploadStoreProvider>
-        </div>
-      )}
+            </div>
+          )}
+        </PreviewUploadStoreProvider>
+      </ModelUploadStoreProvider>
     </WidgetSection>
   );
 };

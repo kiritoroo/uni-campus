@@ -1,11 +1,7 @@
-import { Pencil, Save, X } from "lucide-react";
 import { FormInput } from "@v3/admin/shared/FormInput";
-import GLModelScene from "../webgl/GLModelScene";
 import { useBuildingStore } from "../hooks/useBuildingStore";
-import ImagePreview from "./ImagePreview";
 import { useCommonStore } from "../hooks/useCommonStore";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
-import { cn } from "@Utils/common.utils";
 import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 import { useForm, FormProvider } from "react-hook-form";
 import { TBuildingUpdateSchema, buildingUpdateSchema } from "@v3/admin/schemas/building/update";
@@ -17,6 +13,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
 import DetailField from "./DetailField";
 import { FlexRow } from "@v3/admin/shared/Wrapper";
+import ImagePreview from "./ImagePreview";
+import DropPreview from "./DropPreview";
 
 const DetailForm = () => {
   const globalStore = useGlobalStore();
@@ -105,6 +103,20 @@ const DetailForm = () => {
           label="Building ID"
           desc="The unique identifier assigned to the building, enabling precise identification within the system."
           editable={false}
+        />
+        <DetailField
+          label="Building Preview"
+          desc="This image typically serves as a quick reference or overview, giving users a glimpse of the building's appearance."
+          fieldKey={"preview_file"}
+          customInput={() => (
+            <div className="my-2 aspect-[4/2] h-auto w-2/4 overflow-hidden rounded-md border border-gray-300">
+              {enableEditDetail ? <DropPreview /> : <ImagePreview />}
+            </div>
+          )}
+          editDesc="Supported image format .webp"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "preview_file"}
         />
         <DetailField
           {...register("name")}
@@ -245,23 +257,6 @@ const DetailForm = () => {
             );
           }}
         />
-      </form>
-      <form
-        className={cn(
-          "relative my-12 flex h-full flex-col items-center justify-center border border-gray-300",
-          {
-            "border-blue-300": enableEditDetail,
-          },
-        )}
-      >
-        <div className="relative z-[1] w-full grow">
-          {buildingData && <GLModelScene />}
-          {enableEditDetail && (
-            <div className="absolute bottom-20 right-5 z-[2]">
-              <ImagePreview />
-            </div>
-          )}
-        </div>
       </form>
     </FormProvider>
   );

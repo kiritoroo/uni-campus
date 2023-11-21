@@ -30,30 +30,24 @@ const PublicForm = () => {
 
   const { updateBuilding } = useBuildingServices();
 
-  const { mutate, isLoading } = updateBuilding(
-    {
-      id: buildingId!,
-      is_public: watch("is_public"),
+  const { mutate, isLoading } = updateBuilding({
+    onSuccess: (data) => {
+      buildingStore.setState({ buildingData: data });
+      globalStore.setState({ buildingServiceVersion: uuidv4() });
+      uniToast.success({
+        desc: `Set building to ${getValues("is_public") ? "Public" : "Draft"} success`,
+      });
     },
-    {
-      onSuccess: (data) => {
-        buildingStore.setState({ buildingData: data });
-        globalStore.setState({ buildingServiceVersion: uuidv4() });
-        uniToast.success({
-          desc: `Set building to ${getValues("is_public") ? "Public" : "Draft"} success`,
-        });
-      },
-      onError: (error: any) => {
-        uniToast.error({
-          desc: Error(error).message,
-        });
-      },
+    onError: (error: any) => {
+      uniToast.error({
+        desc: Error(error).message,
+      });
     },
-  );
+  });
 
   const onSubmitForm = (data: any) => {
     console.log(data);
-    mutate();
+    mutate({ id: buildingId!, is_public: watch("is_public") });
   };
 
   useEffect(() => {

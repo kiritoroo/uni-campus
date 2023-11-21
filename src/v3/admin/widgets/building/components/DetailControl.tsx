@@ -9,15 +9,21 @@ import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
 import { useBuildingStore } from "../hooks/useBuildingStore";
 import { useNavigate } from "react-router-dom";
+import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
+import { useModelUploadStore } from "../hooks/useModelUploadStore";
 
 const DetailControl = () => {
   const globalStore = useGlobalStore();
   const commonStore = useCommonStore();
   const buildingStore = useBuildingStore();
+  const previewUploadStore = usePreviewUploadStore();
+  const modelUploadStore = useModelUploadStore();
 
   const enableEditDetail = commonStore.use.enableEditDetail();
   const buildingId = buildingStore.use.buildingId()!;
   const buildingData = buildingStore.use.buildingData()!;
+  const previewUploadAction = previewUploadStore.use.actions();
+  const modelUploadAction = modelUploadStore.use.actions();
 
   const navigate = useNavigate();
   const uniToast = useUniToastify();
@@ -25,7 +31,7 @@ const DetailControl = () => {
 
   const { removeBuilding } = useBuildingServices();
 
-  const { mutate } = removeBuilding(
+  const { mutate, isLoading } = removeBuilding(
     {
       id: buildingId,
     },
@@ -69,29 +75,29 @@ const DetailControl = () => {
     });
   };
 
+  const handleOnClickEdit = () => {
+    commonStore.setState({ enableEditDetail: true });
+  };
+
+  const handleOnClickDone = () => {
+    commonStore.setState({ enableEditDetail: false });
+    previewUploadAction.resetStore();
+    modelUploadAction.resetStore();
+  };
+
   return (
     <FlexRow className="items-stretch justify-start gap-5 px-10 pt-5">
       {!enableEditDetail ? (
-        <Button
-          onClick={() => {
-            commonStore.setState({ enableEditDetail: true });
-          }}
-        >
+        <Button onClick={handleOnClickEdit}>
           <FlexRow>
             <Pencil className="h-4 w-4" />
             <div className="ml-2">Edit</div>
           </FlexRow>
         </Button>
       ) : (
-        <Button
-          onClick={() => {
-            commonStore.setState({ enableEditDetail: false });
-          }}
-        >
-          Done
-        </Button>
+        <Button onClick={handleOnClickDone}>Done</Button>
       )}
-      <Button onClick={handleOnClickDelete}>
+      <Button onClick={handleOnClickDelete} loading={isLoading}>
         <Trash className="h-4 w-4" />
       </Button>
     </FlexRow>

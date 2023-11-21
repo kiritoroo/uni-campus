@@ -55,13 +55,13 @@ const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}
       button: (
         <button
           type="button"
-          className="bg-gem-onyx border-gem-onyx hover:text-gem-onyx active:bg-gem-onyx/20 group flex items-center justify-around gap-2 rounded-lg border px-4 py-3 text-white transition-colors duration-200 hover:bg-white"
+          className="group flex items-center justify-around gap-2 rounded-lg border border-gem-onyx bg-gem-onyx px-4 py-3 text-white transition-colors duration-200 hover:bg-white hover:text-gem-onyx active:bg-gem-onyx/20"
           onClick={() => {
             mutate();
           }}
         >
           <div className="text-sm font-medium">Delete</div>{" "}
-          <Trash className="group-hover:stroke-gem-onyx h-4 w-4 stroke-white transition-colors duration-200" />
+          <Trash className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
         </button>
       ),
     });
@@ -78,25 +78,26 @@ const BuildingCard = ({ id, name, preview_img, is_public }: TBuildingSchema & {}
         </Link>
         <div className="absolute bottom-3 right-3 flex items-center justify-center gap-2">
           <button
-            className="bg-gem-onyx active:bg-gem-onyx/20 border-gem-onyx group cursor-pointer rounded-md border p-2 transition-colors duration-200 hover:bg-white"
+            type="button"
+            className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
             onClick={handleOnClickDelete}
           >
-            <Trash2 className="group-hover:stroke-gem-onyx h-4 w-4 stroke-white transition-colors duration-200" />
+            <Trash2 className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
           </button>
         </div>
-        <div className="to-gem-onyx/20 pointer-events-none absolute bottom-0 left-0 right-0 h-20 w-full select-none bg-gradient-to-b from-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 w-full select-none bg-gradient-to-b from-transparent to-gem-onyx/10" />
       </div>
       <div className="flex w-full flex-col items-start justify-center gap-2 border-t border-gray-300 bg-white p-4">
-        <div className="text-gem-onyx text-lg font-bold">{name}</div>
+        <div className="text-lg font-bold text-gem-onyx">{name}</div>
         <div className="flex w-full items-center justify-between">
-          <div className="text-gem-onyx/80 mr-2 overflow-hidden text-sm font-medium">{id}</div>
+          <div className="mr-2 overflow-hidden text-sm font-medium text-gem-onyx/80">{id}</div>
           <Copied value={id} />
         </div>
         <div className="flex w-full items-center justify-between pt-1">
           <div
             className={cn("rounded-md px-3 py-[2px] text-sm font-medium", {
               " bg-green-100 text-green-700 ": is_public,
-              " text-gem-onyx/80 bg-gray-200 ": !is_public,
+              " bg-gray-200 text-gem-onyx/80 ": !is_public,
             })}
           >
             {is_public ? <span>Public</span> : <span>Draft</span>}

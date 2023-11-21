@@ -49,7 +49,7 @@ const GuardOutlet = () => {
       </div>
       <div className="relative h-screen grow">
         <UniDialogContainer />
-        <div className="h-screen overflow-scroll">
+        <div className="h-screen overflow-auto">
           <Outlet />
         </div>
       </div>
@@ -60,7 +60,7 @@ const GuardOutlet = () => {
 const Layout = () => {
   return (
     <Provider>
-      <main className={cn("font-geist text-gem-onyx bg-white antialiased")}>
+      <main className={cn("bg-white font-geist text-gem-onyx antialiased")}>
         <UniToastifyContainer />
         <GuardOutlet />
       </main>

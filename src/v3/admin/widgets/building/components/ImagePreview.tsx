@@ -1,34 +1,31 @@
-import DropPreview from "./DropPreview";
+import { ImageDown } from "lucide-react";
 import { useBuildingStore } from "../hooks/useBuildingStore";
-import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
+import saveAs from "file-saver";
 
 const ImagePreview = () => {
   const buildingStore = useBuildingStore();
-  const previewUploadStore = usePreviewUploadStore();
-
   const buildingData = buildingStore.use.buildingData();
-  const base64 = previewUploadStore.use.base64();
+
+  const handleSavePreview = () => {
+    const image = `${process.env.UNI_CAMPUS_API_URL}/${buildingData?.preview_img.url}`;
+    saveAs(image, buildingData?.preview_img.filename);
+  };
 
   return (
-    <div className="relative h-full w-full bg-gray-100 p-2">
-      {base64 && (
-        <img
-          src={base64 as string}
-          alt="Image preview"
-          className="max-h-[152px] w-full object-cover"
-        />
-      )}
-
-      {!base64 && (
-        <img
-          src={`${process.env.UNI_CAMPUS_API_URL}/${buildingData?.preview_img.url}`}
-          alt="Image preview"
-          className="max-h-[152px] w-full object-cover"
-        />
-      )}
-
-      <div className="absolute bottom-3 left-3">
-        <DropPreview />
+    <div className="relative h-full w-full bg-white">
+      <img
+        src={`${process.env.UNI_CAMPUS_API_URL}/${buildingData?.preview_img.url}`}
+        alt="Image preview"
+        className="h-full w-full object-contain"
+      />
+      <div className="absolute bottom-3 right-3 flex items-center justify-center gap-2">
+        <button
+          type="button"
+          className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
+          onClick={handleSavePreview}
+        >
+          <ImageDown className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
+        </button>
       </div>
     </div>
   );
