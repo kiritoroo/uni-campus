@@ -38,7 +38,7 @@ const DetailField = React.forwardRef<HTMLInputElement, InputProps>(
     const elId = `el--input-${uuidv4()}`;
 
     return (
-      <div className="rounded-md border border-gray-300 shadow-sm">
+      <div className="overflow-hidden rounded-md border border-gray-300 shadow-sm">
         <div className="p-8">
           <label htmlFor={elId} className="block cursor-pointer pb-2 text-base font-bold">
             {label}

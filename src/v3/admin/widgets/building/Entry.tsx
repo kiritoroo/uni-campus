@@ -9,8 +9,8 @@ import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
 import LoadingScreen from "@v3/admin/shared/LoadingScreen";
 import Copied from "@v3/admin/shared/Copied";
-import Button from "@v3/admin/shared/Button";
-import { Pencil } from "lucide-react";
+import DetailControl from "./components/DetailControl";
+import NotFound from "@v3/admin/shared/NotFound";
 
 const Entry = () => {
   const { id } = useParams();
@@ -39,6 +39,10 @@ const Entry = () => {
     return <LoadingScreen />;
   }
 
+  if (!data) {
+    return <NotFound message="Building Not Found." />;
+  }
+
   return (
     <WidgetSection>
       <FlexRow className="mb-5 items-end justify-start">
@@ -50,14 +54,7 @@ const Entry = () => {
           </FlexRow>
         )}
       </FlexRow>
-      <FlexRow>
-        <Button>
-          <FlexRow>
-            <Pencil className="h-4 w-4" />
-            <div className="ml-2">Edit</div>
-          </FlexRow>
-        </Button>
-      </FlexRow>
+      <DetailControl />
       {data && (
         <div>
           <ModelUploadStoreProvider>

@@ -7,6 +7,7 @@ import SpacesManager from "@v3/admin/screens/SpacesManager";
 import LoginScreen from "@v3/admin/screens/LoginScreen";
 import { Fragment } from "react";
 import SpaceManager from "./admin/screens/SpaceManager";
+import NotFound from "@v3/admin/shared/NotFound";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="spaces" element={<SpacesManager />}>
             <Route path=":id" element={<SpaceManager />} />
           </Route>
+          <Route path="*" element={<NotFound message="Page Not Found" />} />
         </Route>
       </Routes>
     </Fragment>
