@@ -1,6 +1,7 @@
 import { ImageDown } from "lucide-react";
 import { useBuildingStore } from "../hooks/useBuildingStore";
 import saveAs from "file-saver";
+import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 
 const ImagePreview = () => {
   const buildingStore = useBuildingStore();
@@ -10,6 +11,10 @@ const ImagePreview = () => {
     const image = `${process.env.UNI_CAMPUS_API_URL}/${buildingData?.preview_img.url}`;
     saveAs(image, buildingData?.preview_img.filename);
   };
+
+  if (!buildingData) {
+    return <SpinnerLoading width={35} height={35} />;
+  }
 
   return (
     <div className="relative h-full w-full bg-white">
