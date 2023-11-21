@@ -11,6 +11,7 @@ import { useBuildingStore } from "../hooks/useBuildingStore";
 import { useNavigate } from "react-router-dom";
 import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
+import PublicForm from "./PublicForm";
 
 const DetailControl = () => {
   const globalStore = useGlobalStore();
@@ -86,20 +87,24 @@ const DetailControl = () => {
   };
 
   return (
-    <FlexRow className="items-stretch justify-start gap-5 px-10 pt-5">
-      {!enableEditDetail ? (
-        <Button onClick={handleOnClickEdit}>
-          <FlexRow>
-            <Pencil className="h-4 w-4" />
-            <div className="ml-2">Edit</div>
-          </FlexRow>
+    <FlexRow className="items-stretch justify-between px-10 pr-20 pt-5">
+      <FlexRow className="items-stretch gap-5">
+        {!enableEditDetail ? (
+          <Button onClick={handleOnClickEdit}>
+            <FlexRow>
+              <Pencil className="h-4 w-4" />
+              <div className="ml-2">Edit</div>
+            </FlexRow>
+          </Button>
+        ) : (
+          <Button onClick={handleOnClickDone}>Done</Button>
+        )}
+        <Button onClick={handleOnClickDelete} loading={isLoading}>
+          <Trash className="h-4 w-4" />
         </Button>
-      ) : (
-        <Button onClick={handleOnClickDone}>Done</Button>
-      )}
-      <Button onClick={handleOnClickDelete} loading={isLoading}>
-        <Trash className="h-4 w-4" />
-      </Button>
+      </FlexRow>
+
+      <PublicForm />
     </FlexRow>
   );
 };
