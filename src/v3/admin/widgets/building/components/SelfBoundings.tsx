@@ -14,40 +14,40 @@ const SelfBoundings = () => {
       <div className="text-sm font-normal">
         {glSelfBoundings.box ? (
           <ValidObject
-            message="Building Object has 'bounding-box'"
+            message="Building Object has bounding-box"
             isShow={glShowSelfBoundingBox}
             toggleShow={() => {
               buildingStore.setState({ glShowSelfBoundingBox: !glShowSelfBoundingBox });
             }}
           />
         ) : (
-          <UnValidObject message="Building Object missing 'bounding-box'" />
+          <UnValidObject message="Building Object missing bounding-box" />
         )}
       </div>
       <div className="text-sm font-normal">
         {glSelfBoundings.effect ? (
           <ValidObject
-            message="Building Object has 'bounding-effect'"
+            message="Building Object has bounding-effect"
             isShow={glShowSelfBoundingEffect}
             toggleShow={() => {
               buildingStore.setState({ glShowSelfBoundingEffect: !glShowSelfBoundingEffect });
             }}
           />
         ) : (
-          <UnValidObject message="Building Object missing 'bounding-effect'" />
+          <UnValidObject message="Building Object missing bounding-effect" />
         )}
       </div>
       <div className="text-sm font-normal">
         {glSelfBoundings.arround ? (
           <ValidObject
-            message="Building Object has 'bounding-arround'"
+            message="Building Object has bounding-arround"
             isShow={glShowSelfBoundingArround}
             toggleShow={() => {
               buildingStore.setState({ glShowSelfBoundingArround: !glShowSelfBoundingArround });
             }}
           />
         ) : (
-          <UnValidObject message="Building Object missing 'bounding-arround'" />
+          <UnValidObject message="Building Object missing bounding-arround" />
         )}
       </div>
     </div>

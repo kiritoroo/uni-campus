@@ -16,6 +16,7 @@ import { FlexRow } from "@v3/admin/shared/Wrapper";
 import ImagePreview from "./ImagePreview";
 import DropPreview from "./DropPreview";
 import GLModelScene from "../webgl/GLModelScene";
+import ValidateBuilding from "./ValidateBuilding";
 
 const DetailForm = () => {
   const globalStore = useGlobalStore();
@@ -110,9 +111,14 @@ const DetailForm = () => {
           desc="This 3D model is a digital representation that allows for a more immersive and detailed exploration of the building's design."
           fieldKey={"model_file"}
           customInput={() => (
-            <div className="relative my-2 aspect-[4/2] h-auto w-2/4 overflow-hidden rounded-md border border-gray-300">
-              <GLModelScene />
-            </div>
+            <FlexRow className="relative my-2">
+              <div className="relative mr-5 aspect-[4/2] h-auto w-1/2 overflow-hidden rounded-md  border border-gray-300">
+                <GLModelScene />
+              </div>
+              <div className="relative w-1/2">
+                <ValidateBuilding />
+              </div>
+            </FlexRow>
           )}
           editDesc="Supported 3d model format .gltf, glb"
           enableEdit={enableEditDetail}

@@ -12,14 +12,14 @@ const BlocksBounding = () => {
       <div className="text-sm font-normal">
         {(glBlocksBounding ?? []).length > 0 ? (
           <ValidObject
-            message={`Building Object contains ${glBlocksBounding?.length} 'bounding-block'`}
+            message={`Building Object contains ${glBlocksBounding?.length} bounding-block`}
             isShow={glShowBlocksBoundings}
             toggleShow={() => {
               buildingStore.setState({ glShowGroupMerge: !glShowBlocksBoundings });
             }}
           />
         ) : (
-          <UnValidObject message="Building Object does not contain any 'bounding-block'" />
+          <UnValidObject message="Building Object does not contain any bounding-block" />
         )}
       </div>
     </div>

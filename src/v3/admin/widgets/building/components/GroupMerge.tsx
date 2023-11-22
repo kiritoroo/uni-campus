@@ -12,14 +12,14 @@ const GroupMerge = () => {
       <div className="text-sm font-normal">
         {glGroupMerge ? (
           <ValidObject
-            message="building Object has 'group-merge'"
+            message="building Object has group-merge"
             isShow={glShowGroupMerge}
             toggleShow={() => {
               buildingStore.setState({ glShowGroupMerge: !glShowGroupMerge });
             }}
           />
         ) : (
-          <UnValidObject message="Building Object missing 'group-merge'" />
+          <UnValidObject message="Building Object missing group-merge" />
         )}
       </div>
     </div>

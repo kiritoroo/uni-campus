@@ -10,13 +10,21 @@ const ValidObject = ({
   toggleShow: () => void;
 }) => {
   return (
-    <div className="flex w-full items-stretch justify-start">
+    <div className="flex w-full items-stretch justify-start overflow-hidden rounded-md border border-gray-300">
       <div className="flex grow items-center justify-start bg-green-100 px-3 py-2">
         <CheckCircle2 className="mr-2 h-5 w-5 stroke-green-600" />
-        <div className="text-green-700">{message}</div>
+        <div className="font-normal text-green-600">{message}</div>
       </div>
-      <button type="button" className="bg-slate-50 px-3" onClick={toggleShow}>
-        {isShow ? <Eye className="stroke-slate-500" /> : <EyeOff className="stroke-slate-500" />}
+      <button
+        type="button"
+        className="border-l border-l-gray-300 bg-[#FAFAFA] px-3"
+        onClick={toggleShow}
+      >
+        {isShow ? (
+          <Eye className="stroke-gem-onyx/80" />
+        ) : (
+          <EyeOff className="stroke-gem-onyx/80" />
+        )}
       </button>
     </div>
   );
