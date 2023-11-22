@@ -97,7 +97,7 @@ const DetailForm = () => {
 
   return (
     <FormProvider {...formMethod}>
-      <form className="space-y-5 p-5">
+      <form className="space-y-5 py-5">
         <DetailField
           type="string"
           defaultValue={buildingData?.id}

@@ -87,7 +87,7 @@ const DetailControl = () => {
   };
 
   return (
-    <FlexRow className="items-stretch justify-between px-10 pr-20 pt-5">
+    <FlexRow className="items-stretch justify-between px-5 pt-5">
       <FlexRow className="items-stretch gap-5">
         {!enableEditDetail ? (
           <Button onClick={handleOnClickEdit}>
