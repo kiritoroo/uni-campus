@@ -19,7 +19,10 @@ export const FormInput = React.forwardRef<HTMLInputElement, InputProps>(
         })}
       >
         {label && (
-          <label htmlFor={elId} className="block w-fit cursor-pointer pb-1 text-sm font-medium">
+          <label
+            htmlFor={elId}
+            className="block w-fit cursor-pointer pb-2 text-sm font-semibold text-gem-onyx/80"
+          >
             {label}
           </label>
         )}

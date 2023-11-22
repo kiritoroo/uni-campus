@@ -1,6 +1,5 @@
 import DropPreview from "./DropPreview";
 import { FormInput } from "@v3/admin/shared/FormInput";
-import ViewPreview from "./ViewPreview";
 import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 import { useForm, FormProvider } from "react-hook-form";
 import GLViewModel from "../webgl/GLViewModel";
@@ -12,17 +11,15 @@ import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { useCommonStore } from "../hooks/useCommonStore";
 import { TBuildingCreateSchema, buildingCreateSchema } from "@v3/admin/schemas/building/create";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
-import { Loader2 } from "lucide-react";
+import Button from "@v3/admin/shared/Button";
 
 const CreateForm = () => {
   const commonStore = useCommonStore();
   const buildingsStore = useBuildingsStore();
   const modelUploadStore = useModelUploadStore();
-  const previewUploadStore = usePreviewUploadStore();
 
   const actions = buildingsStore.use.actions();
   const scene = modelUploadStore.use.scene();
-  const base64 = previewUploadStore.use.base64();
 
   const uniToast = useUniToastify();
 
@@ -74,155 +71,160 @@ const CreateForm = () => {
 
   return (
     <FormProvider {...formMethod}>
-      <form onSubmit={handleSubmit(onSubmitForm)} className="grid grid-cols-6 gap-8 py-4">
-        <div className="col-span-3 space-y-2">
-          <div className="grid grid-cols-5 gap-5">
-            <div className="col-span-2">
+      <form onSubmit={handleSubmit(onSubmitForm)} className="py-4">
+        <div className="grid h-full w-full grid-cols-6 gap-8">
+          <div className="col-span-3 space-y-2">
+            <div className="aspect-[4/2.5] w-3/5">
               <div className="flex h-full w-full flex-col">
-                <p className="w-fit pb-1 text-sm font-medium text-gray-600">
-                  Preview <span className="text-red-400">*</span>
+                <p className="w-fit pb-2 text-sm font-semibold text-gem-onyx/80">
+                  Building Preview
                 </p>
-                {base64 ? <ViewPreview /> : <DropPreview />}
+                <DropPreview />
               </div>
             </div>
-            <div className="col-span-3 space-y-2">
+            <div className="w-full space-y-2">
               <FormInput
                 {...register("name")}
-                label="Name"
+                className="bg-[#FAFAFA]"
+                label="Building Name"
                 type="text"
                 required
                 autoComplete={"on"}
               />
             </div>
-          </div>
-          <div className="py-1">
-            <p className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600">
-              Position
-            </p>
-            <div className="flex items-center justify-start gap-3">
-              <FormInput
-                {...register("position.x", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="x"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
-              <FormInput
-                {...register("position.y", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="y"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
-              <FormInput
-                {...register("position.z", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="z"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
+            <div className="py-1">
+              <p className="block w-fit cursor-pointer pb-1 text-sm font-semibold text-gem-onyx/80">
+                Object Position
+              </p>
+              <div className="flex items-center justify-start gap-3">
+                <FormInput
+                  {...register("position.x", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="x"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+                <FormInput
+                  {...register("position.y", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="y"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+                <FormInput
+                  {...register("position.z", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="z"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+              </div>
+            </div>
+            <div className="py-1">
+              <p className="block w-fit cursor-pointer pb-1 text-sm font-semibold text-gem-onyx/80">
+                Object Rotation
+              </p>
+              <div className="flex items-center justify-start gap-3">
+                <FormInput
+                  {...register("rotation.x", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="x"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+                <FormInput
+                  {...register("rotation.y", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="y"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+                <FormInput
+                  {...register("rotation.z", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="z"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+              </div>
+            </div>
+            <div className="py-1">
+              <p className="block w-fit cursor-pointer pb-1 text-sm font-semibold text-gem-onyx/80">
+                Object Scale
+              </p>
+              <div className="flex items-center justify-start gap-3">
+                <FormInput
+                  {...register("scale.x", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="x"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+                <FormInput
+                  {...register("scale.y", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="y"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+                <FormInput
+                  {...register("scale.z", { valueAsNumber: true })}
+                  className="bg-[#FAFAFA]"
+                  dir="hoz"
+                  child
+                  label="z"
+                  type="number"
+                  step={0.00001}
+                  required
+                  autoComplete={"on"}
+                />
+              </div>
             </div>
           </div>
-          <div className="py-1">
-            <p className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600">
-              Rotation
-            </p>
-            <div className="flex items-center justify-start gap-3">
-              <FormInput
-                {...register("rotation.x", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="x"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
-              <FormInput
-                {...register("rotation.y", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="y"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
-              <FormInput
-                {...register("rotation.z", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="z"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
+          <div className="col-span-3 h-full w-full grow">
+            <div className="flex h-full w-full flex-col">
+              <p className="w-fit pb-1 text-sm font-medium text-gray-600">Building 3D Model</p>
+              {!scene ? <DropModel /> : <GLViewModel />}
             </div>
-          </div>
-          <div className="py-1">
-            <p className="block w-fit cursor-pointer pb-1 text-sm font-medium text-gray-600">
-              Scale
-            </p>
-            <div className="flex items-center justify-start gap-3">
-              <FormInput
-                {...register("scale.x", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="x"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
-              <FormInput
-                {...register("scale.y", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="y"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
-              <FormInput
-                {...register("scale.z", { valueAsNumber: true })}
-                dir="hoz"
-                child
-                label="z"
-                type="number"
-                step={0.00001}
-                required
-                autoComplete={"on"}
-              />
-            </div>
-          </div>
-          <div className="py-5">
-            <button
-              type="submit"
-              className="inline-flex w-fit items-center justify-center bg-[#e2e2e2] p-3"
-            >
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin stroke-slate-500" />}
-              <p className="text-sm font-medium text-[#2C2B31]">Create</p>
-            </button>
           </div>
         </div>
-        <div className="col-span-3 h-full w-full grow">
-          <div className="flex h-full w-full flex-col">
-            <p className="w-fit pb-1 text-sm font-medium text-gray-600">
-              3D Model <span className="text-red-400">*</span>
-            </p>
-            {scene ? <GLViewModel /> : <DropModel />}
-          </div>
+
+        <div className="pt-5">
+          <Button type="submit" loading={isLoading}>
+            Create Building
+          </Button>
         </div>
       </form>
     </FormProvider>

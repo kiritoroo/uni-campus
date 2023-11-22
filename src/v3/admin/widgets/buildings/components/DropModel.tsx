@@ -5,11 +5,15 @@ import { arrayBufferToString, cn } from "@Utils/common.utils";
 import { startTransition, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { TBuildingCreateSchema } from "@v3/admin/schemas/building/create";
+import { Box } from "lucide-react";
 
 const DropModel = () => {
   const modelUploadStore = useModelUploadStore();
+
+  const scene = modelUploadStore.use.scene();
   const buffer = modelUploadStore.use.buffer();
   const modelUploadActions = modelUploadStore.use.actions();
+
   const { setValue, formState } = useFormContext<TBuildingCreateSchema>();
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
@@ -44,25 +48,34 @@ const DropModel = () => {
 
   return (
     <div
-      className={cn("relative h-full w-full border border-gray-300 bg-[#EFEFEF] p-4 text-center", {
-        "border-2 border-red-400": formState.errors.model_file,
-      })}
+      className={cn(
+        "relative h-full w-full cursor-pointer overflow-hidden rounded-md border border-gray-300 bg-[#F5F5F5]",
+        {
+          "border border-red-400": formState.errors.model_file,
+        },
+      )}
       {...getRootProps()}
     >
       <input {...getInputProps()} />
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        {isDragActive ? (
-          <p className="text-sm font-medium text-[#2953E9]">Drop the files here...</p>
-        ) : (
-          <p className="text-sm font-medium">
-            Drag <strong className="text-[#2953E9]">GLTF/GLB</strong> file here
-          </p>
-        )}
 
-        {fileRejections.length ? (
-          <p className="text-sm font-medium">Only .gltf or .glb files are accepted</p>
-        ) : null}
-      </div>
+      {!scene && (
+        <div className="flex h-full w-full flex-col items-center justify-center">
+          <Box className="h-24 w-24 rounded-full border-2 border-dashed border-gray-300 bg-[#EDEDED] stroke-gray-300 p-5" />
+          <div className="pt-5 font-medium text-gem-onyx/60">
+            {isDragActive ? (
+              <p className="text-sm font-medium text-gem-onyx/80">Drop the files here...</p>
+            ) : (
+              <p className="text-sm font-medium">
+                Upload building model{" "}
+                <span className="font-semibold text-gem-onyx/80">.gltf, .glb</span>{" "}
+              </p>
+            )}
+            {fileRejections.length ? (
+              <p className="text-sm font-medium">Only .gltf or .glb files are accepted</p>
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
