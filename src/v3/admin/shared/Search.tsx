@@ -1,14 +1,16 @@
 import { cn } from "@Utils/common.utils";
 import { FlexRow } from "@v3/admin/shared/Wrapper";
 import { SearchIcon, XCircle } from "lucide-react";
-import { useCommonStore } from "../hooks/useCommonStore";
 
-const Search = () => {
-  const commonStore = useCommonStore();
-  const searchValue = commonStore.use.searchValue();
-
+const Search = ({
+  searchValue,
+  onChangeSearchValue,
+}: {
+  searchValue: string;
+  onChangeSearchValue: (v: string) => void;
+}) => {
   const handleClearSearch = () => {
-    commonStore.setState({ searchValue: "" });
+    onChangeSearchValue("");
   };
 
   return (
@@ -22,7 +24,7 @@ const Search = () => {
           placeholder="Search..."
           value={searchValue}
           onChange={(e) => {
-            commonStore.setState({ searchValue: e.target.value });
+            onChangeSearchValue(e.target.value);
           }}
         />
       </FlexRow>
