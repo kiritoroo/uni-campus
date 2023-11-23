@@ -13,7 +13,7 @@ const BuildingsList = () => {
   const searchValue = commonStore.use.searchValue();
   const buildingsData = buildingsStore.use.buildingsData();
 
-  const searchData = useMemo<TBuildingSchema[] | null>(() => {
+  const searchDataComputed = useMemo<TBuildingSchema[] | null>(() => {
     if (searchValue.length === 0 || !buildingsData) return null;
 
     const regex = new RegExp(`^${searchValue.toLowerCase()}.*$`);
@@ -22,17 +22,17 @@ const BuildingsList = () => {
     );
   }, [searchValue]);
 
-  if (searchData && searchData.length === 0) {
+  if (searchDataComputed && searchDataComputed.length === 0) {
     return <NoResult searchValue={searchValue} />;
   }
 
-  if (!searchData && buildingsData?.length === 0) {
+  if (!searchDataComputed && buildingsData?.length === 0) {
     return <EmptyData dataName="Building" />;
   }
 
   return (
     <ul className="grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10 bg-white">
-      {(searchData ? searchData : buildingsData)?.map((building) => (
+      {(searchDataComputed ? searchDataComputed : buildingsData)?.map((building) => (
         <li key={building.id} className="col-span-4">
           <BuildingCard {...building} />
         </li>

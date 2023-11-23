@@ -10,7 +10,7 @@ import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
 import LoadingScreen from "@v3/admin/shared/LoadingScreen";
 import Button from "@v3/admin/shared/Button";
-import Search from "./components/Search";
+import Search from "../../shared/Search";
 
 const Entry = () => {
   const globalStore = useGlobalStore();
@@ -18,6 +18,7 @@ const Entry = () => {
   const buildingsStore = useBuildingsStore();
 
   const buildingServiceVersion = globalStore.use.buildingServiceVersion();
+  const searchValue = commonStore.use.searchValue();
   const buildingsActions = buildingsStore.use.actions();
   const showCreateModal = commonStore.use.showCreateModal();
 
@@ -43,7 +44,12 @@ const Entry = () => {
       </FlexRow>
       <div className="px-8 pt-5">
         <FlexRow className="mb-10 gap-10">
-          <Search />
+          <Search
+            searchValue={searchValue}
+            onChangeSearchValue={(v) => {
+              commonStore.setState({ searchValue: v });
+            }}
+          />
           <Button
             onClick={() => {
               commonStore.setState({ showCreateModal: true });
