@@ -11,7 +11,7 @@ type TState = {
   glShowSelfBoundingBox: boolean;
   glShowSelfBoundingEffect: boolean;
   glShowSelfBoundingArround: boolean;
-  glShowBlocksBoundings: boolean;
+  glShowBlocksBounding: boolean;
 };
 
 type TComputedState = {
@@ -55,7 +55,7 @@ const initStore: TState & TComputedState = {
   glShowSelfBoundingBox: true,
   glShowSelfBoundingEffect: true,
   glShowSelfBoundingArround: true,
-  glShowBlocksBoundings: true,
+  glShowBlocksBounding: true,
 };
 
 export const BuildingStore = () => {

@@ -7,16 +7,20 @@ import * as THREE from "three";
 import { GLBoundingAround } from "./GLBoundingArround";
 import { GLBoundingBox } from "./GLBoundingBox";
 import { GLBoundingEffect } from "./GLBoundingEffect";
+import { GLBlockBounding } from "./GLBlockBounding";
 
 const GLBuilding = memo(() => {
   const buildingStore = useBuildingStore();
   const buildingData = buildingStore.use.buildingData();
   const glGroupMerge = buildingStore.use.glGroupMerge();
   const glSelfBoundings = buildingStore.use.glSelfBoundings();
+  const glBlocksBounding = buildingStore.use.glBlocksBounding();
+
   const glShowGroupMerge = buildingStore.use.glShowGroupMerge();
   const glShowSelfBoundingBox = buildingStore.use.glShowSelfBoundingBox();
   const glShowSelfBoundingArround = buildingStore.use.glShowSelfBoundingArround();
   const glShowSelfBoundingEffect = buildingStore.use.glShowSelfBoundingEffect();
+  const glShowBlocksBounding = buildingStore.use.glShowBlocksBounding();
 
   const model: TGLTFReference = useLoader(
     GLTFLoader,
@@ -94,6 +98,26 @@ const GLBuilding = memo(() => {
           visible={glShowSelfBoundingEffect}
         />
       )}
+      {glBlocksBounding &&
+        glBlocksBounding.map((item) => {
+          const objBlockBoundingProperty: {
+            geometry: THREE.BufferGeometry;
+            position: THREE.Vector3;
+          } = (() => {
+            return {
+              geometry: item.geometry,
+              position: item.position,
+            };
+          })();
+
+          return (
+            <GLBlockBounding
+              geometry={objBlockBoundingProperty.geometry}
+              position={objBlockBoundingProperty.position}
+              visible={glShowBlocksBounding}
+            />
+          );
+        })}
     </group>
   );
 });

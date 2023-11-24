@@ -5,7 +5,7 @@ import UnValidObject from "./UnValidObject";
 const BlocksBounding = () => {
   const buildingStore = useBuildingStore();
   const glBlocksBounding = buildingStore.use.glBlocksBounding();
-  const glShowBlocksBoundings = buildingStore.use.glShowBlocksBoundings();
+  const glShowBlocksBounding = buildingStore.use.glShowBlocksBounding();
 
   return (
     <div className="relative my-2">
@@ -13,9 +13,9 @@ const BlocksBounding = () => {
         {(glBlocksBounding ?? []).length > 0 ? (
           <ValidObject
             message={`Building Object contains ${glBlocksBounding?.length} bounding-block`}
-            isShow={glShowBlocksBoundings}
+            isShow={glShowBlocksBounding}
             toggleShow={() => {
-              buildingStore.setState({ glShowGroupMerge: !glShowBlocksBoundings });
+              buildingStore.setState({ glShowBlocksBounding: !glShowBlocksBounding });
             }}
           />
         ) : (

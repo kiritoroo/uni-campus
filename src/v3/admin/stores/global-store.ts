@@ -8,10 +8,13 @@ export interface IGlobalStore {
 }
 
 export const GlobalStore = () => {
-  return createStore<IGlobalStore>((set, get) => ({
-    buildingServiceVersion: uuidv4(),
-    spaceServicesVersion: uuidv4(),
-    minimalSidebar:
-      JSON.parse(window.localStorage.getItem("UNI-CAMPUS-X:minimal-sidebar") ?? "")?.value ?? false,
-  }));
+  return createStore<IGlobalStore>((set, get) => {
+    const minimalSidebar = window.localStorage.getItem("UNI-CAMPUS-X:minimal-sidebar");
+
+    return {
+      buildingServiceVersion: uuidv4(),
+      spaceServicesVersion: uuidv4(),
+      minimalSidebar: minimalSidebar ? JSON.parse(minimalSidebar)?.value : false,
+    };
+  });
 };
