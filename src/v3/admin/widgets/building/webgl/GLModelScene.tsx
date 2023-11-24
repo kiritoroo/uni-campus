@@ -1,4 +1,4 @@
-import { Suspense, memo } from "react";
+import { Suspense, memo, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage, Html } from "@react-three/drei";
@@ -23,6 +23,13 @@ const GLModelScene = memo(() => {
   const enableEditDetail = commonStore.use.enableEditDetail();
   const buildingData = buildingStore.use.buildingData();
 
+  const glUploadBuildingObjects = useMemo<THREE.Object3D[] | null>(() => {
+    if (!uploadScene) return null;
+    return uploadScene.clone().children.filter((obj) => !obj.name.includes("bounding"));
+  }, [uploadScene]);
+
+  const uploadSceneGroup = useRef(new THREE.Group());
+
   const handleSavePreview = () => {
     const image = document
       .getElementsByTagName("canvas")[0]
@@ -41,6 +48,12 @@ const GLModelScene = memo(() => {
     const model = `${process.env.UNI_CAMPUS_API_URL}/${buildingData?.model_3d.url}`;
     saveAs(model, buildingData?.model_3d.filename);
   };
+
+  useEffect(() => {
+    if (glUploadBuildingObjects) {
+      uploadSceneGroup.current.add(...glUploadBuildingObjects);
+    }
+  }, [glUploadBuildingObjects]);
 
   return (
     <ErrorBoundary
@@ -90,7 +103,7 @@ const GLModelScene = memo(() => {
             }
           >
             <Stage preset={"rembrandt"} intensity={1} shadows adjustCamera environment={"city"}>
-              <primitive object={uploadScene} />
+              <primitive object={uploadSceneGroup.current} />
             </Stage>
           </Suspense>
         )}
