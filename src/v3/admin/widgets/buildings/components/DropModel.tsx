@@ -59,7 +59,7 @@ const DropModel = () => {
       <input {...getInputProps()} />
 
       {!scene && (
-        <div className="flex h-full w-full flex-col items-center justify-center">
+        <div className="flex h-full w-full flex-col items-center justify-center text-center">
           <Box className="h-24 w-24 rounded-full border-2 border-dashed border-gray-300 bg-[#EDEDED] stroke-gray-300 p-5" />
           <div className="pt-5 font-medium text-gem-onyx/60">
             {isDragActive ? (

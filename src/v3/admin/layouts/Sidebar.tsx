@@ -147,21 +147,21 @@ const Sidebar = () => {
               href="buildings"
               Icon={Building2}
               title={"Buildings"}
-              picked={location.pathname === "/x/buildings"}
+              picked={location.pathname.includes("/x/buildings")}
               minimal={minimalSidebar}
             />
             <NavItem
               href="spaces"
               Icon={LandPlot}
               title={"Spaces"}
-              picked={location.pathname === "/x/spaces"}
+              picked={location.pathname.includes("/x/spaces")}
               minimal={minimalSidebar}
             />
             <NavItem
               href="blocks"
               Icon={Box}
               title={"Blocks"}
-              picked={location.pathname === "/x/blocks"}
+              picked={location.pathname.includes("/x/blocks")}
               minimal={minimalSidebar}
             />
           </div>

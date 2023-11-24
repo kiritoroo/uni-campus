@@ -57,7 +57,7 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
           <div className="flex items-stretch justify-center">
             <input
               className={cn(
-                "peer h-[32px] w-full border border-[#E5E7EA] bg-[#EFEFEF] px-3 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500/20 disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
+                "peer h-[32px] w-full rounded-md rounded-r-none border border-gray-300 bg-[#EFEFEF] px-3 text-sm font-medium text-gray-700 focus:outline-2 focus:outline-gem-onyx disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
                 className,
               )}
               ref={ref}
@@ -78,7 +78,12 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
             <button
               id={`${inputId}-preview`}
               type="button"
-              className="h-auto w-10 border border-[#E5E7EA] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gray-500/20 peer-disabled:cursor-not-allowed"
+              className={cn(
+                "block h-auto w-10 rounded-md rounded-l-none border border-gray-300 peer-disabled:cursor-not-allowed",
+                {
+                  "outline-2 outline-gem-onyx": showPicker,
+                },
+              )}
               css={css`
                 background-color: ${color};
               `}

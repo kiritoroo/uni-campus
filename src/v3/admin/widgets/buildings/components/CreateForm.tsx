@@ -74,7 +74,7 @@ const CreateForm = () => {
       <form onSubmit={handleSubmit(onSubmitForm)} className="py-4">
         <div className="grid h-full w-full grid-cols-6 gap-8">
           <div className="col-span-3 space-y-2">
-            <div className="aspect-[4/2.5] w-3/5">
+            <div className="aspect-[4/2.5] w-[320px]">
               <div className="flex h-full w-full flex-col">
                 <p className="w-fit pb-2 text-sm font-semibold text-gem-onyx/80">
                   Building Preview

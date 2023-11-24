@@ -56,7 +56,7 @@ const DropPreview = () => {
 
       {!base64 && (
         <div className="relative h-full w-full p-5">
-          <div className="relative z-[2] flex h-full w-full flex-col items-center justify-center">
+          <div className="relative z-[2] flex h-full w-full flex-col items-center justify-center text-center">
             <ImagePlus className="h-16 w-16 rounded-full border-2 border-dashed border-gray-300 bg-[#EDEDED] stroke-gray-300 p-3" />
             <div className="pt-5 font-medium text-gem-onyx/60">
               {isDragActive ? (
@@ -75,8 +75,6 @@ const DropPreview = () => {
           </div>
         </div>
       )}
-
-      <div className="absolute inset-0 flex flex-col items-center justify-center"></div>
     </div>
   );
 };
