@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import { useClickOutside } from "@Hooks/useClickOutside";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  initColor: string;
+  initColor: string | undefined | null;
   label?: string;
 }
 
@@ -29,8 +29,8 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
     );
 
     useEffect(() => {
-      setColor(initColor);
-      setTmpColor(initColor);
+      setColor(initColor ?? "#fff");
+      setTmpColor(initColor ?? "#fff");
     }, [initColor]);
 
     const handleOnPickColor = (color: string) => {
@@ -57,7 +57,7 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
           <div className="flex items-stretch justify-center">
             <input
               className={cn(
-                "peer h-[32px] w-full rounded-md rounded-r-none border border-gray-300 bg-[#EFEFEF] px-3 text-sm font-medium text-gray-700 focus:outline-2 focus:outline-gem-onyx disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
+                "peer h-[32px] w-full rounded-md rounded-r-none border border-gray-300 bg-[#FAFAFA] px-3 text-sm font-medium text-gray-700 focus:outline-2 focus:outline-gem-onyx disabled:cursor-not-allowed disabled:bg-[#EFEFEF]/50 disabled:text-gray-700",
                 className,
               )}
               ref={ref}
@@ -81,7 +81,7 @@ export const FormColorInput = React.forwardRef<HTMLInputElement, InputProps>(
               className={cn(
                 "block h-auto w-10 rounded-md rounded-l-none border border-gray-300 peer-disabled:cursor-not-allowed",
                 {
-                  "outline-2 outline-gem-onyx": showPicker,
+                  "outline outline-2 outline-gem-onyx": showPicker,
                 },
               )}
               css={css`

@@ -58,11 +58,7 @@ const Entry = () => {
           </FlexRow>
           <div className="px-8">
             <DetailControl />
-            {data && (
-              <div>
-                <DetailForm />
-              </div>
-            )}
+            {data && <DetailForm />}
           </div>
         </PreviewUploadStoreProvider>
       </ModelUploadStoreProvider>

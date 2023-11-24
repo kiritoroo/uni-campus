@@ -7,6 +7,9 @@ import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 import SpacePreview from "./components/SpacePreview";
 import { IconUploadStoreProvider } from "./contexts/IconUploadStoreContext";
 import DetailForm from "./components/DetailForm";
+import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
+import Copied from "@v3/admin/shared/Copied";
+import DetailControl from "./components/DetailControl";
 
 const Entry = () => {
   const { id } = useParams();
@@ -15,6 +18,7 @@ const Entry = () => {
   const spaceStore = useSpaceStore();
 
   const spaceServiceVersion = globalStore.use.spaceServicesVersion();
+  const spaceId = spaceStore.use.spaceId();
   const actions = spaceStore.use.actions();
 
   const { detailSpace } = useSpaceServices();
@@ -30,18 +34,30 @@ const Entry = () => {
     }
   }, [data]);
 
+  if (isLoading) {
+    return <SpinnerLoading width={50} height={50} />;
+  }
+
   return (
-    <section className="h-full w-full overflow-hidden">
-      {isLoading && <SpinnerLoading width={50} height={50} />}
+    <WidgetSection className="rounded-md border border-gray-300">
       {data && (
         <IconUploadStoreProvider>
-          <div className="h-fit w-full border border-gray-200 px-2 py-5">
-            <SpacePreview />
-            <DetailForm />
+          <FlexRow className="mb-5 items-end justify-start">
+            <WidgetTitle>Building Details</WidgetTitle>
+            {spaceId && (
+              <FlexRow className="ml-8">
+                <div className="mr-2 text-base font-medium text-gem-onyx/80">{spaceId}</div>
+                <Copied value={spaceId} />
+              </FlexRow>
+            )}
+          </FlexRow>
+          <div className="px-8">
+            <DetailControl />
+            {data && <DetailForm />}
           </div>
         </IconUploadStoreProvider>
       )}
-    </section>
+    </WidgetSection>
   );
 };
 

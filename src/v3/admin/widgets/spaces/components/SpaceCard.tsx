@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
 import { useCommonStore } from "../hooks/useCommonStore";
 
-const SpaceCard = ({ id, color, name, icon }: TSpaceSchema) => {
+const SpaceCard = ({ id, color, name, icon, is_publish }: TSpaceSchema) => {
   const globalStore = useGlobalStore();
   const commonStore = useCommonStore();
   const spacesStore = useSpacesStore();
@@ -111,13 +111,14 @@ const SpaceCard = ({ id, color, name, icon }: TSpaceSchema) => {
       </Link>
 
       <div className="absolute bottom-3 right-3 flex items-center justify-center gap-2">
-        <button
-          type="button"
-          className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
-          onClick={handleOnClickDelete}
+        <div
+          className={cn("rounded-md px-3 py-[2px] text-sm font-medium", {
+            " bg-green-100 text-green-700 ": is_publish,
+            " bg-gray-200 text-gem-onyx/80 ": !is_publish,
+          })}
         >
-          <Trash2 className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
-        </button>
+          {is_publish ? <span>Publish</span> : <span>Draft</span>}
+        </div>
       </div>
     </div>
   );

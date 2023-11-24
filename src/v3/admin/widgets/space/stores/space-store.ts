@@ -7,7 +7,9 @@ type TState = {
   spaceData: TSpaceSchema | null;
 };
 
-type TComputedState = {};
+type TComputedState = {
+  canSetPublish: undefined | boolean;
+};
 
 type TActions = {
   initSpaceData: ({
@@ -26,6 +28,7 @@ export interface ISpaceStore extends TState, TComputedState {
 const initStore: TState & TComputedState = {
   spaceId: null,
   spaceData: null,
+  canSetPublish: undefined,
 };
 
 export const SpaceStore = () => {
@@ -39,7 +42,9 @@ export const SpaceStore = () => {
           },
         },
       }),
-      (state) => ({}),
+      (state) => ({
+        canSetPublish: true,
+      }),
     ),
   );
 };

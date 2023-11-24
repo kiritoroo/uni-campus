@@ -38,7 +38,7 @@ const DetailField = React.forwardRef<HTMLInputElement, InputProps>(
     const elId = `el--input-${uuidv4()}`;
 
     return (
-      <div className="overflow-hidden rounded-md border border-gray-300 shadow-sm">
+      <div className="rounded-md border border-gray-300 shadow-sm">
         <div className="p-8">
           <label htmlFor={elId} className="block cursor-pointer pb-2 text-base font-bold">
             {label}
@@ -61,7 +61,7 @@ const DetailField = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {editable && enableEdit && (
-          <div className="flex items-center justify-between border-t border-t-gray-300 bg-[#FAFAFA] px-8 py-3">
+          <div className="flex items-center justify-between rounded-b-md border-t border-t-gray-300 bg-[#FAFAFA] px-8 py-3">
             {editDesc ? (
               <div className="text-sm font-normal text-gem-onyx/80">{editDesc}</div>
             ) : (

@@ -82,10 +82,10 @@ const DetailForm = () => {
   });
 
   const onSubmitForm = (key: keyof TBuildingUpdateSchema) => {
-    console.log(watch());
     setUpdateKey(key);
     mutate({ id: buildingId!, [key]: watch(key) });
   };
+
   useEffect(() => {
     if (buildingData && !enableEditDetail) {
       setValue("name", buildingData.name);

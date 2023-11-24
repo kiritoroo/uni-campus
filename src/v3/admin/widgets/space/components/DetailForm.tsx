@@ -5,15 +5,14 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useUniToastify } from "@v3/admin/shared/UniToastify";
 import { TSpaceUpdateSchema, spaceUpdateSchema } from "@v3/admin/schemas/space/update";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSpaceStore } from "../hooks/useSpaceStore";
-import { Pencil, Save, X } from "lucide-react";
-import { cn } from "@Utils/common.utils";
-import { FormInput } from "@v3/admin/shared/FormInput";
 import { FormColorInput } from "@v3/admin/shared/FormColorInput";
 import IconPreview from "./IconPreview";
 import { useSpaceServices } from "@v3/admin/hooks/useSpaceServices";
 import { v4 as uuidv4 } from "uuid";
+import DetailField from "../../building/components/DetailField";
+import DropIcon from "./DropIcon";
 
 const DetailForm = () => {
   const globalStore = useGlobalStore();
@@ -28,6 +27,8 @@ const DetailForm = () => {
 
   const uniToast = useUniToastify();
 
+  const [updateKey, setUpdateKey] = useState<keyof TSpaceUpdateSchema | null>(null);
+
   const formMethod = useForm<TSpaceUpdateSchema>({
     resolver: zodResolver(spaceUpdateSchema),
     defaultValues: {
@@ -36,36 +37,32 @@ const DetailForm = () => {
     },
   });
 
-  const { control, register, setValue, watch, handleSubmit } = formMethod;
+  const { control, register, setValue, watch } = formMethod;
 
   const { updateSpace } = useSpaceServices();
 
-  const { mutate } = updateSpace(
-    {
-      id: spaceId!,
-      ...watch(),
+  const { mutate, isLoading } = updateSpace({
+    onSuccess: (data) => {
+      iconUploadActions.resetStore();
+      spaceStore.setState({ spaceData: data });
+      globalStore.setState({ spaceServicesVersion: uuidv4() });
+      uniToast.success({
+        desc: "Update building success",
+      });
     },
-    {
-      onSuccess: (data) => {
-        iconUploadActions.resetStore();
-        commonStore.setState({ enableEditDetail: false });
-        spaceStore.setState({ spaceData: data });
-        globalStore.setState({ spaceServicesVersion: uuidv4() });
-        uniToast.success({
-          desc: "Update building success",
-        });
-      },
-      onError: (error: any) => {
-        uniToast.error({
-          desc: Error(error).message,
-        });
-      },
+    onError: (error: any) => {
+      uniToast.error({
+        desc: Error(error).message,
+      });
     },
-  );
+    onSettled: () => {
+      setUpdateKey(null);
+    },
+  });
 
-  const onSubmitForm = () => {
-    console.log(watch());
-    mutate();
+  const onSubmitForm = (key: keyof TSpaceUpdateSchema) => {
+    setUpdateKey(key);
+    mutate({ id: spaceId!, ...watch() });
   };
 
   useEffect(() => {
@@ -77,82 +74,64 @@ const DetailForm = () => {
 
   return (
     <FormProvider {...formMethod}>
-      <form
-        onSubmit={handleSubmit(onSubmitForm)}
-        className={cn(
-          "relative mt-12 flex h-full flex-col items-center justify-center border border-gray-300",
-          {
-            "border-blue-300": enableEditDetail,
-          },
-        )}
-      >
-        <div className="relative w-full px-4 py-6">
-          {!enableEditDetail ? (
-            <button
-              className=" bg-gray-100 p-3"
-              type="button"
-              onClick={() => {
-                commonStore.setState({ enableEditDetail: true });
-              }}
-            >
-              <Pencil className="h-4 w-4 stroke-gray-600" />
-            </button>
-          ) : (
-            <div className="flex items-center justify-start gap-4">
-              <button
-                className=" flex items-center justify-around gap-3 bg-gray-100 px-3 py-2"
-                onClick={() => {
-                  commonStore.setState({ enableEditDetail: false });
-                  iconUploadActions.resetStore();
-                }}
-                type="button"
-              >
-                <X className="h-4 w-4 stroke-gray-600" />{" "}
-                <p className="text-sm font-medium">Cancel</p>
-              </button>
-              <button
-                className=" flex items-center justify-around gap-3 bg-gray-100 px-3 py-2"
-                onClick={() => {}}
-                type="submit"
-              >
-                <Save className="h-4 w-4 stroke-gray-600" />{" "}
-                <p className="text-sm font-medium">Save</p>
-              </button>
+      <form className="space-y-5 py-5">
+        <DetailField
+          type="string"
+          defaultValue={spaceData?.id}
+          disabled={true}
+          label="Space ID"
+          desc="A unique identifier assigned to the space, facilitating precise identification within the system."
+          editable={false}
+        />
+        <DetailField
+          {...register("name")}
+          type="string"
+          required
+          disabled={!enableEditDetail}
+          label="Space Name"
+          desc="The designated name of the space, providing a human-readable label for easy recognition."
+          fieldKey={"name"}
+          editDesc="Make sure not empty field"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "name"}
+        />
+        <DetailField
+          label="Space Color"
+          desc="The color associated with the space, aiding in visual categorization or differentiation."
+          fieldKey={"color"}
+          customInput={() => (
+            <Controller
+              control={control}
+              name="color"
+              render={({ field: { value, onChange } }) => (
+                <FormColorInput
+                  initColor={value}
+                  onChange={onChange}
+                  disabled={!enableEditDetail}
+                />
+              )}
+            />
+          )}
+          editDesc="Supported hex color format"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "color"}
+        />
+        <DetailField
+          label="Space Icon"
+          desc="An icon representing the space, enhancing visual identification and user experience."
+          fieldKey={"icon_file"}
+          customInput={() => (
+            <div className="my-2 aspect-[4/2] h-auto w-2/4 overflow-hidden rounded-md border border-gray-300">
+              {enableEditDetail ? <DropIcon /> : <IconPreview />}
             </div>
           )}
-        </div>
-        <div className="flex w-full flex-col items-start justify-center gap-2 border-t border-gray-300 bg-gray-50 px-8 py-4">
-          <div className="flex flex-row items-stretch justify-start gap-x-8">
-            <div className="flex h-auto flex-col items-start justify-between py-1">
-              <p className="text-sm">Name </p>
-              <p className="text-sm">Color </p>
-            </div>
-            <div className="space-y-3">
-              <FormInput
-                {...register("name")}
-                type="string"
-                required
-                dir="hoz"
-                disabled={!enableEditDetail}
-              />
-              <Controller
-                control={control}
-                name="color"
-                render={({ field: { value, onChange } }) => (
-                  <FormColorInput
-                    initColor={value}
-                    onChange={onChange}
-                    disabled={!enableEditDetail}
-                  />
-                )}
-              />
-            </div>
-          </div>
-          <div className="flex items-center justify-start gap-x-12">
-            <div>Icon</div>
-            <div className="aspect-square h-[64px]">{spaceData && <IconPreview />}</div>
-          </div>
-        </div>
+          editDesc="Supported image format .webp"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "icon_file"}
+        />
       </form>
     </FormProvider>
   );

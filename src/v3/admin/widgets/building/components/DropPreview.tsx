@@ -6,7 +6,6 @@ import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
 import { useFormContext } from "react-hook-form";
 import { useBuildingStore } from "../hooks/useBuildingStore";
-import { SpinnerLoading } from "@v3/admin/shared/SpinnerLoading";
 
 const DropPreview = () => {
   const buildingStore = useBuildingStore();

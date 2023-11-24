@@ -26,10 +26,9 @@ export const useSpaceServices = () => {
   };
 
   const updateSpace = (
-    data: TSpaceUpdateSchema & Pick<TSpaceSchema, "id">,
-    option?: UseMutationOptions<TSpaceSchema>,
+    option?: UseMutationOptions<TSpaceSchema, any, TSpaceUpdateSchema & Pick<TSpaceSchema, "id">>,
   ) => {
-    return useMutation(["api/put-space", data], () => putSpace({ data: data }), option);
+    return useMutation(["api/put-space"], (data) => putSpace({ data: data }), option);
   };
 
   const removeSpace = (data: Pick<TSpaceSchema, "id">, option?: UseMutationOptions) => {
