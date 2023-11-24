@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom";
 import { useUniDialog } from "@v3/admin/shared/UniDialog";
-import { Clipboard, Trash, Trash2 } from "lucide-react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { Tooltip } from "react-tooltip";
 import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 import { useBuildingsStore } from "../hooks/useBuildingsStore";
 import { TBuildingSchema } from "@v3/admin/schemas/building/base";
@@ -11,6 +8,7 @@ import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { v4 as uuidv4 } from "uuid";
 import { cn } from "@Utils/common.utils";
 import Copied from "@v3/admin/shared/Copied";
+import { Trash, Trash2 } from "lucide-react";
 
 const BuildingCard = ({ id, name, preview_img, is_publish }: TBuildingSchema & {}) => {
   const globalStore = useGlobalStore();

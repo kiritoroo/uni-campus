@@ -31,7 +31,7 @@ const BuildingsList = () => {
   }
 
   return (
-    <ul className="grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10 bg-white">
+    <ul className="grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10">
       {(searchDataComputed ? searchDataComputed : buildingsData)?.map((building) => (
         <li key={building.id} className="col-span-4">
           <BuildingCard {...building} />

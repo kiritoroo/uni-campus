@@ -40,9 +40,42 @@ const SpaceCard = ({ id, color, name, icon }: TSpaceSchema) => {
     },
   );
 
+  const handleOnClickDelete = () => {
+    uniDialog.addDialog({
+      body: (
+        <div>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <div className="text-lg font-medium">Delete space?</div>
+            <p className="text-center text-sm">
+              Are you sure you want to delete <strong>"{name}"</strong> space?. <br /> You can't
+              undo this action.
+            </p>
+          </div>
+        </div>
+      ),
+      button: (
+        <button
+          type="button"
+          className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
+          onClick={() => {
+            mutate();
+          }}
+        >
+          <div className="text-sm font-medium">Delete</div>{" "}
+          <Trash className="h-4 w-4 stroke-gray-700" />
+        </button>
+      ),
+    });
+  };
+
   return (
     <div
-      className={cn("relative border border-gray-200", { "border-blue-400": pickedSpaceID === id })}
+      className={cn(
+        "relative overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md transition-all duration-100",
+        {
+          "border-gem-onyx": pickedSpaceID === id,
+        },
+      )}
     >
       <Link
         to={pickedSpaceID === id ? "" : id}
@@ -53,64 +86,39 @@ const SpaceCard = ({ id, color, name, icon }: TSpaceSchema) => {
         }}
         className="flex cursor-pointer items-stretch justify-start "
       >
-        <div className="px-4 py-2">
+        <div className="border-r border-gray-300 px-4 py-2">
           <img
             className="h-full w-14 object-contain"
             src={`${process.env.UNI_CAMPUS_API_URL}/${icon.url!}`}
           />
         </div>
         <div
-          className={cn("relative grow bg-gray-100 px-3 py-5", {
-            "bg-blue-50": pickedSpaceID === id,
+          className={cn("relative grow bg-white px-3 py-5 transition-all duration-100", {
+            "bg-[#FAFAFA]": pickedSpaceID === id,
           })}
         >
-          <div className="flex items-stretch justify-start gap-x-3 pl-2">
+          <div className="flex flex-row items-center justify-start gap-x-3 pl-2">
             <div
-              className={cn("w-1")}
+              className={cn("h-3 w-3 rounded-full border border-gray-300")}
               css={css`
                 background-color: ${color};
               `}
             />
-            <div>
-              <div className="pb-1 text-lg font-medium">{name}</div>
-              <div className="text-sm font-normal">{id}</div>
-            </div>
+            <div className="pb-1 text-xl font-semibold text-gem-onyx">{name}</div>
           </div>
+          <div className="pl-2 text-sm font-normal text-gem-onyx/60">{id}</div>
         </div>
       </Link>
 
-      <button
-        className="absolute bottom-3 right-3 cursor-pointer bg-gray-200 p-2 hover:bg-gray-300"
-        onClick={() => {
-          uniDialog.addDialog({
-            body: (
-              <div>
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="text-lg font-medium">Delete space?</div>
-                  <p className="text-center text-sm">
-                    Are you sure you want to delete <strong>"{name}"</strong> space?. <br /> You
-                    can't undo this action.
-                  </p>
-                </div>
-              </div>
-            ),
-            button: (
-              <button
-                type="button"
-                className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
-                onClick={() => {
-                  mutate();
-                }}
-              >
-                <div className="text-sm font-medium">Delete</div>{" "}
-                <Trash className="h-4 w-4 stroke-gray-700" />
-              </button>
-            ),
-          });
-        }}
-      >
-        <Trash2 className="h-4 w-4 stroke-gray-600" />
-      </button>
+      <div className="absolute bottom-3 right-3 flex items-center justify-center gap-2">
+        <button
+          type="button"
+          className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
+          onClick={handleOnClickDelete}
+        >
+          <Trash2 className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
+        </button>
+      </div>
     </div>
   );
 };

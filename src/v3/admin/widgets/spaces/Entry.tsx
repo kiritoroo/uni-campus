@@ -54,7 +54,7 @@ const Entry = () => {
       <div className="h-full w-full px-8 pt-5">
         {data && (
           <div className="grid h-full w-full grid-cols-12 gap-x-10">
-            <div className="col-span-7 h-full w-full">
+            <div className="col-span-5 h-full w-full">
               <FlexRow className="mb-10 gap-10">
                 <Search
                   searchValue={searchValue}
@@ -75,7 +75,7 @@ const Entry = () => {
                 <SpacesList />
               </div>
             </div>
-            <div className="col-span-5">
+            <div className="col-span-7">
               <Outlet key={id ?? ""} />
               {!id && <EmptyOutlet />}
             </div>
