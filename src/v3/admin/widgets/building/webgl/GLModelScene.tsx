@@ -12,6 +12,7 @@ import { useCommonStore } from "../hooks/useCommonStore";
 import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { cn } from "@Utils/common.utils";
 import DropModel from "../components/DropModel";
+import Button from "@v3/admin/shared/Button";
 
 const GLModelScene = memo(() => {
   const commonStore = useCommonStore();
@@ -119,21 +120,24 @@ const GLModelScene = memo(() => {
       </Canvas>
 
       {!enableEditDetail && (
-        <div className="absolute bottom-3 right-3 z-[2] flex items-center justify-center gap-3">
-          <button
-            type="button"
-            className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
-            onClick={handleSaveModel}
-          >
-            <FileDown className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
-          </button>
-          <button
-            type="button"
-            className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
-            onClick={handleSavePreview}
-          >
-            <ImageDown className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
-          </button>
+        <div className="absolute bottom-3 left-0 right-0 z-[2] flex w-full items-center justify-between px-5">
+          <Button>Blocks</Button>
+          <div className="flex items-center justify-center gap-3">
+            <button
+              type="button"
+              className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
+              onClick={handleSaveModel}
+            >
+              <FileDown className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
+            </button>
+            <button
+              type="button"
+              className="group cursor-pointer rounded-md border border-gem-onyx bg-gem-onyx p-2 transition-colors duration-200 hover:bg-white active:bg-gem-onyx/20"
+              onClick={handleSavePreview}
+            >
+              <ImageDown className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
+            </button>
+          </div>
         </div>
       )}
 

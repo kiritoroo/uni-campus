@@ -23,6 +23,10 @@ type TComputedState = {
     effect: THREE.Mesh | null;
   };
   glBlocksBounding: THREE.Mesh[] | null;
+  glBLockSlots: {
+    objName: string;
+    isEmpty: boolean;
+  }[];
 };
 
 type TActions = {
@@ -56,6 +60,7 @@ const initStore: TState & TComputedState = {
   glShowSelfBoundingEffect: true,
   glShowSelfBoundingArround: true,
   glShowBlocksBounding: true,
+  glBLockSlots: [],
 };
 
 export const BuildingStore = () => {
@@ -96,14 +101,23 @@ export const BuildingStore = () => {
           }
         })() as THREE.Mesh[] | null;
 
-        function getCanSetPublish() {
+        const blockSlots = (function getBlockSlots() {
+          return blocksBounding
+            ? blocksBounding.map((bounding) => ({
+                objName: bounding.name.split("_")[0],
+                isEmpty: false,
+              }))
+            : [];
+        })() as TComputedState["glBLockSlots"];
+
+        const canSetPublic = (function getCanSetPublish() {
           return [
             state.glBuildingObjects && boundingArround && boundingEffect && blocksBounding,
           ].every((x) => x);
-        }
+        })();
 
         return {
-          canSetPublish: getCanSetPublish(),
+          canSetPublish: canSetPublic,
           glGroupMerge: groupMerge,
           glSelfBoundings: {
             box: boundingBox,
@@ -111,6 +125,7 @@ export const BuildingStore = () => {
             effect: boundingEffect,
           },
           glBlocksBounding: blocksBounding,
+          glBLockSlots: blockSlots,
         };
       },
     ),

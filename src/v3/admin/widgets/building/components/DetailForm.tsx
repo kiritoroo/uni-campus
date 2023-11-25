@@ -17,6 +17,9 @@ import ImagePreview from "./ImagePreview";
 import DropPreview from "./DropPreview";
 import GLModelScene from "../webgl/GLModelScene";
 import ValidateBuilding from "./ValidateBuilding";
+import Button from "@v3/admin/shared/Button";
+import { PlusSquare } from "lucide-react";
+import BLockSlots from "./BLockSlots";
 
 const DetailForm = () => {
   const globalStore = useGlobalStore();
@@ -111,14 +114,17 @@ const DetailForm = () => {
           desc="This 3D model is a digital representation that allows for a more immersive and detailed exploration of the building's design."
           fieldKey={"model_file"}
           customInput={() => (
-            <FlexRow className="relative my-2">
-              <div className="relative mr-5 aspect-[4/2] h-auto w-1/2 overflow-hidden rounded-md  border border-gray-300">
-                <GLModelScene />
-              </div>
-              <div className="relative w-1/2">
-                <ValidateBuilding />
-              </div>
-            </FlexRow>
+            <div className="h-auto w-full space-y-5">
+              <FlexRow className="relative my-2">
+                <div className="relative mr-5 aspect-[4/2] h-auto w-1/2 overflow-hidden rounded-md  border border-gray-300">
+                  <GLModelScene />
+                </div>
+                <div className="relative w-1/2">
+                  <ValidateBuilding />
+                </div>
+              </FlexRow>
+              <BLockSlots />
+            </div>
           )}
           editDesc="Supported 3d model format .gltf, glb"
           enableEdit={enableEditDetail}
