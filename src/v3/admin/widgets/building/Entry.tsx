@@ -11,6 +11,7 @@ import LoadingScreen from "@v3/admin/shared/LoadingScreen";
 import Copied from "@v3/admin/shared/Copied";
 import DetailControl from "./components/DetailControl";
 import NotFound from "@v3/admin/shared/NotFound";
+import { useBlockServices } from "@v3/admin/hooks/useBlockServices";
 
 const Entry = () => {
   const { id } = useParams();
@@ -19,12 +20,17 @@ const Entry = () => {
   const buildingStore = useBuildingStore();
 
   const buildingServiceVersion = globalStore.use.buildingServiceVersion();
+  const blockServicesVersion = globalStore.use.blockServicesVersion();
   const buildingId = buildingStore.use.buildingId();
+  const glBlocksBounding = buildingStore.use.glBlocksBounding();
+
   const actions = buildingStore.use.actions();
 
   const { detailBuilding } = useBuildingServices();
+  const { listBlocks } = useBlockServices();
 
   const { data, isLoading } = detailBuilding(buildingServiceVersion, { id: id ?? "" });
+  const { data: blocksData } = listBlocks(blockServicesVersion);
 
   useEffect(() => {
     if (data && id) {
@@ -34,6 +40,12 @@ const Entry = () => {
       });
     }
   }, [data]);
+
+  useEffect(() => {
+    if (glBlocksBounding) {
+      blocksData && actions.mapBlockSlots(blocksData);
+    }
+  }, [blocksData, glBlocksBounding]);
 
   if (isLoading) {
     return <LoadingScreen />;

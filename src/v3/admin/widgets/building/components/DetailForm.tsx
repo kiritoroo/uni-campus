@@ -17,8 +17,6 @@ import ImagePreview from "./ImagePreview";
 import DropPreview from "./DropPreview";
 import GLModelScene from "../webgl/GLModelScene";
 import ValidateBuilding from "./ValidateBuilding";
-import Button from "@v3/admin/shared/Button";
-import { PlusSquare } from "lucide-react";
 import BLockSlots from "./BLockSlots";
 
 const DetailForm = () => {

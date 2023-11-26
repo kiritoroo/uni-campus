@@ -23,7 +23,7 @@ const SlotEmptyCard = ({
   });
 
   return (
-    <div className="col-span-2 rounded-md border border-gray-300 p-5">
+    <div className="col-span-2 rounded-md border border-red-300 bg-red-50 p-5">
       <div className="flex items-center justify-between">
         <div>
           <div className="pb-1 text-base font-semibold">Empty</div>

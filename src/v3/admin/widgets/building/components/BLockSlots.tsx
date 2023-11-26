@@ -1,4 +1,5 @@
 import { useBuildingStore } from "../hooks/useBuildingStore";
+import SlotCard from "./SlotCard";
 import SlotEmptyCard from "./SlotEmptyCard";
 
 const BLockSlots = () => {
@@ -10,15 +11,19 @@ const BLockSlots = () => {
 
   return (
     <div className="grid grid-cols-6 gap-x-8 gap-y-5">
-      {blocksSlot?.map((slot, idx) => (
-        <SlotEmptyCard
-          key={idx}
-          buildingId={buildingId}
-          buildingName={buildingData.name}
-          objBlockName={slot.objName}
-          slotIndex={idx}
-        />
-      ))}
+      {blocksSlot?.map((slot, idx) =>
+        slot.isEmpty ? (
+          <SlotEmptyCard
+            key={idx}
+            slotIndex={idx}
+            buildingId={buildingId}
+            buildingName={buildingData.name}
+            objBlockName={slot.objName}
+          />
+        ) : (
+          <SlotCard key={idx} slotIndex={idx} blockData={slot.blockData!} />
+        ),
+      )}
     </div>
   );
 };

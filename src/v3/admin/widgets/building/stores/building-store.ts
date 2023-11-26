@@ -2,6 +2,7 @@ import { TBuildingSchema } from "@v3/admin/schemas/building/base";
 import { createStore } from "zustand";
 import { computed } from "zustand-computed";
 import * as THREE from "three";
+import { TBlockSchema } from "@v3/admin/schemas/block/base";
 
 type TState = {
   buildingId: TBuildingSchema["id"] | null;
@@ -23,10 +24,13 @@ type TComputedState = {
     effect: THREE.Mesh | null;
   };
   glBlocksBounding: THREE.Mesh[] | null;
-  glBLockSlots: {
-    objName: string;
-    isEmpty: boolean;
-  }[];
+  glBLockSlots:
+    | {
+        objName: string;
+        isEmpty: boolean;
+        blockData: TBlockSchema | null;
+      }[]
+    | null;
 };
 
 type TActions = {
@@ -37,6 +41,7 @@ type TActions = {
     buildingId: TBuildingSchema["id"];
     buildingData: TBuildingSchema;
   }) => void;
+  mapBlockSlots: (blocks: TBlockSchema[]) => void;
 };
 
 export interface IBuildingStore extends TState, TComputedState {
@@ -60,7 +65,7 @@ const initStore: TState & TComputedState = {
   glShowSelfBoundingEffect: true,
   glShowSelfBoundingArround: true,
   glShowBlocksBounding: true,
-  glBLockSlots: [],
+  glBLockSlots: null,
 };
 
 export const BuildingStore = () => {
@@ -71,6 +76,33 @@ export const BuildingStore = () => {
         actions: {
           initBuildingData: ({ buildingId, buildingData }) => {
             set({ buildingId, buildingData });
+          },
+          mapBlockSlots: (blocks) => {
+            const blocksBounding = get().glBlocksBounding;
+
+            const blockSlots = (function getBlockSlots() {
+              return blocksBounding
+                ? blocksBounding.map((bounding) => ({
+                    objName: bounding.name.split("_")[0],
+                    isEmpty: true,
+                    blockData: null,
+                  }))
+                : [];
+            })() as TComputedState["glBLockSlots"];
+
+            const updatedSlots = blockSlots?.map((slot) => {
+              const matchingBlock = blocks.find((block) => block.obj_name === slot.objName);
+              if (matchingBlock) {
+                return {
+                  ...slot,
+                  isEmpty: false,
+                  blockData: matchingBlock,
+                };
+              } else {
+                return slot;
+              }
+            });
+            set({ glBLockSlots: updatedSlots });
           },
         },
       }),
@@ -101,15 +133,6 @@ export const BuildingStore = () => {
           }
         })() as THREE.Mesh[] | null;
 
-        const blockSlots = (function getBlockSlots() {
-          return blocksBounding
-            ? blocksBounding.map((bounding) => ({
-                objName: bounding.name.split("_")[0],
-                isEmpty: false,
-              }))
-            : [];
-        })() as TComputedState["glBLockSlots"];
-
         const canSetPublic = (function getCanSetPublish() {
           return [
             state.glBuildingObjects && boundingArround && boundingEffect && blocksBounding,
@@ -125,7 +148,7 @@ export const BuildingStore = () => {
             effect: boundingEffect,
           },
           glBlocksBounding: blocksBounding,
-          glBLockSlots: blockSlots,
+          glBLockSlots: null,
         };
       },
     ),
