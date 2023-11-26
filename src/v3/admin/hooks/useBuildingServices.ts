@@ -5,6 +5,8 @@ import {
   postBuilding,
   putBuilding,
   deleteBuilding,
+  getBuildingsPopulate,
+  getBuildingPopulate,
 } from "../services/building-services";
 import { TBuildingSchema } from "../schemas/building/base";
 import { TBuildingCreateSchema } from "../schemas/building/create";
@@ -19,8 +21,24 @@ export const useBuildingServices = () => {
     });
   };
 
+  const listBuildingsPopulate = (ver: string) => {
+    return useQuery(["api/get-buildings-populate", ver], () => getBuildingsPopulate(), {
+      staleTime: 5 * 60 * 1000,
+      keepPreviousData: true,
+      retry: false,
+    });
+  };
+
   const detailBuilding = (ver: string, data: Pick<TBuildingSchema, "id">) => {
     return useQuery(["api/get-building", ver, data], () => getBuilding({ data }), {
+      staleTime: 5 * 60 * 100,
+      keepPreviousData: true,
+      retry: false,
+    });
+  };
+
+  const detailBuildingPopulate = (ver: string, data: Pick<TBuildingSchema, "id">) => {
+    return useQuery(["api/get-building", ver, data], () => getBuildingPopulate({ data }), {
       staleTime: 5 * 60 * 100,
       keepPreviousData: true,
       retry: false,
@@ -49,7 +67,9 @@ export const useBuildingServices = () => {
 
   return {
     listBuildings,
+    listBuildingsPopulate,
     detailBuilding,
+    detailBuildingPopulate,
     createBuilding,
     updateBuilding,
     removeBuilding,

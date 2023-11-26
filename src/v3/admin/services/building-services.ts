@@ -5,6 +5,8 @@ import { TBuildingSchema, buildingSchema } from "../schemas/building/base";
 import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
 import axios from "axios";
 import { z } from "zod";
+import { TBuildingPopulateSchema, buildingPopulateSchema } from "../schemas/building/populate";
+import qs from "query-string";
 
 export const getBuildings = async (): Promise<TBuildingSchema[]> => {
   const axiosInstance = setupInterceptorsTo(axios.create());
@@ -14,6 +16,21 @@ export const getBuildings = async (): Promise<TBuildingSchema[]> => {
     return z.array(buildingSchema).parse(response.data);
   } catch (error) {
     throw new Error(`Failed to get api/building: ${error}`);
+  }
+};
+
+export const getBuildingsPopulate = async (): Promise<TBuildingPopulateSchema[]> => {
+  const query = qs.stringify({
+    populate: true,
+  });
+
+  const axiosInstance = setupInterceptorsTo(axios.create());
+
+  try {
+    const response = await axiosInstance.get(`/building?${query}`);
+    return z.array(buildingPopulateSchema).parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to get api/building populate: ${error}`);
   }
 };
 
@@ -31,6 +48,26 @@ export const getBuilding = async ({
     return buildingSchema.parse(response.data);
   } catch (error) {
     throw new Error(`Failed to get api/building:id: ${error}`);
+  }
+};
+
+export const getBuildingPopulate = async ({
+  data,
+}: {
+  data: Pick<TBuildingSchema, "id">;
+}): Promise<TBuildingPopulateSchema> => {
+  const path = data.id;
+  const query = qs.stringify({
+    populate: true,
+  });
+
+  const axiosInstance = setupInterceptorsTo(axios.create());
+
+  try {
+    const response = await axiosInstance.get(`/building/${path}?${query}`);
+    return buildingPopulateSchema.parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to get api/building:id populate: ${error}`);
   }
 };
 

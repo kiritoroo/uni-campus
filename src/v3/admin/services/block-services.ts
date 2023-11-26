@@ -5,6 +5,8 @@ import { TBlockCreateSchema } from "../schemas/block/create";
 import { TBlockUpdateSchema } from "../schemas/block/update";
 import axios from "axios";
 import { z } from "zod";
+import { TBlockPopulateSchema, blockPopulateSchema } from "../schemas/block/populate";
+import qs from "query-string";
 
 export const getBlocks = async (): Promise<TBlockSchema[]> => {
   const axiosInstance = setupInterceptorsTo(axios.create());
@@ -14,6 +16,21 @@ export const getBlocks = async (): Promise<TBlockSchema[]> => {
     return z.array(blockSchema).parse(response.data);
   } catch (error) {
     throw new Error(`Failed to get api/block: ${error}`);
+  }
+};
+
+export const getBlocksPopulate = async (): Promise<TBlockPopulateSchema[]> => {
+  const query = qs.stringify({
+    populate: true,
+  });
+
+  const axiosInstance = setupInterceptorsTo(axios.create());
+
+  try {
+    const response = await axiosInstance.get(`/block?${query}`);
+    return z.array(blockPopulateSchema).parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to get api/block populate: ${error}`);
   }
 };
 
@@ -31,6 +48,26 @@ export const getBlock = async ({
     return blockSchema.parse(response.data);
   } catch (error) {
     throw new Error(`Failed to get api/block:id: ${error}`);
+  }
+};
+
+export const getBlockPopulate = async ({
+  data,
+}: {
+  data: Pick<TBlockSchema, "id">;
+}): Promise<TBlockPopulateSchema> => {
+  const path = data.id;
+  const query = qs.stringify({
+    populate: true,
+  });
+
+  const axiosInstance = setupInterceptorsTo(axios.create());
+
+  try {
+    const response = await axiosInstance.get(`/block/${path}?${query}`);
+    return blockPopulateSchema.parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to get api/block:id populate: ${error}`);
   }
 };
 

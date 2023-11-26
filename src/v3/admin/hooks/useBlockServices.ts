@@ -1,5 +1,13 @@
 import { useQuery, useMutation, UseMutationOptions } from "react-query";
-import { getBlocks, getBlock, postBlock, putBlock, deleteBlock } from "../services/block-services";
+import {
+  getBlocks,
+  getBlock,
+  postBlock,
+  putBlock,
+  deleteBlock,
+  getBlocksPopulate,
+  getBlockPopulate,
+} from "../services/block-services";
 import { TBlockSchema } from "../schemas/block/base";
 import { TBlockCreateSchema } from "../schemas/block/create";
 import { TBlockUpdateSchema } from "../schemas/block/update";
@@ -13,8 +21,24 @@ export const useBlockServices = () => {
     });
   };
 
+  const listBlocksPopulate = (ver: string) => {
+    return useQuery(["api/get-blocks-populate", ver], () => getBlocksPopulate(), {
+      staleTime: 5 * 60 * 1000,
+      keepPreviousData: true,
+      retry: false,
+    });
+  };
+
   const detalBlock = (ver: string, data: Pick<TBlockSchema, "id">) => {
     return useQuery(["api/get-block", ver, data], () => getBlock({ data }), {
+      staleTime: 5 * 60 * 100,
+      keepPreviousData: true,
+      retry: false,
+    });
+  };
+
+  const detalBlockPopulate = (ver: string, data: Pick<TBlockSchema, "id">) => {
+    return useQuery(["api/get-block-populate", ver, data], () => getBlockPopulate({ data }), {
       staleTime: 5 * 60 * 100,
       keepPreviousData: true,
       retry: false,
@@ -37,7 +61,9 @@ export const useBlockServices = () => {
 
   return {
     listBlocks,
+    listBlocksPopulate,
     detalBlock,
+    detalBlockPopulate,
     createBlock,
     updateBlock,
     removeBlock,
