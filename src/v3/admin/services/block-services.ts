@@ -1,0 +1,91 @@
+import { objectToFormData } from "@Utils/common.utils";
+import { setupInterceptorsTo } from "./axios-interceptors";
+import { TBlockSchema, blockSchema } from "../schemas/block/base";
+import { TBlockCreateSchema } from "../schemas/block/create";
+import { TBlockUpdateSchema } from "../schemas/block/update";
+import axios from "axios";
+import { z } from "zod";
+
+export const getBlocks = async (): Promise<TBlockSchema[]> => {
+  const axiosInstance = setupInterceptorsTo(axios.create());
+
+  try {
+    const response = await axiosInstance.get("/block");
+    return z.array(blockSchema).parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to get api/block: ${error}`);
+  }
+};
+
+export const getBlock = async ({
+  data,
+}: {
+  data: Pick<TBlockSchema, "id">;
+}): Promise<TBlockSchema> => {
+  const path = data.id;
+
+  const axiosInstance = setupInterceptorsTo(axios.create());
+
+  try {
+    const response = await axiosInstance.get(`/block/${path}`);
+    return blockSchema.parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to get api/block:id: ${error}`);
+  }
+};
+
+export const postBlock = async ({ data }: { data: TBlockCreateSchema }): Promise<TBlockSchema> => {
+  const form = objectToFormData<TBlockCreateSchema>(data);
+
+  const axiosInstance = setupInterceptorsTo(
+    axios.create({
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  );
+
+  try {
+    const response = await axiosInstance.post("/block", form);
+    return blockSchema.parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to post api/block: ${error}`);
+  }
+};
+
+export const putBlock = async ({
+  data,
+}: {
+  data: TBlockUpdateSchema & Pick<TBlockSchema, "id">;
+}): Promise<TBlockSchema> => {
+  const path = data.id;
+  const form = objectToFormData<TBlockUpdateSchema>(data);
+
+  const axiosInstance = setupInterceptorsTo(
+    axios.create({
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  );
+
+  try {
+    const response = await axiosInstance.put(`/block/${path}`, form);
+    return blockSchema.parse(response.data);
+  } catch (error) {
+    throw new Error(`Failed to put api/block: ${error}`);
+  }
+};
+
+export const deleteBlock = async ({ data }: { data: Pick<TBlockSchema, "id"> }): Promise<any> => {
+  const path = data.id;
+
+  const axiosInstance = setupInterceptorsTo(axios.create());
+
+  try {
+    const response = await axiosInstance.delete(`/block/${path}`);
+    return response;
+  } catch (error) {
+    throw new Error(`Failed to delete api/block: ${error}`);
+  }
+};

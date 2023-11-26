@@ -114,8 +114,16 @@ export const objectToFormData = <
 ) => {
   const formData = new FormData();
   Object.entries(obj).forEach(([key, value]) => {
-    const _v = _.isString(value) || value instanceof Blob ? value : JSON.stringify(value);
-    formData.append(key, _v);
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        const newKey = `${key}[${index}]`;
+        const _v = _.isString(item) || item instanceof Blob ? item : JSON.stringify(item);
+        formData.append(newKey, _v);
+      });
+    } else {
+      const _v = _.isString(value) || value instanceof Blob ? value : JSON.stringify(value);
+      formData.append(key, _v);
+    }
   });
 
   return formData;

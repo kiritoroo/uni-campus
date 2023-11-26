@@ -21,7 +21,7 @@ const markerPositionField = z.optional(
 const galleryField = z.optional(z.array(fileInfoSchema));
 const isPublishField = z.optional(z.boolean()).nullable();
 
-const blockCreateSchema = z.object({
+const blockUpdateSchema = z.object({
   name: nameField,
   space_id: spaceIdField,
   uses: usesField,
@@ -32,7 +32,7 @@ const blockCreateSchema = z.object({
   is_publish: isPublishField,
 });
 
-type TBlockCreateSchema = z.infer<typeof blockCreateSchema>;
+type TBlockUpdateSchema = z.infer<typeof blockUpdateSchema>;
 
-export { blockCreateSchema };
-export type { TBlockCreateSchema };
+export { blockUpdateSchema };
+export type { TBlockUpdateSchema };
