@@ -99,7 +99,7 @@ const GLBuilding = memo(() => {
         />
       )}
       {glBlocksBounding &&
-        glBlocksBounding.map((item) => {
+        glBlocksBounding.map((item, idx) => {
           const objBlockBoundingProperty: {
             geometry: THREE.BufferGeometry;
             position: THREE.Vector3;
@@ -112,6 +112,7 @@ const GLBuilding = memo(() => {
 
           return (
             <GLBlockBounding
+              key={idx}
               geometry={objBlockBoundingProperty.geometry}
               position={objBlockBoundingProperty.position}
               visible={glShowBlocksBounding}
