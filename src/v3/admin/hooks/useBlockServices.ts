@@ -14,7 +14,7 @@ import { TBlockUpdateSchema } from "../schemas/block/update";
 
 export const useBlockServices = () => {
   const listBlocks = (ver: string, data?: Pick<TBlockSchema, "building_id">) => {
-    return useQuery(["api/get-blocks", ver], () => getBlocks({ data }), {
+    return useQuery(["api/get-blocks", ver, data], () => getBlocks({ data }), {
       staleTime: 5 * 60 * 1000,
       keepPreviousData: true,
       retry: false,
@@ -22,7 +22,7 @@ export const useBlockServices = () => {
   };
 
   const listBlocksPopulate = (ver: string, data?: Pick<TBlockSchema, "building_id">) => {
-    return useQuery(["api/get-blocks-populate", ver], () => getBlocksPopulate({ data }), {
+    return useQuery(["api/get-blocks-populate", ver, data], () => getBlocksPopulate({ data }), {
       staleTime: 5 * 60 * 1000,
       keepPreviousData: true,
       retry: false,

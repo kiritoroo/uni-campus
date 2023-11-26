@@ -13,7 +13,6 @@ export const getBlocks = async ({
 }: {
   data?: Pick<TBlockSchema, "building_id">;
 }): Promise<TBlockSchema[]> => {
-  console.log("dada", data);
   const query = data ? qs.stringify(data) : "";
 
   const axiosInstance = setupInterceptorsTo(axios.create());
