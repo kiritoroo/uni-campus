@@ -4,7 +4,7 @@ import { blockPopulateSchema } from "../block/populate";
 
 const buildingPopulateSchema = buildingSchema.and(
   z.object({
-    blocks: blockPopulateSchema,
+    blocks: z.array(blockPopulateSchema),
   }),
 );
 
