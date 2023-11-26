@@ -6,7 +6,7 @@ const BLockSlots = () => {
 
   const buildingId = buildingStore.use.buildingId()!;
   const blocksSlot = buildingStore.use.glBLockSlots();
-  console.log(blocksSlot);
+
   return (
     <div className="grid grid-cols-6 gap-x-8 gap-y-5">
       {blocksSlot?.map((slot, idx) => (

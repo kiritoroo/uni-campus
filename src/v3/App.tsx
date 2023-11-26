@@ -9,6 +9,7 @@ import LoginScreen from "@v3/admin/screens/LoginScreen";
 import SpaceManager from "@v3/admin/screens/SpaceManager";
 import NotFound from "@v3/admin/shared/NotFound";
 import OverviewScreen from "@v3/admin/screens/OverviewScreen";
+import BlocksManager from "@v3/admin/screens/BlocksManager";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="login" element={<LoginScreen />} />
           <Route path="buildings" element={<BuildingsManager />} />
           <Route path="buildings/:id" element={<BuildingManager />} />
+          <Route path="blocks" element={<BlocksManager />} />
           <Route path="spaces" element={<SpacesManager />}>
             <Route path=":id" element={<SpaceManager />} />
           </Route>
