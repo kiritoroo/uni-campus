@@ -8,14 +8,17 @@ const SlotEmptyCard = ({
   slotIndex,
   objBlockName,
   buildingId,
+  buildingName,
 }: {
   slotIndex: number;
   objBlockName: string;
   buildingId: string;
+  buildingName: string;
 }) => {
   const query = qs.stringify({
     create: true,
     "building-id": buildingId,
+    "building-name": buildingName,
     "obj-name": objBlockName,
   });
 

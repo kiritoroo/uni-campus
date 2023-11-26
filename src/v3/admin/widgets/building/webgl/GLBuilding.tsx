@@ -66,7 +66,6 @@ const GLBuilding = memo(() => {
       buildingStore.setState({
         glBuildingObjects: scene.clone().children,
       });
-      console.log(scene.children);
     }
   }, [scene]);
 

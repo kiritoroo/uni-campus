@@ -49,7 +49,6 @@ const PublishForm = () => {
   });
 
   const onSubmitForm = (data: any) => {
-    console.log(data);
     mutate({ id: spaceId!, is_publish: watch("is_publish") });
   };
 

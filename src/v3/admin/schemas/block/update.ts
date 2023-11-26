@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { fileInfoSchema } from "../fileinfo-schema";
 
 const nameField = z.optional(z.string());
 const spaceIdField = z.optional(z.string());
@@ -18,7 +17,7 @@ const markerPositionField = z.optional(
     z: z.coerce.number(),
   }),
 );
-const galleryField = z.optional(z.array(fileInfoSchema));
+const galleryField = z.optional(z.instanceof(File));
 const isPublishField = z.optional(z.boolean()).nullable();
 
 const blockUpdateSchema = z.object({

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { fileInfoSchema } from "../fileinfo-schema";
 
 const nameField = z.string();
 const objNameField = z.string();
@@ -16,7 +15,7 @@ const markerPositionField = z.object({
   y: z.coerce.number(),
   z: z.coerce.number(),
 });
-const galleryField = z.array(fileInfoSchema);
+const galleryField = z.array(z.instanceof(File)).nonempty();
 
 const blockCreateSchema = z.object({
   name: nameField,

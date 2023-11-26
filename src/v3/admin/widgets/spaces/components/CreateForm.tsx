@@ -51,7 +51,6 @@ const CreateForm = () => {
   );
 
   const onSubmitForm = () => {
-    console.log(watch());
     mutate();
   };
 

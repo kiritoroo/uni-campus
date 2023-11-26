@@ -116,7 +116,7 @@ export const objectToFormData = <
   Object.entries(obj).forEach(([key, value]) => {
     if (Array.isArray(value)) {
       value.forEach((item, index) => {
-        const newKey = `${key}[${index}]`;
+        const newKey = `${key}`;
         const _v = _.isString(item) || item instanceof Blob ? item : JSON.stringify(item);
         formData.append(newKey, _v);
       });

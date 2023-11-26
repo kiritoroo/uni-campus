@@ -43,7 +43,6 @@ export const AuthStore = () => {
             try {
               return token ? claimsSchema.parse(jwtDecode<TClaimsSchema>(token)) : undefined;
             } catch (error) {
-              console.log(error);
               return undefined;
             }
           })();

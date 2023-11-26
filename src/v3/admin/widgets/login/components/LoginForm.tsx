@@ -51,7 +51,6 @@ const LoginForm = () => {
   );
 
   const onSubmitForm = () => {
-    console.log(watch());
     mutate();
   };
 
@@ -63,7 +62,7 @@ const LoginForm = () => {
       <div className="px-6 pb-3 pt-8">
         <div className="pb-4">
           <div className="flex w-full items-center justify-center pb-3">
-            <div className="bg-gem-onyx h-fit w-fit rounded-full p-2">
+            <div className="h-fit w-fit rounded-full bg-gem-onyx p-2">
               <Box className="block stroke-white" />
             </div>
           </div>
@@ -78,7 +77,7 @@ const LoginForm = () => {
         <FormInput
           {...register("username")}
           label="Username"
-          icon={<AtSign className="stroke-gem-onyx h-4 w-4" />}
+          icon={<AtSign className="h-4 w-4 stroke-gem-onyx" />}
           type="text"
           required
           placeholder="example@uni.x"
@@ -87,7 +86,7 @@ const LoginForm = () => {
         <FormInput
           {...register("plain_pwd")}
           label="Password"
-          icon={<Lock className="stroke-gem-onyx h-4 w-4" />}
+          icon={<Lock className="h-4 w-4 stroke-gem-onyx" />}
           type="password"
           required
           placeholder="Password"
@@ -97,7 +96,7 @@ const LoginForm = () => {
       <div className="border-t border-t-gray-300 bg-[#FAFAFA] px-6 py-4">
         <button
           type="submit"
-          className="bg-gem-onyx hover:bg-gem-onyx/90 active:bg-gem-onyx relative inline-flex w-full items-center justify-center rounded-md py-[10px] text-base font-medium text-white transition-colors duration-200 disabled:opacity-80"
+          className="relative inline-flex w-full items-center justify-center rounded-md bg-gem-onyx py-[10px] text-base font-medium text-white transition-colors duration-200 hover:bg-gem-onyx/90 active:bg-gem-onyx disabled:opacity-80"
           disabled={isLoading}
         >
           <div className={cn("relative")}>

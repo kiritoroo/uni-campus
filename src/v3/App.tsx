@@ -11,6 +11,10 @@ import NotFound from "@v3/admin/shared/NotFound";
 import OverviewScreen from "@v3/admin/screens/OverviewScreen";
 import BlocksManager from "@v3/admin/screens/BlocksManager";
 
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 const App = () => {
   return (
     <Fragment>

@@ -1,6 +1,5 @@
 import DropPreview from "./DropPreview";
 import { FormInput } from "@v3/admin/shared/FormInput";
-import { usePreviewUploadStore } from "../hooks/usePreviewUploadStore";
 import { useForm, FormProvider } from "react-hook-form";
 import GLViewModel from "../webgl/GLViewModel";
 import DropModel from "./DropModel";
@@ -65,7 +64,6 @@ const CreateForm = () => {
   });
 
   const onSubmitForm = () => {
-    console.log(watch());
     mutate({ ...watch() });
   };
 

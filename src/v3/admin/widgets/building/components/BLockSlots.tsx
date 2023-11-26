@@ -5,6 +5,7 @@ const BLockSlots = () => {
   const buildingStore = useBuildingStore();
 
   const buildingId = buildingStore.use.buildingId()!;
+  const buildingData = buildingStore.use.buildingData()!;
   const blocksSlot = buildingStore.use.glBLockSlots();
 
   return (
@@ -13,6 +14,7 @@ const BLockSlots = () => {
         <SlotEmptyCard
           key={idx}
           buildingId={buildingId}
+          buildingName={buildingData.name}
           objBlockName={slot.objName}
           slotIndex={idx}
         />
