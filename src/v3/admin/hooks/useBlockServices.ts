@@ -13,16 +13,16 @@ import { TBlockCreateSchema } from "../schemas/block/create";
 import { TBlockUpdateSchema } from "../schemas/block/update";
 
 export const useBlockServices = () => {
-  const listBlocks = (ver: string) => {
-    return useQuery(["api/get-blocks", ver], () => getBlocks(), {
+  const listBlocks = (ver: string, data?: Pick<TBlockSchema, "building_id">) => {
+    return useQuery(["api/get-blocks", ver], () => getBlocks({ data }), {
       staleTime: 5 * 60 * 1000,
       keepPreviousData: true,
       retry: false,
     });
   };
 
-  const listBlocksPopulate = (ver: string) => {
-    return useQuery(["api/get-blocks-populate", ver], () => getBlocksPopulate(), {
+  const listBlocksPopulate = (ver: string, data?: Pick<TBlockSchema, "building_id">) => {
+    return useQuery(["api/get-blocks-populate", ver], () => getBlocksPopulate({ data }), {
       staleTime: 5 * 60 * 1000,
       keepPreviousData: true,
       retry: false,

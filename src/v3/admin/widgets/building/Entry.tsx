@@ -30,7 +30,7 @@ const Entry = () => {
   const { listBlocks } = useBlockServices();
 
   const { data, isLoading } = detailBuilding(buildingServiceVersion, { id: id ?? "" });
-  const { data: blocksData } = listBlocks(blockServicesVersion);
+  const { data: blocksData } = listBlocks(blockServicesVersion, { building_id: id! });
 
   useEffect(() => {
     if (data && id) {

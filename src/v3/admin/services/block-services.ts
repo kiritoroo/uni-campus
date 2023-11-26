@@ -8,20 +8,32 @@ import { z } from "zod";
 import { TBlockPopulateSchema, blockPopulateSchema } from "../schemas/block/populate";
 import qs from "query-string";
 
-export const getBlocks = async (): Promise<TBlockSchema[]> => {
+export const getBlocks = async ({
+  data = undefined,
+}: {
+  data?: Pick<TBlockSchema, "building_id">;
+}): Promise<TBlockSchema[]> => {
+  console.log("dada", data);
+  const query = data ? qs.stringify(data) : "";
+
   const axiosInstance = setupInterceptorsTo(axios.create());
 
   try {
-    const response = await axiosInstance.get("/block");
+    const response = await axiosInstance.get(`/block?${query}`);
     return z.array(blockSchema).parse(response.data);
   } catch (error) {
     throw new Error(`Failed to get api/block: ${error}`);
   }
 };
 
-export const getBlocksPopulate = async (): Promise<TBlockPopulateSchema[]> => {
+export const getBlocksPopulate = async ({
+  data = undefined,
+}: {
+  data?: Pick<TBlockSchema, "building_id">;
+}): Promise<TBlockPopulateSchema[]> => {
   const query = qs.stringify({
     populate: true,
+    ...(data ? data : {}),
   });
 
   const axiosInstance = setupInterceptorsTo(axios.create());
