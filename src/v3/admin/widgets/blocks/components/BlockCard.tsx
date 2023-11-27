@@ -70,7 +70,7 @@ const BlockCard = ({ id, name, uses, gallery, is_publish }: TBlockSchema & {}) =
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md">
+    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md transition-colors duration-200 hover:border-gray-500">
       <div className="relative w-full grow">
         <Link to={`${id}`} className="block h-full px-5">
           <div className="flex h-full flex-row items-center justify-center py-4">

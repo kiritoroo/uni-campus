@@ -66,7 +66,7 @@ const BuildingCard = ({ id, name, preview_img, is_publish }: TBuildingSchema & {
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md">
+    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md transition-colors duration-200 hover:border-gray-500">
       <div className="relative w-full grow">
         <Link to={`${id}`} className="h-full">
           <img

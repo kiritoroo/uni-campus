@@ -68,7 +68,7 @@ const LoginForm = () => {
           </div>
           <div className="text-center text-2xl font-bold">Uni Campus X</div>
           <div className="text-center text-sm font-medium">
-            Manager Uni Campus, the behind the scene.
+            Manager Uni Campus, behind the scene.
           </div>
         </div>
       </div>

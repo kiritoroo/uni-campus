@@ -71,7 +71,7 @@ const SpaceCard = ({ id, color, name, icon, is_publish }: TSpaceSchema) => {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md transition-all duration-100",
+        "relative overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md transition-all duration-200 hover:border-gray-500",
         {
           "border-gem-onyx": pickedSpaceID === id,
         },
