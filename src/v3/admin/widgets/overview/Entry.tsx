@@ -1,9 +1,10 @@
+import { useBlockServices } from "@v3/admin/hooks/useBlockServices";
 import { useBuildingServices } from "@v3/admin/hooks/useBuildingServices";
 import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { useSpaceServices } from "@v3/admin/hooks/useSpaceServices";
 import StatsCard from "@v3/admin/shared/StatsCard";
 import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
-import { Box, Diamond } from "lucide-react";
+import { Box, Building2, Diamond } from "lucide-react";
 import { useMemo } from "react";
 
 const Entry = () => {
@@ -13,15 +14,20 @@ const Entry = () => {
   const spaceServiceVersion = globalStore.use.spaceServicesVersion();
 
   const { listBuildings } = useBuildingServices();
+  const { listBlocks } = useBlockServices();
   const { listSpaces } = useSpaceServices();
 
   const { data: buildingsData, isLoading: isFetchBuildings } =
     listBuildings(buildingServiceVersion);
+  const { data: blocksData, isLoading: isFetchBlocks } = listBlocks(spaceServiceVersion);
   const { data: spacesData, isLoading: isFetchSpaces } = listSpaces(spaceServiceVersion);
 
   const buildingsCount = useMemo<number>(() => {
     return buildingsData?.length ?? 0;
   }, [buildingsData]);
+  const blocksCount = useMemo<number>(() => {
+    return blocksData?.length ?? 0;
+  }, [spacesData]);
   const spacesCount = useMemo<number>(() => {
     return spacesData?.length ?? 0;
   }, [spacesData]);
@@ -37,8 +43,15 @@ const Entry = () => {
             className="col-span-2"
             value={buildingsCount.toString()}
             title="Total Buildings"
-            Icon={Box}
+            Icon={Building2}
             isLoading={isFetchBuildings}
+          />
+          <StatsCard
+            className="col-span-2"
+            value={blocksCount.toString()}
+            title="Total Blocks"
+            Icon={Box}
+            isLoading={isFetchBlocks}
           />
           <StatsCard
             className="col-span-2"

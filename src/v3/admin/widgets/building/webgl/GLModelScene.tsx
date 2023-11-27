@@ -13,6 +13,7 @@ import { useModelUploadStore } from "../hooks/useModelUploadStore";
 import { cn } from "@Utils/common.utils";
 import DropModel from "../components/DropModel";
 import Button from "@v3/admin/shared/Button";
+import { Link } from "react-router-dom";
 
 const GLModelScene = memo(() => {
   const commonStore = useCommonStore();
@@ -121,7 +122,9 @@ const GLModelScene = memo(() => {
 
       {!enableEditDetail && (
         <div className="absolute bottom-3 left-0 right-0 z-[2] flex w-full items-center justify-between px-5">
-          <Button>Blocks</Button>
+          <Link to={`/x/blocks?search=${buildingData?.id}`}>
+            <Button>Blocks</Button>
+          </Link>
           <div className="flex items-center justify-center gap-3">
             <button
               type="button"

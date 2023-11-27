@@ -1,6 +1,7 @@
 import { cn } from "@Utils/common.utils";
 import { FlexRow } from "@v3/admin/shared/Wrapper";
 import { SearchIcon, XCircle } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Search = ({
   searchValue,
@@ -9,8 +10,12 @@ const Search = ({
   searchValue: string;
   onChangeSearchValue: (v: string) => void;
 }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const handleClearSearch = () => {
     onChangeSearchValue("");
+    navigate(location.pathname);
   };
 
   return (

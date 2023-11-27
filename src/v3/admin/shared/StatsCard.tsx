@@ -35,7 +35,7 @@ const StatsCard = ({ Icon, value, title, isLoading, className }: StatsCardProps)
         )}
 
         <div className="mx-5 rounded-full bg-[#FAFAFA] p-5">
-          <Icon className="h-14 w-14 stroke-gem-onyx" />
+          <Icon className="h-14 w-14 stroke-gem-onyx opacity-80" />
         </div>
       </div>
     </div>

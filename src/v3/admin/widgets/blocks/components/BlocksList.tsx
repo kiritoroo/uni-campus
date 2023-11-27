@@ -18,7 +18,10 @@ const BlocksList = () => {
 
     const regex = new RegExp(`^${searchValue.toLowerCase()}.*$`);
     return blocksData?.filter(
-      (data) => data.id.toLowerCase().match(regex) || data.name.toLowerCase().match(regex),
+      (data) =>
+        data.id.toLowerCase().match(regex) ||
+        data.name.toLowerCase().match(regex) ||
+        data.building_id.toLowerCase().match(regex),
     );
   }, [searchValue]);
 
@@ -31,10 +34,10 @@ const BlocksList = () => {
   }
 
   return (
-    <ul className="grid h-auto w-auto grid-cols-12 gap-x-5 gap-y-10">
+    <ul className="grid h-auto w-auto grid-cols-8 gap-x-5 gap-y-10">
       {(searchDataComputed ? searchDataComputed : blocksData)?.map((block) => (
         <li key={block.id} className="col-span-4">
-          <BlockCard />
+          <BlockCard {...block} />
         </li>
       ))}
     </ul>

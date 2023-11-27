@@ -40,7 +40,7 @@ const DropGallery = () => {
   });
 
   useEffect(() => {
-    setValue("gallery", files);
+    setValue("gallery", files as any);
   }, [files]);
 
   return (

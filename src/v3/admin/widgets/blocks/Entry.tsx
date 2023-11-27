@@ -44,6 +44,13 @@ const Entry = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (data) {
+      const search = searchParams.get("search");
+      search && commonStore.setState({ searchValue: search });
+    }
+  }, [data]);
+
   if (isLoading) {
     return <LoadingScreen />;
   }
