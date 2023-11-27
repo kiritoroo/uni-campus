@@ -40,7 +40,7 @@ const PublishForm = () => {
     },
     onError: (error: any) => {
       uniToast.error({
-        desc: Error(error).message,
+        desc: error.message,
       });
     },
   });

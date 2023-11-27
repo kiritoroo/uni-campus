@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from "./axios-interceptors";
 import { TBlockSchema, blockSchema } from "../schemas/block/base";
 import { TBlockCreateSchema } from "../schemas/block/create";
 import { TBlockUpdateSchema } from "../schemas/block/update";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { z } from "zod";
 import { TBlockPopulateSchema, blockPopulateSchema } from "../schemas/block/populate";
 import qs from "query-string";
@@ -21,6 +21,10 @@ export const getBlocks = async ({
     const response = await axiosInstance.get(`/block?${query}`);
     return z.array(blockSchema).parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to get api/block: ${error}`);
   }
 };
@@ -41,6 +45,10 @@ export const getBlocksPopulate = async ({
     const response = await axiosInstance.get(`/block?${query}`);
     return z.array(blockPopulateSchema).parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to get api/block populate: ${error}`);
   }
 };
@@ -58,6 +66,10 @@ export const getBlock = async ({
     const response = await axiosInstance.get(`/block/${path}`);
     return blockSchema.parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to get api/block:id: ${error}`);
   }
 };
@@ -78,6 +90,10 @@ export const getBlockPopulate = async ({
     const response = await axiosInstance.get(`/block/${path}?${query}`);
     return blockPopulateSchema.parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to get api/block:id populate: ${error}`);
   }
 };
@@ -97,6 +113,10 @@ export const postBlock = async ({ data }: { data: TBlockCreateSchema }): Promise
     const response = await axiosInstance.post("/block", form);
     return blockSchema.parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to post api/block: ${error}`);
   }
 };
@@ -134,6 +154,10 @@ export const deleteBlock = async ({ data }: { data: Pick<TBlockSchema, "id"> }):
     const response = await axiosInstance.delete(`/block/${path}`);
     return response;
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to delete api/block: ${error}`);
   }
 };

@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from "./axios-interceptors";
 import { TBuildingCreateSchema } from "../schemas/building/create";
 import { TBuildingSchema, buildingSchema } from "../schemas/building/base";
 import { TBuildingUpdateSchema } from "@v3/admin/schemas/building/update";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { z } from "zod";
 import { TBuildingPopulateSchema, buildingPopulateSchema } from "../schemas/building/populate";
 import qs from "query-string";
@@ -15,6 +15,10 @@ export const getBuildings = async (): Promise<TBuildingSchema[]> => {
     const response = await axiosInstance.get("/building");
     return z.array(buildingSchema).parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to get api/building: ${error}`);
   }
 };
@@ -30,6 +34,10 @@ export const getBuildingsPopulate = async (): Promise<TBuildingPopulateSchema[]>
     const response = await axiosInstance.get(`/building?${query}`);
     return z.array(buildingPopulateSchema).parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to get api/building populate: ${error}`);
   }
 };
@@ -47,6 +55,10 @@ export const getBuilding = async ({
     const response = await axiosInstance.get(`/building/${path}`);
     return buildingSchema.parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to get api/building:id: ${error}`);
   }
 };
@@ -67,6 +79,10 @@ export const getBuildingPopulate = async ({
     const response = await axiosInstance.get(`/building/${path}?${query}`);
     return buildingPopulateSchema.parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to get api/building:id populate: ${error}`);
   }
 };
@@ -90,6 +106,10 @@ export const postBuilding = async ({
     const response = await axiosInstance.post("/building", form);
     return buildingSchema.parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to post api/building: ${error}`);
   }
 };
@@ -114,6 +134,10 @@ export const putBuilding = async ({
     const response = await axiosInstance.put(`/building/${path}`, form);
     return buildingSchema.parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to put api/building: ${error}`);
   }
 };
@@ -131,6 +155,10 @@ export const deleteBuilding = async ({
     const response = await axiosInstance.delete(`/building/${path}`);
     return response;
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to delete api/building: ${error}`);
   }
 };

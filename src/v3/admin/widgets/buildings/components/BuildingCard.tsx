@@ -32,7 +32,7 @@ const BuildingCard = ({ id, name, preview_img, is_publish }: TBuildingSchema & {
         uniToast.success({ desc: "Remove building success" });
       },
       onError: (error: any) => {
-        uniToast.error({ desc: Error(error).message });
+        uniToast.error({ desc: error.message });
       },
     },
   );

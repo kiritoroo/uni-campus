@@ -41,7 +41,7 @@ const DetailControl = () => {
         uniToast.success({ desc: "Remove space success" });
       },
       onError: (error: any) => {
-        uniToast.error({ desc: Error(error).message });
+        uniToast.error({ desc: error.message });
       },
     },
   );

@@ -36,7 +36,7 @@ const BlockCard = ({ id, name, uses, gallery, is_publish }: TBlockSchema & {}) =
         uniToast.success({ desc: "Remove building success" });
       },
       onError: (error: any) => {
-        uniToast.error({ desc: Error(error).message });
+        uniToast.error({ desc: error.message });
       },
     },
   );
