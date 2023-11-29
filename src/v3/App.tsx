@@ -7,13 +7,10 @@ import BuildingManager from "@v3/admin/screens/BuildingManager";
 import SpacesManager from "@v3/admin/screens/SpacesManager";
 import LoginScreen from "@v3/admin/screens/LoginScreen";
 import SpaceManager from "@v3/admin/screens/SpaceManager";
-import NotFound from "@v3/admin/shared/NotFound";
 import OverviewScreen from "@v3/admin/screens/OverviewScreen";
 import BlocksManager from "@v3/admin/screens/BlocksManager";
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import BlockManager from "@v3/admin/screens/BlockManager";
+import NotFound from "@v3/admin/shared/NotFound";
 
 const App = () => {
   return (
@@ -25,6 +22,7 @@ const App = () => {
           <Route path="buildings" element={<BuildingsManager />} />
           <Route path="buildings/:id" element={<BuildingManager />} />
           <Route path="blocks" element={<BlocksManager />} />
+          <Route path="blocks/:id" element={<BlockManager />} />
           <Route path="spaces" element={<SpacesManager />}>
             <Route path=":id" element={<SpaceManager />} />
           </Route>

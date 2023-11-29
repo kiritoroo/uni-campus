@@ -141,6 +141,10 @@ export const putBlock = async ({
     const response = await axiosInstance.put(`/block/${path}`, form);
     return blockSchema.parse(response.data);
   } catch (error) {
+    if (error instanceof AxiosError) {
+      const { response } = error;
+      throw new Error(response?.data?.detail);
+    }
     throw new Error(`Failed to put api/block: ${error}`);
   }
 };

@@ -1,10 +1,14 @@
 import ReactDOM from "react-dom/client";
-import App from "./v3/App.tsx";
 import { BrowserRouter as Router } from "react-router-dom";
-import "@Styles/main.scss";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
+import { QueryClient, QueryClientProvider } from "react-query";
+import App from "./v3/App.tsx";
+
 import "react-toastify/dist/ReactToastify.css";
+import "@Styles/main.scss";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const getQueryClient = new QueryClient();
 
