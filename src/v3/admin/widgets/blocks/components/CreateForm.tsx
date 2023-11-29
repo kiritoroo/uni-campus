@@ -124,7 +124,6 @@ const CreateForm = () => {
                   }
                   className="bg-[#FAFAFA]"
                   label="Space"
-                  required
                   onChange={onChange}
                 />
               )}

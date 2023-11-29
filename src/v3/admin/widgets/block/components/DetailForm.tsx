@@ -93,7 +93,7 @@ const DetailForm = () => {
   useEffect(() => {
     if (blockData && !enableEditDetail) {
       setValue("name", blockData.name);
-      setValue("space_id", blockData.space_id);
+      blockData.space_id && setValue("space_id", blockData.space_id);
       setValue("uses", blockData.uses);
       setValue("direction_url", blockData.direction_url);
       setValue("coordinate", blockData.coordinate);

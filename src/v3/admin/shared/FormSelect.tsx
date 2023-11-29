@@ -94,17 +94,18 @@ export const FormSelect = React.forwardRef<HTMLInputElement, FormSelectProps>(
         <div
           className="relative cursor-pointer"
           onClick={() => {
-            setShowOptions(true);
+            setShowOptions(!disabled && true);
           }}
         >
           <input
             className={cn(
-              "h-[32px] w-full select-none rounded-md border border-gray-300 px-3 text-sm font-medium text-gem-onyx/80 focus:outline-2 focus:focus:outline-gem-onyx/80",
+              "h-[32px] w-full select-none rounded-md border border-gray-300 bg-white px-3 text-sm font-medium text-gem-onyx/80 focus:outline-2 focus:focus:outline-gem-onyx/80 disabled:cursor-not-allowed disabled:opacity-80",
               { "text-gem-onyx/50": currOption.key === "" },
               className,
             )}
             key={currOption.key}
             value={currOption.value}
+            disabled={disabled}
             onChange={() => {}}
             ref={ref}
             id={inputId}
