@@ -20,7 +20,7 @@ export interface FormSelectProps extends React.InputHTMLAttributes<HTMLInputElem
 }
 
 export const FormSelect = React.forwardRef<HTMLInputElement, FormSelectProps>(
-  ({ options, label, className, initOption, onChange, ...props }, ref) => {
+  ({ options, label, className, initOption, disabled, onChange, ...props }, ref) => {
     const inputId = `el--input-select${uuidv4()}`;
 
     const dropDownRef = useRef<any>(undefined);
@@ -45,20 +45,20 @@ export const FormSelect = React.forwardRef<HTMLInputElement, FormSelectProps>(
 
     useEffect(() => {
       initOption && setCurrOption(initOption);
-    }, []);
+    }, [initOption]);
 
     const renderedOptions = useMemo(() => {
       return (
         <div
           ref={dropDownRef}
-          className="absolute left-0 right-0 top-[calc(100%+5px)] z-[99] h-auto w-full"
+          className="absolute left-0 right-0 top-[calc(100%+5px)] z-[99] h-auto w-fit"
         >
-          <div className="max-h-[500px] overflow-auto rounded-md border border-gray-300 bg-white shadow-md">
+          <div className="max-h-[500px] w-fit overflow-auto rounded-md border border-gray-300 bg-white shadow-md">
             {options.map((option, idx) => (
               <div
                 key={idx}
                 className={cn(
-                  "cursor-pointer px-3 py-2 transition-colors duration-200 hover:bg-[#E6E6E2]",
+                  "cursor-pointer px-3 py-2 pr-10 transition-colors duration-200 hover:bg-[#E6E6E2]",
                   {
                     "border-b border-gray-300": idx !== options.length - 1,
                   },
@@ -111,7 +111,7 @@ export const FormSelect = React.forwardRef<HTMLInputElement, FormSelectProps>(
             {...props}
           />
 
-          {currOption.key !== "" && (
+          {!disabled && currOption.key !== "" && (
             <div className="absolute bottom-0 right-0 top-0 h-fit w-fit translate-y-[25%]">
               <button
                 type="button"

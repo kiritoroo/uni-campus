@@ -30,7 +30,7 @@ const StatsCard = ({ Icon, value, title, isLoading, className }: StatsCardProps)
             <div className="bg-gradient-to-br from-gem-onyx/60 to-gem-onyx bg-clip-text pb-5 text-5xl font-black text-transparent">
               {value}
             </div>
-            <div className="text-lg font-bold text-gem-onyx">{title}</div>
+            <div className="text-lg font-bold text-gem-onyx/80">{title}</div>
           </div>
         )}
 

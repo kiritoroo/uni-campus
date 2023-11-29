@@ -1,8 +1,9 @@
-import { arrayBufferToString, cn } from "@Utils/common.utils";
-import { TBlockCreateSchema } from "@v3/admin/schemas/block/create";
 import { useFormContext } from "react-hook-form";
-import { useGalleryUploadStore } from "../hooks/useGalleryUploadStore";
+import { useBlockStore } from "../hooks/useBlockStore";
+import { useGalleryUploadStore } from "../stores/useGalleryUploadStore";
+import { TBlockUpdateSchema } from "@v3/admin/schemas/block/update";
 import { CSSProperties, useCallback, useEffect } from "react";
+import { arrayBufferToString } from "@Utils/common.utils";
 import { useDropzone } from "react-dropzone";
 import { ImagePlus, Trash2 } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,13 +11,15 @@ import { Navigation } from "swiper/modules";
 import { Pagination } from "swiper/modules";
 
 const DropGallery = () => {
+  const blockStore = useBlockStore();
   const galleryUploadStore = useGalleryUploadStore();
+
+  const blockData = blockStore.use.blockData();
   const base64List = galleryUploadStore.use.base64List();
   const files = galleryUploadStore.use.files();
-
   const galleryUploadAction = galleryUploadStore.use.actions();
 
-  const { setValue, formState } = useFormContext<TBlockCreateSchema>();
+  const { setValue } = useFormContext<TBlockUpdateSchema>();
 
   const handleOnDrop = useCallback((acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
@@ -45,15 +48,7 @@ const DropGallery = () => {
 
   return (
     <div
-      className={cn(
-        "relative h-full w-full overflow-hidden rounded-md border border-gray-300 bg-[#FAFAFA]",
-        {
-          "border border-red-400": formState.errors.gallery,
-        },
-        {
-          "cursor-pointer": base64List.length === 0,
-        },
-      )}
+      className="relative h-full w-full bg-[#F5F5F5]"
       {...(base64List.length === 0 ? getRootProps() : {})}
     >
       {base64List.length === 0 && <input {...getInputProps()} />}

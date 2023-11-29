@@ -10,6 +10,7 @@ import DetailForm from "./components/DetailForm";
 import { FlexRow, WidgetSection, WidgetTitle } from "@v3/admin/shared/Wrapper";
 import Copied from "@v3/admin/shared/Copied";
 import DetailControl from "./components/DetailControl";
+import NotFound from "@v3/admin/shared/NotFound";
 
 const Entry = () => {
   const { id } = useParams();
@@ -38,25 +39,27 @@ const Entry = () => {
     return <SpinnerLoading width={50} height={50} />;
   }
 
+  if (!data) {
+    return <NotFound message="Space Not Found." />;
+  }
+
   return (
     <WidgetSection className="rounded-md border border-gray-300">
-      {data && (
-        <IconUploadStoreProvider>
-          <FlexRow className="mb-5 items-end justify-start">
-            <WidgetTitle>Building Details</WidgetTitle>
-            {spaceId && (
-              <FlexRow className="ml-8">
-                <div className="mr-2 text-base font-medium text-gem-onyx/80">{spaceId}</div>
-                <Copied value={spaceId} />
-              </FlexRow>
-            )}
-          </FlexRow>
-          <div className="px-8">
-            <DetailControl />
-            {data && <DetailForm />}
-          </div>
-        </IconUploadStoreProvider>
-      )}
+      <IconUploadStoreProvider>
+        <FlexRow className="mb-5 items-end justify-start">
+          <WidgetTitle>Building Details</WidgetTitle>
+          {spaceId && (
+            <FlexRow className="ml-8">
+              <div className="mr-2 text-base font-medium text-gem-onyx/80">{spaceId}</div>
+              <Copied value={spaceId} />
+            </FlexRow>
+          )}
+        </FlexRow>
+        <div className="px-8">
+          <DetailControl />
+          {data && <DetailForm />}
+        </div>
+      </IconUploadStoreProvider>
     </WidgetSection>
   );
 };
