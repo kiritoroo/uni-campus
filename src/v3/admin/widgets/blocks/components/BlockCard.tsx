@@ -32,6 +32,7 @@ const BlockCard = ({ id, name, uses, gallery, is_publish }: TBlockSchema & {}) =
     {
       onSuccess: () => {
         actions.removeBlock({ blockId: id });
+        globalStore.setState({ blockServicesVersion: uuidv4() });
         globalStore.setState({ buildingServiceVersion: uuidv4() });
         uniToast.success({ desc: "Remove building success" });
       },

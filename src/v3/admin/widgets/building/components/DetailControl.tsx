@@ -40,6 +40,7 @@ const DetailControl = () => {
       onSuccess: () => {
         navigate("/x/buildings");
         globalStore.setState({ buildingServiceVersion: uuidv4() });
+        globalStore.setState({ blockServicesVersion: uuidv4() });
         uniToast.success({ desc: "Remove building success" });
       },
       onError: (error: any) => {
@@ -56,6 +57,7 @@ const DetailControl = () => {
             <div className="text-lg font-bold">Delete building?</div>
             <p className="text-center text-sm">
               Are you sure you want to delete <strong>"{buildingData.name}"</strong> building?.{" "}
+              <br /> All <strong>blocks</strong> of this building are also deleted
               <br /> You can't undo this action.
             </p>
           </div>
