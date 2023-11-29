@@ -21,7 +21,12 @@ const BLockSlots = () => {
             objBlockName={slot.objName}
           />
         ) : (
-          <SlotCard key={idx} slotIndex={idx} blockData={slot.blockData!} />
+          <SlotCard
+            key={idx}
+            slotIndex={idx}
+            objBlockName={slot.objName}
+            blockData={slot.blockData!}
+          />
         ),
       )}
     </div>
