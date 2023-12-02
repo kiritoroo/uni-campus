@@ -1,7 +1,7 @@
 import { TSpaceCreateSchema } from "../schemas/space/create";
 import { TSpaceUpdateSchema } from "../schemas/space/update";
 import { TSpaceSchema, spaceSchema } from "../schemas/space/base";
-import { setupInterceptorsTo } from "./axios-interceptors";
+import { setupInterceptorsTo } from "@v3/admin/services/axios-interceptors";
 import { objectToFormData } from "@Utils/common.utils";
 import axios, { AxiosError } from "axios";
 import { z } from "zod";
