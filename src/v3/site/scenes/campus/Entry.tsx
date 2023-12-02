@@ -1,5 +1,5 @@
 import { useBuildingServices } from "@v3/site/hooks/useBuildingServices";
-import GLCanvas from "./components/GLCanvas";
+import GLCanvas from "./webgl/GLCanvas";
 import { useCampusSceneStore } from "./hooks/useCampuseSceneStore";
 import { useEffect } from "react";
 

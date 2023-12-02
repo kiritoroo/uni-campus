@@ -1,5 +1,5 @@
-import { CampusSceneStoreProvider } from "../webgl/scenes/campus/contexts/CampusSceneStoreContext";
-import Entry from "../webgl/scenes/campus/Entry";
+import { CampusSceneStoreProvider } from "../scenes/campus/contexts/CampusSceneStoreContext";
+import Entry from "../scenes/campus/Entry";
 
 const CampusScreen = () => {
   return (
