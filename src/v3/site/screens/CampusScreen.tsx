@@ -1,10 +1,10 @@
-import GLEntry from "../webgl/scenes/campus/GLEntry";
 import { CampusSceneStoreProvider } from "../webgl/scenes/campus/contexts/CampusSceneStoreContext";
+import Entry from "../webgl/scenes/campus/Entry";
 
 const CampusScreen = () => {
   return (
     <CampusSceneStoreProvider>
-      <GLEntry />
+      <Entry />
     </CampusSceneStoreProvider>
   );
 };

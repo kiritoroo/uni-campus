@@ -1,6 +1,6 @@
 import { objectToFormData } from "@Utils/common.utils";
 import { TLoginSchema } from "../schemas/login-schema";
-import { setupInterceptorsTo } from "./axios-interceptors";
+import { setupInterceptorsTo } from "@v3/admin/services/axios-interceptors";
 import axios, { AxiosError } from "axios";
 import { TTokenSchema, tokenSchema } from "../schemas/token-schema";
 

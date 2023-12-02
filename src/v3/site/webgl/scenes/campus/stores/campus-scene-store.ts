@@ -3,19 +3,21 @@ import { createStore } from "zustand";
 import { computed } from "zustand-computed";
 
 type TState = {
-  buildingData: TBuildingSchema | null;
+  buildingsData: TBuildingSchema[] | null;
 };
 
 type TComputedState = {};
 
-type TActions = {};
+type TActions = {
+  initBuildingsData: ({ buildingsData }: { buildingsData: TBuildingSchema[] }) => void;
+};
 
 export interface ICampusSceneStore extends TState, TComputedState {
   actions: TActions;
 }
 
 const initStore: TState & TComputedState = {
-  buildingData: null,
+  buildingsData: null,
 };
 
 export const CampusSceneStore = () => {
@@ -23,7 +25,11 @@ export const CampusSceneStore = () => {
     computed(
       (set, get) => ({
         ...initStore,
-        actions: {},
+        actions: {
+          initBuildingsData: ({ buildingsData }) => {
+            set({ buildingsData });
+          },
+        },
       }),
       (state) => ({}),
     ),
