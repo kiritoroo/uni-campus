@@ -6,6 +6,7 @@ import { GLLights } from "./GLLights";
 import { GLFog } from "./GLFog";
 import { GLSkydom } from "./GLSkydom";
 import GLCampus from "../objects/campus/GLCampus";
+import { GLCamera } from "./GLCamera";
 
 const GLCanvas = () => {
   return (
@@ -21,17 +22,14 @@ const GLCanvas = () => {
         pixelRatio: 1,
       }}
     >
-      <mesh>
-        <boxGeometry />
-        <meshStandardMaterial />
-      </mesh>
-
       <GLCampus />
 
       <GLSkydom />
       <GLFog />
       <GLLights />
       <GLEnvironment />
+
+      <GLCamera />
       <GLOrbitControls />
     </Canvas>
   );
