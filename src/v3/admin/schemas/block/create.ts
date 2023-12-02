@@ -3,7 +3,7 @@ import { z } from "zod";
 const nameField = z.string();
 const objNameField = z.string();
 const buildingIdField = z.string();
-const spaceIdField = z.string();
+const spaceIdField = z.string().nullable();
 const usesField = z.string();
 const directionUrl = z.string();
 const coordinateField = z.object({

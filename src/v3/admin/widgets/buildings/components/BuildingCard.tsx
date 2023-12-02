@@ -29,6 +29,7 @@ const BuildingCard = ({ id, name, preview_img, is_publish }: TBuildingSchema & {
       onSuccess: () => {
         actions.removeBuilding({ buildingId: id });
         globalStore.setState({ buildingServiceVersion: uuidv4() });
+        globalStore.setState({ blockServicesVersion: uuidv4() });
         uniToast.success({ desc: "Remove building success" });
       },
       onError: (error: any) => {
@@ -44,8 +45,9 @@ const BuildingCard = ({ id, name, preview_img, is_publish }: TBuildingSchema & {
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="text-lg font-bold">Delete building?</div>
             <p className="text-center text-sm">
-              Are you sure you want to delete <strong>"{name}"</strong> building?. <br /> You can't
-              undo this action.
+              Are you sure you want to delete <strong>"{name}"</strong> building?.
+              <br /> All <strong>blocks</strong> of this building are also deleted
+              <br /> You can't undo this action.
             </p>
           </div>
         </div>

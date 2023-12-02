@@ -13,6 +13,7 @@ import { useGlobalStore } from "@v3/admin/hooks/useGlobalStore";
 import { FormSelect } from "@v3/admin/shared/FormSelect";
 import DropGallery from "./DropGallery";
 import Button from "@v3/admin/shared/Button";
+import { v4 as uuidv4 } from "uuid";
 
 const CreateForm = () => {
   const globalStore = useGlobalStore();
@@ -61,6 +62,8 @@ const CreateForm = () => {
     onSuccess: (data) => {
       commonStore.setState({ showCreateModal: false });
       actions.addBlock({ blockData: data });
+      globalStore.setState({ blockServicesVersion: uuidv4() });
+      globalStore.setState({ buildingServiceVersion: uuidv4() });
       uniToast.success({
         desc: "Create block success",
       });
@@ -124,7 +127,6 @@ const CreateForm = () => {
                   }
                   className="bg-[#FAFAFA]"
                   label="Space"
-                  required
                   onChange={onChange}
                 />
               )}

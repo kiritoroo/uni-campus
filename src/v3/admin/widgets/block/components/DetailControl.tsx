@@ -37,6 +37,7 @@ const DetailControl = () => {
       onSuccess: () => {
         navigate("/x/buildings");
         globalStore.setState({ buildingServiceVersion: uuidv4() });
+        globalStore.setState({ blockServicesVersion: uuidv4() });
         uniToast.success({ desc: "Remove block success" });
       },
       onError: (error: any) => {

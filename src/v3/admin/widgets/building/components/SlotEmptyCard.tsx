@@ -27,7 +27,9 @@ const SlotEmptyCard = ({
       <div className="flex items-center justify-between">
         <div>
           <div className="pb-1 text-base font-semibold">Empty</div>
-          <div className="text-sm font-medium text-gem-onyx/50">Slot block {slotIndex}</div>
+          <div className="text-sm font-medium text-gem-onyx/50">
+            Slot block {slotIndex} <strong>({objBlockName})</strong>
+          </div>
         </div>
         <div className="px-2">
           <Link to={`/x/blocks?${query}`}>
