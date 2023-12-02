@@ -5,6 +5,7 @@ import GLEnvironment from "./GLEnvironment";
 import { GLLights } from "./GLLights";
 import { GLFog } from "./GLFog";
 import { GLSkydom } from "./GLSkydom";
+import GLCampus from "../objects/campus/GLCampus";
 
 const GLCanvas = () => {
   return (
@@ -24,6 +25,8 @@ const GLCanvas = () => {
         <boxGeometry />
         <meshStandardMaterial />
       </mesh>
+
+      <GLCampus />
 
       <GLSkydom />
       <GLFog />
