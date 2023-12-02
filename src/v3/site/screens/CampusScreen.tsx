@@ -1,10 +1,10 @@
 import { SoundFxProvider } from "../contexts/SoundFxContext";
-import GLCampusScene from "../webgl/scenes/GLCampusScene";
+import GLEntry from "../webgl/scenes/campus/GLEntry";
 
 const CampusScreen = () => {
   return (
     <SoundFxProvider>
-      <GLCampusScene />
+      <GLEntry />
     </SoundFxProvider>
   );
 };

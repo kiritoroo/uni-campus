@@ -1,9 +1,9 @@
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import GLOrbitControls from "../core/GLOrbitControls";
-import GLEnvironment from "../core/GLEnvironment";
+import GLOrbitControls from "./components/GLOrbitControls";
+import GLEnvironment from "./components/GLEnvironment";
 
-const GLCampusScene = () => {
+const GLEntry = () => {
   return (
     <div className="relative h-screen w-screen">
       <Canvas
@@ -30,4 +30,4 @@ const GLCampusScene = () => {
   );
 };
 
-export default GLCampusScene;
+export default GLEntry;
