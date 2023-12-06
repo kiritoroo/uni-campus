@@ -6,6 +6,7 @@ import { Center } from "@react-three/drei";
 import GLBoundingBox from "./webgl/GLBoundingBox";
 import GlBoundingEffect from "./webgl/GLBoundingEffect";
 import GlBoundingAround from "./webgl/GLBoundingAround";
+import GLBlock from "../block/GLBlock";
 
 const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   const buildingStore = useBuildingStore();
@@ -24,10 +25,6 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
       group: obj,
     };
   }, [buildingScene]);
-
-  useEffect(() => {
-    buildingActions.initBuildingData({ buildingData: buildingData });
-  }, []);
 
   const objBoundingBoxProperty = useMemo<{
     geometry: THREE.BufferGeometry;
@@ -70,7 +67,11 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
       position: obj.position,
     };
   }, [buildingScene]);
-  console.log(buildingScene);
+
+  useEffect(() => {
+    buildingActions.initBuildingData({ buildingData: buildingData });
+  }, []);
+
   return (
     <Center
       position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
@@ -81,6 +82,12 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
       {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
       {objBoundingEffectProperty && <GlBoundingEffect property={objBoundingEffectProperty} />}
       {objBoundingAroundProperty && <GlBoundingAround property={objBoundingAroundProperty} />}
+
+      {buildingData.blocks
+        .filter((item) => item.is_publish)
+        .map((item) => (
+          <GLBlock key={item.id} blockData={item} />
+        ))}
     </Center>
   );
 };
