@@ -3,7 +3,8 @@ import { useBlockStore } from "./hooks/useBlockStore";
 import { useEffect, useMemo } from "react";
 import { useBuildingStore } from "../building/hooks/useBuildingStore";
 import * as THREE from "three";
-import GLBoundingBox from "./webgl/GlBoundingBox";
+import GLBoundingBox from "./webgl/GLBoundingBox";
+import GLBlockMarker from "./webgl/GLBlockMarker";
 
 const Entry = ({ blockData }: { blockData: TBlockSchema }) => {
   const buildingStore = useBuildingStore();
@@ -31,7 +32,10 @@ const Entry = ({ blockData }: { blockData: TBlockSchema }) => {
   }, []);
 
   return (
-    <group>{objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}</group>
+    <group>
+      {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
+      {buildingScene && <GLBlockMarker blockData={blockData} />}
+    </group>
   );
 };
 

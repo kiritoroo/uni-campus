@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import * as THREE from "three";
-import randomcolor from "randomcolor";
 
 interface GLBoundingBoxProps {
   property: {
@@ -12,11 +11,7 @@ interface GLBoundingBoxProps {
 const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
   const material = useRef<THREE.MeshBasicMaterial>(
     new THREE.MeshBasicMaterial({
-      color: new THREE.Color(
-        randomcolor({
-          hue: "red",
-        }),
-      ),
+      color: new THREE.Color(0xf45a5b),
       side: THREE.DoubleSide,
       wireframe: true,
       opacity: 1,
