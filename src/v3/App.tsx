@@ -12,12 +12,15 @@ import BlocksManager from "@v3/admin/screens/BlocksManager";
 import BlockManager from "@v3/admin/screens/BlockManager";
 import NotFound from "@v3/admin/shared/NotFound";
 import CampusScreen from "@v3/site/screens/CampusScreen";
+import SiteLayout from "@v3/site/layouts/Layout";
 
 const App = () => {
   return (
     <Fragment>
       <Routes>
-        <Route path="/" element={<CampusScreen />} />
+        <Route path="/" element={<SiteLayout />}>
+          <Route path="" element={<CampusScreen />} />
+        </Route>
         <Route path="/x" element={<AdminLayout />}>
           <Route path="" element={<OverviewScreen />} />
           <Route path="login" element={<LoginScreen />} />
