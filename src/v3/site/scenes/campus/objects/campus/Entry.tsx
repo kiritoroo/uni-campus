@@ -24,7 +24,9 @@ const Entry = () => {
       <GLGroundLayer />
       <GLFloorLayer />
 
-      {buildingsData?.map((item) => <GLBuilding key={item.id} buildingData={item} />)}
+      {buildingsData
+        ?.filter((item) => item.is_publish)
+        .map((item) => <GLBuilding key={item.id} buildingData={item} />)}
     </group>
   );
 };
