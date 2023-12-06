@@ -2,6 +2,10 @@ import { TBuildingSchema } from "@v3/site/schemas/building";
 import { useBuildingStore } from "./hooks/useBuildingStore";
 import { useEffect, useMemo } from "react";
 import * as THREE from "three";
+import { Center } from "@react-three/drei";
+import GLBoundingBox from "./webgl/GLBoundingBox";
+import GlBoundingEffect from "./webgl/GLBoundingEffect";
+import GlBoundingAround from "./webgl/GLBoundingAround";
 
 const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   const buildingStore = useBuildingStore();
@@ -25,14 +29,59 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
     buildingActions.initBuildingData({ buildingData: buildingData });
   }, []);
 
+  const objBoundingBoxProperty = useMemo<{
+    geometry: THREE.BufferGeometry;
+    position: THREE.Vector3;
+  } | null>(() => {
+    if (!buildingScene) return null;
+    const obj = buildingScene.getObjectByName("bounding-box");
+    if (!obj || !(obj instanceof THREE.Mesh)) return null;
+
+    return {
+      geometry: obj.geometry,
+      position: obj.position,
+    };
+  }, [buildingScene]);
+
+  const objBoundingEffectProperty = useMemo<{
+    geometry: THREE.BufferGeometry;
+    position: THREE.Vector3;
+  } | null>(() => {
+    if (!buildingScene) return null;
+    const obj = buildingScene.getObjectByName("bounding-effect");
+    if (!obj || !(obj instanceof THREE.Mesh)) return null;
+
+    return {
+      geometry: obj.geometry,
+      position: obj.position,
+    };
+  }, [buildingScene]);
+
+  const objBoundingAroundProperty = useMemo<{
+    geometry: THREE.BufferGeometry;
+    position: THREE.Vector3;
+  } | null>(() => {
+    if (!buildingScene) return null;
+    const obj = buildingScene.getObjectByName("bounding-around");
+    if (!obj || !(obj instanceof THREE.Mesh)) return null;
+
+    return {
+      geometry: obj.geometry,
+      position: obj.position,
+    };
+  }, [buildingScene]);
+  console.log(buildingScene);
   return (
-    <group
+    <Center
       position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
       rotation={[buildingData.rotation.x, buildingData.rotation.y, buildingData.rotation.z]}
       scale={[buildingData.scale.x, buildingData.scale.y, buildingData.scale.z]}
     >
       {objGroupMergeProperty && <primitive object={objGroupMergeProperty.group} />}
-    </group>
+      {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
+      {objBoundingEffectProperty && <GlBoundingEffect property={objBoundingEffectProperty} />}
+      {objBoundingAroundProperty && <GlBoundingAround property={objBoundingAroundProperty} />}
+    </Center>
   );
 };
 
