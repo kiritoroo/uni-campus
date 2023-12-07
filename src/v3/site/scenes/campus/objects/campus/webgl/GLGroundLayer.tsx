@@ -3,8 +3,8 @@ import { useLoader } from "@react-three/fiber";
 import { MODELS_ASSETS } from "@v3/site/assets/models";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
 const GLGroundLayer = () => {
   const gltf: TGLTFReference = useLoader(GLTFLoader, MODELS_ASSETS.groundLayer);
   const model = useMemo(() => gltf.scenes[0], []);
