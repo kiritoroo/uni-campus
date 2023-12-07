@@ -8,12 +8,16 @@ import GlBoundingEffect from "./webgl/GLBoundingEffect";
 import GlBoundingAround from "./webgl/GLBoundingAround";
 import GLBlock from "../block/GLBlock";
 import GLBuildingMesh from "./webgl/GLBuildingMesh";
+import { useCampusStore } from "../campus/hooks/useCampusStore";
 
 const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
+  const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
 
+  const buildingPointerEnterNearest = campusStore.use.buildingPointerEnterNearest();
   const buildingActions = buildingStore.use.actions();
   const buildingScene = buildingStore.use.buildingScene();
+  const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
 
   const objGroupMergeProperty = useMemo<{
     group: THREE.Group;
@@ -72,6 +76,27 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   useEffect(() => {
     buildingActions.initBuildingData({ buildingData: buildingData });
   }, []);
+
+  useEffect(() => {
+    if (buildingPointerEnterNearest) {
+      if (buildingPointerEnterNearest.buildingId === buildingData.id) {
+        buildingStore.setState({ isPointerEnterBuildingNearest: true });
+      }
+
+      if (
+        buildingPointerEnterNearest.buildingId !== buildingData.id &&
+        isPointerEnterBuildingNearest
+      ) {
+        buildingStore.setState({ isPointerEnterBuildingNearest: false });
+      }
+    }
+
+    if (!buildingPointerEnterNearest) {
+      if (isPointerEnterBuildingNearest) {
+        buildingStore.setState({ isPointerEnterBuildingNearest: false });
+      }
+    }
+  }, [buildingPointerEnterNearest]);
 
   return (
     <Center

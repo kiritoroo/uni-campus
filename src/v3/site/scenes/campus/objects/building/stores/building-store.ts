@@ -6,6 +6,7 @@ import { computed } from "zustand-computed";
 type TState = {
   buildingData: TBuildingSchema | null;
   buildingScene: THREE.Group | null;
+  isPointerEnterBuildingNearest: boolean;
 };
 
 type TComputedState = {};
@@ -21,6 +22,7 @@ export interface IBuildingStore extends TState, TComputedState {
 const initStore: TState & TComputedState = {
   buildingData: null,
   buildingScene: null,
+  isPointerEnterBuildingNearest: false,
 };
 
 const gltfLoader = initializeGLTFLoader();

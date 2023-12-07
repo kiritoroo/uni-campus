@@ -18,8 +18,6 @@ const GLPlantLayer = () => {
     });
   }, []);
 
-  console.log(model);
-
   return (
     <group>
       <primitive object={model} />
