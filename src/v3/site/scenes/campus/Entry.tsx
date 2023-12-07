@@ -23,7 +23,7 @@ const Entry = () => {
   }
 
   return (
-    <div className="relative h-screen w-screen">
+    <div className="relative h-screen w-screen bg-[#e9e9e9]">
       <GLCanvas />
     </div>
   );
