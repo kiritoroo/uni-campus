@@ -7,6 +7,7 @@ import GLBoundingBox from "./webgl/GLBoundingBox";
 import GlBoundingEffect from "./webgl/GLBoundingEffect";
 import GlBoundingAround from "./webgl/GLBoundingAround";
 import GLBlock from "../block/GLBlock";
+import GLBuildingMesh from "./webgl/GLBuildingMesh";
 
 const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   const buildingStore = useBuildingStore();
@@ -71,14 +72,42 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   useEffect(() => {
     buildingActions.initBuildingData({ buildingData: buildingData });
   }, []);
-
+  console.log(objGroupMergeProperty);
   return (
     <Center
       position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
       rotation={[buildingData.rotation.x, buildingData.rotation.y, buildingData.rotation.z]}
       scale={[buildingData.scale.x, buildingData.scale.y, buildingData.scale.z]}
     >
-      {objGroupMergeProperty && <primitive object={objGroupMergeProperty.group} />}
+      {objGroupMergeProperty && (
+        <group
+          position={objGroupMergeProperty.group.position}
+          rotation={objGroupMergeProperty.group.rotation}
+          scale={objGroupMergeProperty.group.scale}
+        >
+          {objGroupMergeProperty.group.children.map((obj) => {
+            const objBuildingMeshProperty: {
+              geometry: THREE.BufferGeometry;
+              material: THREE.MeshStandardMaterial;
+              position: THREE.Vector3;
+            } | null = (() => {
+              if (!obj || !(obj instanceof THREE.Mesh)) return null;
+
+              return {
+                geometry: obj.geometry,
+                position: obj.position,
+                material: obj.material,
+              };
+            })();
+
+            return (
+              <group>
+                {objBuildingMeshProperty && <GLBuildingMesh property={objBuildingMeshProperty} />}
+              </group>
+            );
+          })}
+        </group>
+      )}
       {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
       {objBoundingEffectProperty && <GlBoundingEffect property={objBoundingEffectProperty} />}
       {objBoundingAroundProperty && <GlBoundingAround property={objBoundingAroundProperty} />}

@@ -17,7 +17,7 @@ export const CampusSceneStoreProvider = ({
 }) => {
   const storeRef = useRef<ICampusSceneStoreContext>();
   if (!storeRef.current) {
-    storeRef.current = CampusSceneStore({ mode: "prod" });
+    storeRef.current = CampusSceneStore({ mode: mode });
   }
 
   return (
