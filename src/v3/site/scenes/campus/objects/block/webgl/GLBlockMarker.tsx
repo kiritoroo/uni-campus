@@ -19,6 +19,12 @@ const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
             )}
           >
             <div className="text-[14px] font-bold uppercase">{blockData.name}</div>
+
+            <div
+              className={cn(
+                "bottom absolute bottom-0 left-1/2 z-[2] h-3 w-3 origin-center translate-x-[-50%] translate-y-[calc(50%)] rotate-45 bg-[#454545]",
+              )}
+            />
           </div>
         </div>
       </Html>
