@@ -13,8 +13,8 @@ const GLBuildingMesh = ({ property }: GLBuildingMeshProps) => {
 
   return (
     <mesh
-      castShadow={false}
-      receiveShadow={false}
+      castShadow={true}
+      receiveShadow={true}
       geometry={property?.geometry}
       position={property?.position}
       material={material.current}
