@@ -19,8 +19,8 @@ const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
   const buildingStore = useBuildingStore();
 
   const campusMode = campusSceneStore.use.campusMode();
-  const buildingData = buildingStore.use.buildingData()!;
   const campusStoreActions = campusStore.use.actions();
+  const buildingData = buildingStore.use.buildingData()!;
 
   const material = useRef<THREE.MeshBasicMaterial>(
     new THREE.MeshBasicMaterial({

@@ -4,6 +4,7 @@ import { computed } from "zustand-computed";
 
 type TState = {
   blockData: TBlockSchema | null;
+  isPointerEnterBlockNearest: boolean;
 };
 
 type TComputedState = {};
@@ -18,6 +19,7 @@ export interface IBlockStore extends TState, TComputedState {
 
 const initStore: TState & TComputedState = {
   blockData: null,
+  isPointerEnterBlockNearest: false,
 };
 
 export const BlockStore = () => {

@@ -15,63 +15,63 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   const buildingStore = useBuildingStore();
 
   const buildingPointerEnterNearest = campusStore.use.buildingPointerEnterNearest();
+  const buildingModelScene = buildingStore.use.buildingModelScene();
   const buildingActions = buildingStore.use.actions();
-  const buildingScene = buildingStore.use.buildingScene();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
 
   const objGroupMergeProperty = useMemo<{
     group: THREE.Group;
   } | null>(() => {
-    if (!buildingScene) return null;
-    const obj = buildingScene.getObjectByName("group-merge");
+    if (!buildingModelScene) return null;
+    const obj = buildingModelScene.getObjectByName("group-merge");
     if (!obj || !(obj instanceof THREE.Group)) return null;
 
     return {
       group: obj,
     };
-  }, [buildingScene]);
+  }, [buildingModelScene]);
 
   const objBoundingBoxProperty = useMemo<{
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
   } | null>(() => {
-    if (!buildingScene) return null;
-    const obj = buildingScene.getObjectByName("bounding-box");
+    if (!buildingModelScene) return null;
+    const obj = buildingModelScene.getObjectByName("bounding-box");
     if (!obj || !(obj instanceof THREE.Mesh)) return null;
 
     return {
       geometry: obj.geometry,
       position: obj.position,
     };
-  }, [buildingScene]);
+  }, [buildingModelScene]);
 
   const objBoundingEffectProperty = useMemo<{
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
   } | null>(() => {
-    if (!buildingScene) return null;
-    const obj = buildingScene.getObjectByName("bounding-effect");
+    if (!buildingModelScene) return null;
+    const obj = buildingModelScene.getObjectByName("bounding-effect");
     if (!obj || !(obj instanceof THREE.Mesh)) return null;
 
     return {
       geometry: obj.geometry,
       position: obj.position,
     };
-  }, [buildingScene]);
+  }, [buildingModelScene]);
 
   const objBoundingAroundProperty = useMemo<{
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
   } | null>(() => {
-    if (!buildingScene) return null;
-    const obj = buildingScene.getObjectByName("bounding-around");
+    if (!buildingModelScene) return null;
+    const obj = buildingModelScene.getObjectByName("bounding-around");
     if (!obj || !(obj instanceof THREE.Mesh)) return null;
 
     return {
       geometry: obj.geometry,
       position: obj.position,
     };
-  }, [buildingScene]);
+  }, [buildingModelScene]);
 
   useEffect(() => {
     buildingActions.initBuildingData({ buildingData: buildingData });
