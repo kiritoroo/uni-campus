@@ -3,6 +3,7 @@ import { createStore } from "zustand";
 import { computed } from "zustand-computed";
 
 type TState = {
+  campusMode: "dev" | "prod";
   buildingsData: TBuildingSchema[] | null;
 };
 
@@ -17,14 +18,16 @@ export interface ICampusSceneStore extends TState, TComputedState {
 }
 
 const initStore: TState & TComputedState = {
+  campusMode: "prod",
   buildingsData: null,
 };
 
-export const CampusSceneStore = () => {
+export const CampusSceneStore = ({ mode }: { mode: "dev" | "prod" }) => {
   return createStore<ICampusSceneStore, [["chrisvander/zustand-computed", TComputedState]]>(
     computed(
       (set, get) => ({
         ...initStore,
+        campusMode: mode,
         actions: {
           initBuildingsData: ({ buildingsData }) => {
             set({ buildingsData });
