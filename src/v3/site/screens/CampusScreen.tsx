@@ -3,7 +3,7 @@ import Entry from "../scenes/campus/Entry";
 
 const CampusScreen = () => {
   return (
-    <CampusSceneStoreProvider>
+    <CampusSceneStoreProvider mode="prod">
       <Entry />
     </CampusSceneStoreProvider>
   );

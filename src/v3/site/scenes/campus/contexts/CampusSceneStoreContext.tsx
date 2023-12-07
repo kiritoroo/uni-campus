@@ -8,10 +8,16 @@ export const CampusSceneStoreContext = createContext<ICampusSceneStoreContext | 
   undefined,
 );
 
-export const CampusSceneStoreProvider = ({ children }: { children: React.ReactNode }) => {
+export const CampusSceneStoreProvider = ({
+  mode,
+  children,
+}: {
+  mode: "dev" | "prod";
+  children: React.ReactNode;
+}) => {
   const storeRef = useRef<ICampusSceneStoreContext>();
   if (!storeRef.current) {
-    storeRef.current = CampusSceneStore();
+    storeRef.current = CampusSceneStore({ mode: "prod" });
   }
 
   return (

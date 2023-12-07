@@ -1,8 +1,9 @@
-import { useFrame } from "@react-three/fiber";
+import { MeshProps, useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 
-interface GLBoundingEffectProps {
+interface GLBoundingEffectProps extends MeshProps {
   property: {
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
@@ -10,6 +11,9 @@ interface GLBoundingEffectProps {
 }
 
 const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
+  const campusSceneStore = useCampusSceneStore();
+  const campusMode = campusSceneStore.use.campusMode();
+
   const material = useRef<THREE.MeshBasicMaterial>(
     new THREE.MeshBasicMaterial({
       color: new THREE.Color(0.21, 0.35, 0.67),
@@ -66,6 +70,7 @@ const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
       material={material.current}
       scale={[1, 1, 1]}
       renderOrder={1000}
+      visible={campusMode === "dev" ? true : false}
     />
   );
 };
