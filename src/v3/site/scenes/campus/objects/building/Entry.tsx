@@ -72,7 +72,7 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   useEffect(() => {
     buildingActions.initBuildingData({ buildingData: buildingData });
   }, []);
-  console.log(objGroupMergeProperty);
+
   return (
     <Center
       position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
@@ -101,7 +101,7 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
             })();
 
             return (
-              <group>
+              <group key={obj.id}>
                 {objBuildingMeshProperty && <GLBuildingMesh property={objBuildingMeshProperty} />}
               </group>
             );

@@ -6,7 +6,7 @@ import GLCampusCurve from "./webgl/GLCampusCurve";
 import GLFloorLayer from "./webgl/GLFloorLayer";
 import GLGrassLayer from "./webgl/GLGrassLayer";
 import GLGroundLayer from "./webgl/GLGroundLayer";
-import GLPlaneLayer from "./webgl/GLPlaneLayer";
+import GLPlantLayer from "./webgl/GLPlantLayer";
 
 const Entry = () => {
   const campusSceneStore = useCampusSceneStore();
@@ -19,7 +19,7 @@ const Entry = () => {
       <GLCampusControls />
       <GLCampusCurve />
 
-      <GLPlaneLayer />
+      <GLPlantLayer />
       <GLGrassLayer />
       <GLGroundLayer />
       <GLFloorLayer />
