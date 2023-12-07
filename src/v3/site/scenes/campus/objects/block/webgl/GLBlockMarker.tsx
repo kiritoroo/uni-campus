@@ -5,17 +5,42 @@ import { useBlockStore } from "../hooks/useBlockStore";
 import { useEffect, useState } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { randomRand } from "@Utils/math.utils";
+import { useCampusStore } from "../../campus/hooks/useCampusStore";
 
 const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
+  const campusStore = useCampusStore();
   const blockStore = useBlockStore();
 
+  const buildingPicked = campusStore.use.buildingPicked();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
+  const isBlockPiced = blockStore.use.isBlockPicked();
 
   const [markerRefForce, setMarkerRefForce] = useState<HTMLDivElement | null>(null);
   const [, animate] = useAnimate();
 
+  // Animate on first enter scene
   useEffect(() => {
     if (!markerRefForce) return;
+
+    animate(
+      markerRefForce,
+      { scale: 1 },
+      {
+        type: "spring",
+        mass: randomRand(0.5, 0.8),
+        stiffness: randomRand(50, 100),
+        damping: randomRand(5, 10),
+        delay: randomRand(0.0, 0.4),
+        onPlay: () => {},
+        onComplete: () => {},
+      },
+    );
+  }, [markerRefForce]);
+
+  // Animate on pointer enter nearest
+  useEffect(() => {
+    if (!markerRefForce) return;
+    if (buildingPicked) return;
 
     if (isPointerEnterBlockNearest) {
       animate(
@@ -34,24 +59,23 @@ const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
     }
   }, [isPointerEnterBlockNearest]);
 
+  // Animate on picked
   useEffect(() => {
     if (!markerRefForce) return;
+    if (!buildingPicked) return;
 
-    // Animate on first enter scene
-    animate(
-      markerRefForce,
-      { scale: 1 },
-      {
-        type: "spring",
-        mass: randomRand(0.5, 0.8),
-        stiffness: randomRand(50, 100),
-        damping: randomRand(5, 10),
-        delay: randomRand(0.0, 0.4),
-        onPlay: () => {},
-        onComplete: () => {},
-      },
-    );
-  }, [markerRefForce]);
+    if (isBlockPiced) {
+      animate(markerRefForce, { y: 0, scale: 0 }, { duration: 0.3, delay: 0.5, type: "tween" });
+    }
+
+    if (!isBlockPiced) {
+      animate(
+        markerRefForce,
+        { scale: 0 },
+        { type: "spring", mass: 0.5, stiffness: randomRand(50, 100), damping: 10 },
+      );
+    }
+  }, [buildingPicked, isBlockPiced]);
 
   return (
     <group
@@ -70,6 +94,10 @@ const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
           }}
           initial={{
             scale: 0,
+          }}
+          style={{
+            originX: "50%",
+            originY: "100%",
           }}
           className="pointer-events-none relative cursor-pointer select-none text-center drop-shadow-lg"
         >

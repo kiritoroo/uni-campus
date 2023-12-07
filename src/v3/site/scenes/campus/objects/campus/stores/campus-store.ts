@@ -8,6 +8,9 @@ type TState = {
     buildingId: string;
     distance: number;
   }[];
+  buildingPicked: {
+    buildingId: string;
+  } | null;
 };
 
 type TComputedState = {
@@ -34,6 +37,7 @@ export interface ICampusStore extends TState, TComputedState {
 const initStore: TState & TComputedState = {
   buildingsPointerEnter: [],
   buildingPointerEnterNearest: null,
+  buildingPicked: null,
 };
 
 export const CampusStore = () => {

@@ -16,12 +16,15 @@ interface GLBoundingBoxProps {
 
 const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
   const campusSceneStore = useCampusSceneStore();
+  const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
   const blockStore = useBlockStore();
 
   const campusMode = campusSceneStore.use.campusMode();
+  const buildingData = buildingStore.use.buildingData()!;
   const buildingStoreActions = buildingStore.use.actions();
   const blockData = blockStore.use.blockData()!;
+  const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
 
   const material = useRef<THREE.MeshBasicMaterial>(
     new THREE.MeshBasicMaterial({
@@ -48,6 +51,15 @@ const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
     buildingStoreActions.removeBlockPointerEnter(blockData.id);
   };
 
+  const handleOnPointerClick = () => {
+    if (!isPointerEnterBlockNearest) return;
+
+    campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
+    buildingStore.setState({ isBuildingPicked: true });
+    buildingStore.setState({ blockPicked: { blockId: blockData.id } });
+    blockStore.setState({ isBlockPicked: true });
+  };
+
   return (
     <mesh
       castShadow={false}
@@ -58,6 +70,8 @@ const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
       visible={campusMode === "dev" ? true : false}
       onPointerEnter={handleOnPointerEnterBoundingBox}
       onPointerLeave={handleOnPointerLeaveBoundingBox}
+      onPointerDown={handleOnPointerClick}
+      onClick={handleOnPointerClick}
     />
   );
 };

@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import gsap, { Expo } from "gsap";
 import { useBuildingStore } from "../hooks/useBuildingStore";
+import { useCampusStore } from "../../campus/hooks/useCampusStore";
 
 interface GLBoundingEffectProps extends MeshProps {
   property: {
@@ -14,10 +15,13 @@ interface GLBoundingEffectProps extends MeshProps {
 
 const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
   const campusSceneStore = useCampusSceneStore();
+  const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
 
   const campusMode = campusSceneStore.use.campusMode();
+  const buildingPicked = campusStore.use.buildingPicked();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
+  const isBuildingPicked = buildingStore.use.isBuildingPicked();
 
   const boundingEffectRef = useRef<THREE.Mesh | any>(null);
   const animateTimeline = useMemo(() => {
@@ -118,6 +122,7 @@ const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
     material.current.defines = { USE_UV: "" };
   }, []);
 
+  // Animate on pointer enter nearest
   useEffect(() => {
     if (isPointerEnterBuildingNearest) {
       handleOnPointerEnterBuildingNearest();
@@ -127,6 +132,26 @@ const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
       handleOnPointerLeaveBuildingNearest();
     }
   }, [isPointerEnterBuildingNearest]);
+
+  // Animate on picked
+  useEffect(() => {
+    if (!buildingPicked) return;
+
+    if (isBuildingPicked) {
+      animateTimeline.clear();
+      animateTimeline
+        .to(
+          effectUniform.current.uAlpha,
+          {
+            value: 0,
+            ease: Expo.easeInOut,
+            duration: 0.5,
+          },
+          "<",
+        )
+        .play();
+    }
+  }, [isBuildingPicked]);
 
   useFrame(({ clock }) => {
     effectUniform.current.uTime.value = clock.getElapsedTime();

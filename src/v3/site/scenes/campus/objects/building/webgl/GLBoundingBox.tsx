@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
@@ -19,6 +19,7 @@ const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
   const buildingStore = useBuildingStore();
 
   const campusMode = campusSceneStore.use.campusMode();
+  const buildingPicked = campusStore.use.buildingPicked();
   const campusStoreActions = campusStore.use.actions();
   const buildingData = buildingStore.use.buildingData()!;
 
@@ -34,6 +35,8 @@ const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
 
   const handleOnPointerEnterBoundingBox = _.throttle(
     (e: ThreeEvent<PointerEvent>) => {
+      if (buildingPicked) return;
+
       document.body.style.cursor = "pointer";
       campusStoreActions.addBuildingPointerEnter({
         buildingId: buildingData?.id,
@@ -45,11 +48,15 @@ const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
   );
 
   const handleOnPointerLeaveBoundingBox = () => {
+    if (buildingPicked) return;
+
     document.body.style.cursor = "auto";
     campusStoreActions.removeBuildingPointerEnter(buildingData.id);
   };
 
   const handleOnPointerMoveBoundingBox = () => {
+    if (buildingPicked) return;
+
     document.body.style.cursor = "pointer";
   };
 

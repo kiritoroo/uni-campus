@@ -9,10 +9,14 @@ type TState = {
   buildingData: TBuildingSchema | null;
   buildingModelScene: THREE.Group | null;
   isPointerEnterBuildingNearest: boolean;
+  isBuildingPicked: boolean;
   blocksPointerEnter: {
     blockId: string;
     distance: number;
   }[];
+  blockPicked: {
+    blockId: string;
+  } | null;
 };
 
 type TComputedState = {
@@ -35,8 +39,10 @@ const initStore: TState & TComputedState = {
   buildingData: null,
   buildingModelScene: null,
   isPointerEnterBuildingNearest: false,
+  isBuildingPicked: false,
   blocksPointerEnter: [],
   blockPointerEnterNearest: null,
+  blockPicked: null,
 };
 
 const gltfLoader = initializeGLTFLoader();
