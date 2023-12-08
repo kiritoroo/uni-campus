@@ -21,7 +21,7 @@ const GLCampusCurve = () => {
   const SCALE_LOOK_AT_OFFSET = useRef<number>(0.5);
 
   const acceleration = useRef({ v: 0.0002 });
-  const progress = useRef({ v: 0 });
+  const progress = useRef({ v: 0.5 });
   const positionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const binormalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const directionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
@@ -68,10 +68,10 @@ const GLCampusCurve = () => {
     };
   })();
 
-  const handleUpdateCameraFollowCurve = () => {
+  const handleUpdateCameraFollowCurve = (delta: number) => {
     if (!objBoundingCurveProperty || !campusCamera) return;
 
-    progress.current.v += acceleration.current.v;
+    progress.current.v += acceleration.current.v + delta / 60;
 
     if (progress.current.v > 1) {
       progress.current.v = 0;
@@ -123,10 +123,10 @@ const GLCampusCurve = () => {
     }
   };
 
-  useFrame(() => {
+  useFrame((state, delta) => {
     if (buildingPicked) return;
 
-    handleUpdateCameraFollowCurve();
+    handleUpdateCameraFollowCurve(delta);
   });
 
   return (

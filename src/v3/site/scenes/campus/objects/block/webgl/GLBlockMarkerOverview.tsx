@@ -7,7 +7,7 @@ import { ChevronRightIcon } from "lucide-react";
 const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const blockStore = useBlockStore();
 
-  const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
+  // const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
 
   return (
     <group
@@ -17,18 +17,17 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
         blockData.marker_position.z,
       ]}
     >
-      {isBlockPointerEnterNearest && (
-        <Html distanceFactor={200} position={[0, 0, 0]} center className="pointer-events-none">
-          <div className="pointer-events-none relative cursor-pointer select-none text-center">
-            {/* <div className="flex aspect-square rotate-45 items-center justify-center bg-white/50 p-3">
-              <div className="flex h-full w-full items-center justify-center bg-[#495363] p-2">
-                <div className="-rotate-45 text-sm font-semibold text-white">
-                  {Math.ceil(Math.random() * 50)}
-                </div>
+      <Html distanceFactor={200} position={[0, 0, 0]} center className="pointer-events-none">
+        <div className="pointer-events-none relative cursor-pointer select-none text-center">
+          <div className="flex aspect-square items-center justify-center rounded-full bg-white/50 p-3">
+            <div className="flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2">
+              <div className="text-sm font-semibold text-white">
+                {Math.ceil(Math.random() * 50)}
               </div>
-            </div> */}
+            </div>
+          </div>
 
-            <div className="bg-white drop-shadow-md">
+          {/* <div className="bg-white drop-shadow-md">
               <div className="flex items-stretch justify-center gap-x-10">
                 <div className="px-8 py-6">
                   <div className="whitespace-nowrap text-lg font-bold text-[#495363]">
@@ -42,10 +41,9 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </Html>
-      )}
+            </div> */}
+        </div>
+      </Html>
     </group>
   );
 });
