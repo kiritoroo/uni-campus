@@ -7,7 +7,7 @@ import { motion, useAnimate } from "framer-motion";
 import { randomRand } from "@Utils/math.utils";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
 
-const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
+const GLBlockMarkerBySpace = ({ blockData }: { blockData: TBlockSchema }) => {
   const campusStore = useCampusStore();
   const blockStore = useBlockStore();
 
@@ -103,7 +103,7 @@ const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
         >
           <div
             className={cn(
-              "relative z-[2] w-max  max-w-[400px] rounded-md bg-[#495363] px-8 py-3 text-[#FFFFFF]",
+              "relative z-[2] w-max  max-w-[400px] bg-[#495363] px-8 py-3 text-[#FFFFFF]",
               { "bg-[#7f99b4] transition-colors duration-100": isPointerEnterBlockNearest },
             )}
           >
@@ -122,4 +122,4 @@ const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
   );
 };
 
-export default GLBlockMarker;
+export default GLBlockMarkerBySpace;
