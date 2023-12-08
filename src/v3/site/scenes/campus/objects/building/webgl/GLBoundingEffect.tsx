@@ -1,5 +1,5 @@
 import { MeshProps, useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import gsap, { Expo } from "gsap";
@@ -13,7 +13,7 @@ interface GLBoundingEffectProps extends MeshProps {
   };
 }
 
-const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
+const GlBoundingEffect = memo(({ property }: GLBoundingEffectProps) => {
   const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
@@ -170,6 +170,6 @@ const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
       visible={true}
     />
   );
-};
+});
 
 export default GlBoundingEffect;

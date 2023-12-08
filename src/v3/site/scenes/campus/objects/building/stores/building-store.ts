@@ -1,12 +1,14 @@
 import { minOfArray } from "@Utils/math.utils";
 import { initializeGLTFLoader } from "@Utils/three.utils";
-import { TBuildingSchema } from "@v3/admin/schemas/building/base";
 import { produce } from "immer";
 import { createStore } from "zustand";
 import { computed } from "zustand-computed";
+import * as THREE from "three";
+import { TBuildingSchema } from "@v3/site/schemas/building";
 
 type TState = {
   buildingData: TBuildingSchema | null;
+  buildingObject: THREE.Group | null;
   buildingModelScene: THREE.Group | null;
   isPointerEnterBuildingNearest: boolean;
   isBuildingPicked: boolean;
@@ -23,6 +25,7 @@ type TComputedState = {
   blockPointerEnterNearest: {
     blockId: string;
   } | null;
+  focusPostion: THREE.Vector3;
 };
 
 type TActions = {
@@ -37,12 +40,14 @@ export interface IBuildingStore extends TState, TComputedState {
 
 const initStore: TState & TComputedState = {
   buildingData: null,
+  buildingObject: null,
   buildingModelScene: null,
   isPointerEnterBuildingNearest: false,
   isBuildingPicked: false,
   blocksPointerEnter: [],
   blockPointerEnterNearest: null,
   blockPicked: null,
+  focusPostion: new THREE.Vector3(0, 0, 0),
 };
 
 const gltfLoader = initializeGLTFLoader();
@@ -87,6 +92,7 @@ export const BuildingStore = () => {
       }),
       (state) => {
         const blocksPointerEnter = state.blocksPointerEnter;
+        const buildingData = state.buildingData;
 
         const blockPointerEnterNearest = (() => {
           if (blocksPointerEnter.length > 0) {
@@ -98,8 +104,32 @@ export const BuildingStore = () => {
           }
           return null;
         })();
+
+        const focusPosition = (() => {
+          const v3 = new THREE.Vector3(0, 0, 0);
+          if (buildingData) {
+            const avgXMarker =
+              buildingData.blocks.reduce((sum, block) => sum + block.marker_position.x, 0) /
+              buildingData.blocks.length;
+            const avgZMarker =
+              buildingData.blocks.reduce((sum, block) => sum + block.marker_position.z, 0) /
+              buildingData.blocks.length;
+            const maxYMarker = Math.max(
+              ...buildingData.blocks.map((block) => block.marker_position.y),
+            );
+
+            v3.set(
+              avgXMarker + buildingData.position.x,
+              maxYMarker + buildingData.position.y,
+              avgZMarker + buildingData.position.z,
+            );
+          }
+          return v3;
+        })();
+
         return {
           blockPointerEnterNearest: blockPointerEnterNearest,
+          focusPostion: focusPosition,
         };
       },
     ),

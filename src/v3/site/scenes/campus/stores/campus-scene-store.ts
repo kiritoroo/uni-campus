@@ -5,6 +5,7 @@ import { computed } from "zustand-computed";
 type TState = {
   campusMode: "dev" | "prod";
   buildingsData: TBuildingSchema[] | null;
+  campusCamera: THREE.PerspectiveCamera | null;
 };
 
 type TComputedState = {};
@@ -20,6 +21,7 @@ export interface ICampusSceneStore extends TState, TComputedState {
 const initStore: TState & TComputedState = {
   campusMode: "prod",
   buildingsData: null,
+  campusCamera: null,
 };
 
 export const CampusSceneStore = ({ mode }: { mode: "dev" | "prod" }) => {

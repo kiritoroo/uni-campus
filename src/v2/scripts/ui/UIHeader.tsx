@@ -5,7 +5,7 @@ export const UIHeader = () => {
     <header className="fixed left-[50px] right-[50px] top-[20px] z-[10] flex items-center justify-between">
       <Link
         to={"/"}
-        className="text-xl font-extrabold uppercase text-[#23262D] transition-colors duration-200 hover:text-[#46448B]"
+        className="whitespace-nowrap text-xl font-extrabold uppercase text-[#23262D] transition-colors duration-200 hover:text-[#46448B]"
       >
         UTE Campus
       </Link>

@@ -1,15 +1,22 @@
 import { OrbitControls } from "@react-three/drei";
+import { useCampusSceneStore } from "../hooks/useCampuseSceneStore";
+import { memo } from "react";
 
-const GLOrbitControls = () => {
+const GLOrbitControls = memo(() => {
+  const campusSceneStore = useCampusSceneStore();
+  const campusMode = campusSceneStore.use.campusMode();
+
   return (
-    <OrbitControls
-      makeDefault
-      enableDamping
-      enablePan={true}
-      enableZoom={true}
-      enableRotate={true}
-    />
+    <group>
+      <OrbitControls
+        makeDefault
+        enableDamping
+        enablePan={campusMode === "dev" ? true : false}
+        enableZoom={campusMode === "dev" ? true : false}
+        enableRotate={campusMode === "dev" ? true : false}
+      />
+    </group>
   );
-};
+});
 
 export default GLOrbitControls;

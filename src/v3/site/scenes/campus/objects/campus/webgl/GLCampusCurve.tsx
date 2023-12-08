@@ -1,20 +1,34 @@
 import { TGLTFReference } from "@Types/three.type";
 import { Line } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
+import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { MODELS_ASSETS } from "@v3/site/assets/models";
 import { RefObject, useRef } from "react";
 import * as THREE from "three";
 import { Line2 } from "three-stdlib";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
+import { useCampusStore } from "../hooks/useCampusStore";
 
 const GLCampusCurve = () => {
+  const campusSceneStore = useCampusSceneStore();
+  const campusStore = useCampusStore();
+
+  const campusMode = campusSceneStore.use.campusMode();
+  const campusCamera = campusSceneStore.use.campusCamera();
+  const buildingPicked = campusStore.use.buildingPicked();
+
   const SCALE_FOLLOW_OFFSET = useRef<number>(1.5);
   const SCALE_LOOK_AT_OFFSET = useRef<number>(0.5);
 
-  const campusSceneStore = useCampusSceneStore();
+  const acceleration = useRef({ v: 0.0002 });
+  const progress = useRef({ v: 0.5 });
+  const positionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const binormalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const directionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const normalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
+  const lookAtTarget = useRef<THREE.Vector3>(new THREE.Vector3());
 
-  const campusMode = campusSceneStore.use.campusMode();
+  const { controls: campusControls } = useThree();
 
   const gltf: TGLTFReference = useLoader(GLTFLoader, MODELS_ASSETS.campusCurve);
   const model = gltf.scenes[0];
@@ -53,6 +67,67 @@ const GLCampusCurve = () => {
       tubeGeometry,
     };
   })();
+
+  const handleUpdateCameraFollowCurve = (delta: number) => {
+    if (!objBoundingCurveProperty || !campusCamera) return;
+
+    progress.current.v += acceleration.current.v + delta / 120;
+
+    if (progress.current.v > 1) {
+      progress.current.v = 0;
+    }
+
+    objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(
+      progress.current.v,
+      positionTarget.current,
+    );
+    positionTarget.current.multiplyScalar(SCALE_FOLLOW_OFFSET.current);
+
+    const segments = objBoundingCurveProperty.tubeGeometry.tangents.length;
+    const pickt = progress.current.v * segments;
+    const pick = Math.floor(pickt);
+    const pickNext = (pick + 1) % segments;
+
+    binormalTarget.current.subVectors(
+      objBoundingCurveProperty.tubeGeometry.binormals[pickNext],
+      objBoundingCurveProperty.tubeGeometry.binormals[pick],
+    );
+    binormalTarget.current
+      .multiplyScalar(pickt - pick)
+      .add(objBoundingCurveProperty.tubeGeometry.binormals[pick]);
+
+    objBoundingCurveProperty.tubeGeometry.parameters.path.getTangentAt(
+      progress.current.v,
+      directionTarget.current,
+    );
+
+    normalTarget.current.copy(binormalTarget.current).cross(directionTarget.current);
+    positionTarget.current.add(
+      normalTarget.current.clone().multiplyScalar(SCALE_FOLLOW_OFFSET.current),
+    );
+
+    campusCamera.position.lerp(positionTarget.current, 0.1);
+
+    objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(
+      (progress.current.v +
+        50 / objBoundingCurveProperty.tubeGeometry.parameters.path.getLength()) %
+        1,
+      lookAtTarget.current,
+    );
+    lookAtTarget.current.multiplyScalar(SCALE_LOOK_AT_OFFSET.current);
+
+    if (campusControls && campusMode === "prod") {
+      (campusControls as any).target.lerp(lookAtTarget.current, 0.1);
+      campusCamera.lookAt((campusControls as any).target);
+      (campusControls as any).update();
+    }
+  };
+
+  useFrame((state, delta) => {
+    if (buildingPicked) return;
+
+    handleUpdateCameraFollowCurve(delta);
+  });
 
   return (
     <group>

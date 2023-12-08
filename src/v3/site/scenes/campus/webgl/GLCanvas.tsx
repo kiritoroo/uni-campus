@@ -7,8 +7,9 @@ import { GLFog } from "./GLFog";
 import { GLSkydom } from "./GLSkydom";
 import GLCampus from "../objects/campus/GLCampus";
 import { GLCamera } from "./GLCamera";
+import { memo } from "react";
 
-const GLCanvas = () => {
+const GLCanvas = memo(() => {
   return (
     <Canvas
       shadows="soft"
@@ -33,6 +34,6 @@ const GLCanvas = () => {
       <GLOrbitControls />
     </Canvas>
   );
-};
+});
 
 export default GLCanvas;

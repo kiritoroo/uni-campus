@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import vs from "@v3/site/shaders/skydom/vertex.vs.glsl";
 import fs from "@v3/site/shaders/skydom/fragment.fs.glsl";
 
-export const GLSkydom = () => {
+export const GLSkydom = memo(() => {
   const geometry = useRef<THREE.SphereGeometry>(new THREE.SphereGeometry(800, 32, 32));
   const groupRef = useRef<THREE.Group>(null);
 
@@ -31,4 +31,4 @@ export const GLSkydom = () => {
       <primitive object={mesh.current} />
     </group>
   );
-};
+});

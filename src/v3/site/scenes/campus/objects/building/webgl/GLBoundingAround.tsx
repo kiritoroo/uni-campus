@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import * as THREE from "three";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 
@@ -9,7 +9,7 @@ interface GLBoundingArroundProps {
   };
 }
 
-const GlBoundingAround = ({ property }: GLBoundingArroundProps) => {
+const GlBoundingAround = memo(({ property }: GLBoundingArroundProps) => {
   const campusSceneStore = useCampusSceneStore();
   const campusMode = campusSceneStore.use.campusMode();
 
@@ -37,6 +37,6 @@ const GlBoundingAround = ({ property }: GLBoundingArroundProps) => {
       visible={campusMode === "dev" ? false : false}
     />
   );
-};
+});
 
 export default GlBoundingAround;

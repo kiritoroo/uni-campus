@@ -1,9 +1,9 @@
 import { useBuildingServices } from "@v3/site/hooks/useBuildingServices";
 import GLCanvas from "./webgl/GLCanvas";
 import { useCampusSceneStore } from "./hooks/useCampuseSceneStore";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 
-const Entry = () => {
+const Entry = memo(() => {
   const campusSceneStore = useCampusSceneStore();
   const campusSceneActions = campusSceneStore.use.actions();
 
@@ -27,6 +27,6 @@ const Entry = () => {
       <GLCanvas />
     </div>
   );
-};
+});
 
 export default Entry;

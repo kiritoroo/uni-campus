@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import * as THREE from "three";
 
 interface GLBuildingMeshProps {
@@ -8,7 +8,7 @@ interface GLBuildingMeshProps {
     position: THREE.Vector3;
   };
 }
-const GLBuildingMesh = ({ property }: GLBuildingMeshProps) => {
+const GLBuildingMesh = memo(({ property }: GLBuildingMeshProps) => {
   const material = useRef<THREE.MeshStandardMaterial>(property.material.clone());
 
   return (
@@ -20,6 +20,6 @@ const GLBuildingMesh = ({ property }: GLBuildingMeshProps) => {
       material={material.current}
     />
   );
-};
+});
 
 export default GLBuildingMesh;

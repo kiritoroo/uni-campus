@@ -1,12 +1,13 @@
 import { TBlockSchema } from "@v3/site/schemas/block";
 import { useBlockStore } from "./hooks/useBlockStore";
-import { useEffect, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { useBuildingStore } from "../building/hooks/useBuildingStore";
 import * as THREE from "three";
 import GLBoundingBox from "./webgl/GLBoundingBox";
-import GLBlockMarker from "./webgl/GLBlockMarker";
+import GLBlockMarkerBySpace from "./webgl/GLBlockMarkerBySpace";
+import GLBlockMarkerOverview from "./webgl/GLBlockMarkerOverview";
 
-const Entry = ({ blockData }: { blockData: TBlockSchema }) => {
+const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const buildingStore = useBuildingStore();
   const blockStore = useBlockStore();
 
@@ -59,9 +60,10 @@ const Entry = ({ blockData }: { blockData: TBlockSchema }) => {
   return (
     <group>
       {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
-      {buildingModelScene && <GLBlockMarker blockData={blockData} />}
+      {/* {buildingModelScene && <GLBlockMarkerBySpace blockData={blockData} />} */}
+      {/* {buildingModelScene && <GLBlockMarkerOverview blockData={blockData} />} */}
     </group>
   );
-};
+});
 
 export default Entry;
