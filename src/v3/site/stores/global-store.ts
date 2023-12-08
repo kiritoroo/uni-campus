@@ -1,13 +1,17 @@
 import { createStore } from "zustand";
 import { computed } from "zustand-computed";
+import { TBlockSchema } from "../schemas/block";
 
 type TState = {
   showSidebar: boolean;
+  blocksData: TBlockSchema[] | null;
 };
 
 type TComputedState = {};
 
-type TActions = {};
+type TActions = {
+  initBlocksData: ({ blocksData }: { blocksData: TBlockSchema[] }) => void;
+};
 
 export interface IGlobalStore extends TState, TComputedState {
   actions: TActions;
@@ -15,6 +19,7 @@ export interface IGlobalStore extends TState, TComputedState {
 
 const initStore: TState & TComputedState = {
   showSidebar: false,
+  blocksData: null,
 };
 
 export const GlobalStore = () => {
@@ -22,7 +27,11 @@ export const GlobalStore = () => {
     computed(
       (set, get) => ({
         ...initStore,
-        actions: {},
+        actions: {
+          initBlocksData({ blocksData }) {
+            set({ blocksData: blocksData });
+          },
+        },
       }),
       (state) => ({}),
     ),

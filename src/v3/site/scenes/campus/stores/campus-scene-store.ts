@@ -1,7 +1,6 @@
 import { TBuildingSchema } from "@v3/site/schemas/building";
 import { createStore } from "zustand";
 import { computed } from "zustand-computed";
-import { OrbitControls } from "three-stdlib";
 
 type TState = {
   campusMode: "dev" | "prod";

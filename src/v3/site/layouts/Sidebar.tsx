@@ -1,6 +1,7 @@
 import { Variants, motion, useAnimationControls } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useGlobalStore } from "../hooks/useGlobalStore";
+import Overview from "./widgets/overview/Overview";
 
 const Sidebar = () => {
   const globalStore = useGlobalStore();
@@ -35,53 +36,49 @@ const Sidebar = () => {
       variants={variants.current}
       animate={controls}
       initial="hide"
-      className="fixed bottom-0 left-0 right-0 top-0 z-[9999999999]"
+      className="fixed bottom-0 left-0 top-0 z-[9999999999]"
     >
-      <div className="flex h-full flex-row items-stretch justify-between">
-        <div className="bg-gem-crystal h-auto">
-          <div className="h-full px-16 py-8">
-            <div className="flex h-full flex-col items-center justify-between">
-              <div />
-              <div>
-                <ul className="space-y-2 pb-10">
-                  <li className="p-2 font-semibold">
-                    <div>Search</div>
-                  </li>
-                  <li className="p-2 font-semibold">
-                    <div>Spaces</div>
-                  </li>
-                  <li className="p-2 font-semibold">
-                    <div>Overview</div>
-                  </li>
-                </ul>
+      <div className="bg-gem-crystal flex h-full items-center justify-center">
+        <div className="h-full px-16 py-8">
+          <div className="flex h-full flex-col items-center justify-between">
+            <div />
+            <div>
+              <ul className="space-y-2 pb-10">
+                <li className="p-2 font-semibold">
+                  <div>Search</div>
+                </li>
+                <li className="p-2 font-semibold">
+                  <div>Spaces</div>
+                </li>
+                <li className="p-2 font-semibold">
+                  <div>Overview</div>
+                </li>
+              </ul>
 
-                <ul className="space-y-2">
-                  <li className="p-2 font-semibold">
-                    <div>Events</div>
-                  </li>
-                </ul>
+              <ul className="space-y-2">
+                <li className="p-2 font-semibold">
+                  <div>Events</div>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div>
+                <div className="pb-2 text-center text-sm font-semibold">
+                  University of <br /> Technology and Education
+                </div>
+                <div className="text-center font-geist text-xl font-bold">HCMUTE</div>
               </div>
-              <div>
-                <div>
-                  <div className="pb-2 text-center text-sm font-semibold">
-                    University of <br /> Technology and Education
-                  </div>
-                  <div className="text-center font-geist text-xl font-bold">HCMUTE</div>
-                </div>
 
-                <div className="flex items-center justify-center py-6">
-                  <div className="bg-gem-sapphire h-[3px] w-8" />
-                </div>
+              <div className="flex items-center justify-center py-8">
+                <div className="bg-gem-sapphire h-[3px] w-8" />
+              </div>
 
-                <div className="py-2">
-                  <div className="text-center text-sm font-bold uppercase">Campus Map</div>
-                </div>
+              <div className="py-2">
+                <div className="text-center text-sm font-bold uppercase">Campus Map</div>
               </div>
             </div>
           </div>
         </div>
-
-        <div className="h-auto w-auto grow bg-white/50 backdrop-blur-[5px]"></div>
       </div>
     </motion.div>
   );
