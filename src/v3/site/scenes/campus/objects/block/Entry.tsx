@@ -61,7 +61,7 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
     <group>
       {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
       {/* {buildingModelScene && <GLBlockMarkerBySpace blockData={blockData} />} */}
-      {buildingModelScene && <GLBlockMarkerOverview blockData={blockData} />}
+      {/* {buildingModelScene && <GLBlockMarkerOverview blockData={blockData} />} */}
     </group>
   );
 });
