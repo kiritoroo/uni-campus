@@ -62,7 +62,8 @@ const Sidebar = () => {
                 <X className="h-5 w-5 stroke-gem-crystal" />
               </button>
             </div>
-            <div>
+
+            <div className="py-12">
               <ul className="space-y-2 pb-16">
                 <li className="p-2 font-semibold">
                   <div>Search</div>
@@ -83,6 +84,7 @@ const Sidebar = () => {
                 </li>
               </ul>
             </div>
+
             <div>
               <div>
                 <div className="pb-2 text-center text-sm font-semibold">

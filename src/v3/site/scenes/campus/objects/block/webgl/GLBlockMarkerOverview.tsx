@@ -28,9 +28,9 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
           transition={{ duration: 0.5 }}
           className="pointer-events-none relative cursor-pointer select-none text-center"
         >
-          <div className="flex aspect-square items-center justify-center rounded-full bg-white/50 p-3">
+          <div className="flex aspect-square items-center justify-center rounded-full bg-white/50 p-3 shadow-sm">
             <div className="flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2">
-              <div className="text-sm font-semibold text-white">
+              <div className="h-5 w-5 text-center font-geist text-sm font-semibold text-white">
                 {Math.ceil(Math.random() * 50)}
               </div>
             </div>

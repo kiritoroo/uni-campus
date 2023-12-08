@@ -42,7 +42,7 @@ const Overview = () => {
         { "pointer-events-auto visible select-auto opacity-100": showOverview },
       )}
     >
-      <div className="px-12 py-20">
+      <div className="px-8 py-12">
         <div className="flex items-center justify-start">
           {spacesData?.map((space) => {
             return (
@@ -63,12 +63,14 @@ const Overview = () => {
         <div className="h-auto w-full overflow-hidden pt-20">
           <div className="flex items-start justify-start gap-x-32">
             {groupedBlocks.map((group, groupIndex) => (
-              <div key={groupIndex} className="flex flex-col items-start justify-center gap-y-12">
+              <div key={groupIndex} className="flex flex-col items-start justify-center gap-y-8">
                 {group.map((block, blockIndex) => (
                   <div key={blockIndex} className="flex items-center justify-start gap-x-5">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gem-sapphire bg-gem-crystal p-2">
-                      <div className="text-base font-semibold text-gem-sapphire">
-                        {Math.ceil(Math.random() * 50)}
+                    <div className="flex aspect-square items-center justify-center rounded-full bg-white/50 p-3 shadow-sm">
+                      <div className="flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2">
+                        <div className="h-5 w-5 text-center font-geist text-sm font-semibold text-white">
+                          {Math.ceil(Math.random() * 50)}
+                        </div>
                       </div>
                     </div>
                     <div className="whitespace-nowrap text-lg font-medium">{block.name}</div>
