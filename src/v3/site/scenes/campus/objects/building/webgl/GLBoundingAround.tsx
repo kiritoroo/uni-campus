@@ -34,7 +34,7 @@ const GlBoundingAround = ({ property }: GLBoundingArroundProps) => {
       material={material.current}
       scale={[1, 1, 1]}
       renderOrder={999}
-      visible={campusMode === "dev" ? true : false}
+      visible={campusMode === "dev" ? false : false}
     />
   );
 };

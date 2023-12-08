@@ -1,7 +1,10 @@
 import { MeshProps, useFrame } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
+import gsap, { Expo } from "gsap";
+import { useBuildingStore } from "../hooks/useBuildingStore";
+import { useCampusStore } from "../../campus/hooks/useCampusStore";
 
 interface GLBoundingEffectProps extends MeshProps {
   property: {
@@ -12,22 +15,83 @@ interface GLBoundingEffectProps extends MeshProps {
 
 const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
   const campusSceneStore = useCampusSceneStore();
+  const campusStore = useCampusStore();
+  const buildingStore = useBuildingStore();
+
   const campusMode = campusSceneStore.use.campusMode();
+  const buildingPicked = campusStore.use.buildingPicked();
+  const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
+  const isBuildingPicked = buildingStore.use.isBuildingPicked();
+
+  const boundingEffectRef = useRef<THREE.Mesh | any>(null);
+  const animateTimeline = useMemo(() => {
+    return gsap.timeline();
+  }, []);
 
   const material = useRef<THREE.MeshBasicMaterial>(
     new THREE.MeshBasicMaterial({
       color: new THREE.Color(0.21, 0.35, 0.67),
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 1,
+      opacity: 0,
       depthWrite: false,
       depthTest: true,
     }),
   );
   const effectUniform = useRef({
     uTime: { value: 0 },
-    uAlpha: { value: 1 },
+    uAlpha: { value: 0 },
   });
+
+  const handleOnPointerEnterBuildingNearest = () => {
+    animateTimeline.clear();
+    boundingEffectRef.current &&
+      animateTimeline
+        .to(
+          (boundingEffectRef.current as THREE.Mesh).scale,
+          {
+            y: 1,
+            ease: Expo.easeInOut,
+            duration: 0.3,
+          },
+          "<",
+        )
+        .to(
+          effectUniform.current.uAlpha,
+          {
+            value: 1,
+            ease: Expo.easeInOut,
+            duration: 0.3,
+          },
+          "<",
+        )
+        .play();
+  };
+
+  const handleOnPointerLeaveBuildingNearest = () => {
+    animateTimeline.clear();
+    boundingEffectRef.current &&
+      animateTimeline
+        .to(
+          (boundingEffectRef.current as THREE.Mesh).scale,
+          {
+            y: 0,
+            ease: Expo.easeInOut,
+            duration: 0.3,
+          },
+          "<",
+        )
+        .to(
+          effectUniform.current.uAlpha,
+          {
+            value: 0,
+            ease: Expo.easeInOut,
+            duration: 0.3,
+          },
+          "<",
+        )
+        .play();
+  };
 
   useEffect(() => {
     material.current.onBeforeCompile = (shader: any) => {
@@ -58,19 +122,52 @@ const GlBoundingEffect = ({ property }: GLBoundingEffectProps) => {
     material.current.defines = { USE_UV: "" };
   }, []);
 
+  // Animate on pointer enter nearest
+  useEffect(() => {
+    if (isPointerEnterBuildingNearest) {
+      handleOnPointerEnterBuildingNearest();
+    }
+
+    if (!isPointerEnterBuildingNearest) {
+      handleOnPointerLeaveBuildingNearest();
+    }
+  }, [isPointerEnterBuildingNearest]);
+
+  // Animate on picked
+  useEffect(() => {
+    if (!buildingPicked) return;
+
+    if (isBuildingPicked) {
+      animateTimeline.clear();
+      animateTimeline
+        .to(
+          effectUniform.current.uAlpha,
+          {
+            value: 0,
+            ease: Expo.easeInOut,
+            duration: 0.5,
+          },
+          "<",
+        )
+        .play();
+    }
+  }, [isBuildingPicked]);
+
   useFrame(({ clock }) => {
     effectUniform.current.uTime.value = clock.getElapsedTime();
   });
+
   return (
     <mesh
+      ref={boundingEffectRef}
       castShadow={false}
       receiveShadow={false}
       geometry={property.geometry}
       position={property.position}
       material={material.current}
-      scale={[1, 1, 1]}
+      scale={[1, 0, 1]}
       renderOrder={1000}
-      visible={campusMode === "dev" ? true : false}
+      visible={true}
     />
   );
 };

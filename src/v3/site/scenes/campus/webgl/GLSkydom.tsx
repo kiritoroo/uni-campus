@@ -27,7 +27,7 @@ export const GLSkydom = () => {
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} visible={false}>
       <primitive object={mesh.current} />
     </group>
   );

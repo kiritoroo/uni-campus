@@ -7,70 +7,96 @@ import GLBoundingBox from "./webgl/GLBoundingBox";
 import GlBoundingEffect from "./webgl/GLBoundingEffect";
 import GlBoundingAround from "./webgl/GLBoundingAround";
 import GLBlock from "../block/GLBlock";
+import GLBuildingMesh from "./webgl/GLBuildingMesh";
+import { useCampusStore } from "../campus/hooks/useCampusStore";
 
 const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
+  const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
 
+  const buildingPointerEnterNearest = campusStore.use.buildingPointerEnterNearest();
+  const buildingModelScene = buildingStore.use.buildingModelScene();
   const buildingActions = buildingStore.use.actions();
-  const buildingScene = buildingStore.use.buildingScene();
+  const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
 
   const objGroupMergeProperty = useMemo<{
     group: THREE.Group;
   } | null>(() => {
-    if (!buildingScene) return null;
-    const obj = buildingScene.getObjectByName("group-merge");
+    if (!buildingModelScene) return null;
+    const obj = buildingModelScene.getObjectByName("group-merge");
     if (!obj || !(obj instanceof THREE.Group)) return null;
 
     return {
       group: obj,
     };
-  }, [buildingScene]);
+  }, [buildingModelScene]);
 
   const objBoundingBoxProperty = useMemo<{
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
   } | null>(() => {
-    if (!buildingScene) return null;
-    const obj = buildingScene.getObjectByName("bounding-box");
+    if (!buildingModelScene) return null;
+    const obj = buildingModelScene.getObjectByName("bounding-box");
     if (!obj || !(obj instanceof THREE.Mesh)) return null;
 
     return {
       geometry: obj.geometry,
       position: obj.position,
     };
-  }, [buildingScene]);
+  }, [buildingModelScene]);
 
   const objBoundingEffectProperty = useMemo<{
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
   } | null>(() => {
-    if (!buildingScene) return null;
-    const obj = buildingScene.getObjectByName("bounding-effect");
+    if (!buildingModelScene) return null;
+    const obj = buildingModelScene.getObjectByName("bounding-effect");
     if (!obj || !(obj instanceof THREE.Mesh)) return null;
 
     return {
       geometry: obj.geometry,
       position: obj.position,
     };
-  }, [buildingScene]);
+  }, [buildingModelScene]);
 
   const objBoundingAroundProperty = useMemo<{
     geometry: THREE.BufferGeometry;
     position: THREE.Vector3;
   } | null>(() => {
-    if (!buildingScene) return null;
-    const obj = buildingScene.getObjectByName("bounding-around");
+    if (!buildingModelScene) return null;
+    const obj = buildingModelScene.getObjectByName("bounding-around");
     if (!obj || !(obj instanceof THREE.Mesh)) return null;
 
     return {
       geometry: obj.geometry,
       position: obj.position,
     };
-  }, [buildingScene]);
+  }, [buildingModelScene]);
 
   useEffect(() => {
     buildingActions.initBuildingData({ buildingData: buildingData });
   }, []);
+
+  useEffect(() => {
+    if (buildingPointerEnterNearest) {
+      if (buildingPointerEnterNearest.buildingId === buildingData.id) {
+        buildingStore.setState({ isPointerEnterBuildingNearest: true });
+      }
+
+      if (
+        buildingPointerEnterNearest.buildingId !== buildingData.id &&
+        isPointerEnterBuildingNearest
+      ) {
+        buildingStore.setState({ isPointerEnterBuildingNearest: false });
+      }
+    }
+
+    if (!buildingPointerEnterNearest) {
+      if (isPointerEnterBuildingNearest) {
+        buildingStore.setState({ isPointerEnterBuildingNearest: false });
+      }
+    }
+  }, [buildingPointerEnterNearest]);
 
   return (
     <Center
@@ -78,7 +104,35 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
       rotation={[buildingData.rotation.x, buildingData.rotation.y, buildingData.rotation.z]}
       scale={[buildingData.scale.x, buildingData.scale.y, buildingData.scale.z]}
     >
-      {objGroupMergeProperty && <primitive object={objGroupMergeProperty.group} />}
+      {objGroupMergeProperty && (
+        <group
+          position={objGroupMergeProperty.group.position}
+          rotation={objGroupMergeProperty.group.rotation}
+          scale={objGroupMergeProperty.group.scale}
+        >
+          {objGroupMergeProperty.group.children.map((obj) => {
+            const objBuildingMeshProperty: {
+              geometry: THREE.BufferGeometry;
+              material: THREE.MeshStandardMaterial;
+              position: THREE.Vector3;
+            } | null = (() => {
+              if (!obj || !(obj instanceof THREE.Mesh)) return null;
+
+              return {
+                geometry: obj.geometry,
+                position: obj.position,
+                material: obj.material,
+              };
+            })();
+
+            return (
+              <group key={obj.id}>
+                {objBuildingMeshProperty && <GLBuildingMesh property={objBuildingMeshProperty} />}
+              </group>
+            );
+          })}
+        </group>
+      )}
       {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
       {objBoundingEffectProperty && <GlBoundingEffect property={objBoundingEffectProperty} />}
       {objBoundingAroundProperty && <GlBoundingAround property={objBoundingAroundProperty} />}
