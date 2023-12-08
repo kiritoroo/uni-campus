@@ -53,6 +53,7 @@ const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
 
   const handleOnPointerClick = () => {
     if (!isPointerEnterBlockNearest) return;
+    document.body.style.cursor = "auto";
 
     campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
     buildingStore.setState({ isBuildingPicked: true });
