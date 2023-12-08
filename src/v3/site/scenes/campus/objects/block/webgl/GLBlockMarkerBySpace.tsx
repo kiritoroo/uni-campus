@@ -2,12 +2,12 @@ import { cn } from "@Utils/common.utils";
 import { Html } from "@react-three/drei";
 import { TBlockSchema } from "@v3/site/schemas/block";
 import { useBlockStore } from "../hooks/useBlockStore";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { randomRand } from "@Utils/math.utils";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
 
-const GLBlockMarkerBySpace = ({ blockData }: { blockData: TBlockSchema }) => {
+const GLBlockMarkerBySpace = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const campusStore = useCampusStore();
   const blockStore = useBlockStore();
 
@@ -120,6 +120,6 @@ const GLBlockMarkerBySpace = ({ blockData }: { blockData: TBlockSchema }) => {
       </Html>
     </group>
   );
-};
+});
 
 export default GLBlockMarkerBySpace;

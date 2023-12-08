@@ -1,6 +1,6 @@
 import { TBuildingSchema } from "@v3/site/schemas/building";
 import { useBuildingStore } from "./hooks/useBuildingStore";
-import { useEffect, useMemo, useRef } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Center } from "@react-three/drei";
 import GLBoundingBox from "./webgl/GLBoundingBox";
@@ -11,7 +11,7 @@ import GLBuildingMesh from "./webgl/GLBuildingMesh";
 import { useCampusStore } from "../campus/hooks/useCampusStore";
 import GLFocusCurve from "./webgl/GLFocusCurve";
 
-const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
+const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
 
@@ -156,6 +156,6 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
         ))}
     </Center>
   );
-};
+});
 
 export default Entry;

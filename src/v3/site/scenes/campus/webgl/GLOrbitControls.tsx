@@ -1,7 +1,8 @@
 import { OrbitControls } from "@react-three/drei";
 import { useCampusSceneStore } from "../hooks/useCampuseSceneStore";
+import { memo } from "react";
 
-const GLOrbitControls = () => {
+const GLOrbitControls = memo(() => {
   const campusSceneStore = useCampusSceneStore();
   const campusMode = campusSceneStore.use.campusMode();
 
@@ -16,6 +17,6 @@ const GLOrbitControls = () => {
       />
     </group>
   );
-};
+});
 
 export default GLOrbitControls;

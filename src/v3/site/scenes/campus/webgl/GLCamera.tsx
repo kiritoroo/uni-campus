@@ -1,7 +1,8 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { useCampusSceneStore } from "../hooks/useCampuseSceneStore";
+import { memo } from "react";
 
-export const GLCamera = () => {
+export const GLCamera = memo(() => {
   const campusSceneStore = useCampusSceneStore();
 
   const campusMode = campusSceneStore.use.campusMode();
@@ -15,4 +16,4 @@ export const GLCamera = () => {
       far={2000}
     />
   );
-};
+});

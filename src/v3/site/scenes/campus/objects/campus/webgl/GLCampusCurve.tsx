@@ -71,7 +71,7 @@ const GLCampusCurve = () => {
   const handleUpdateCameraFollowCurve = (delta: number) => {
     if (!objBoundingCurveProperty || !campusCamera) return;
 
-    progress.current.v += acceleration.current.v + delta / 60;
+    progress.current.v += acceleration.current.v + delta / 120;
 
     if (progress.current.v > 1) {
       progress.current.v = 0;

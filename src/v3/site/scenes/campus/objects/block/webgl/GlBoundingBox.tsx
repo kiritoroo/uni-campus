@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import * as THREE from "three";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { useBlockStore } from "../hooks/useBlockStore";
@@ -14,7 +14,7 @@ interface GLBoundingBoxProps {
   };
 }
 
-const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
+const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
   const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
@@ -75,6 +75,6 @@ const GLBoundingBox = ({ property }: GLBoundingBoxProps) => {
       onClick={handleOnPointerClick}
     />
   );
-};
+});
 
 export default GLBoundingBox;

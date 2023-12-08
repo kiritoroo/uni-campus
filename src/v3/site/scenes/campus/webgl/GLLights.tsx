@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useCampusSceneStore } from "../hooks/useCampuseSceneStore";
 import { useHelper } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 
-export const GLLights = () => {
+export const GLLights = memo(() => {
   const campusSceneStore = useCampusSceneStore();
   const campusMode = campusSceneStore.use.campusMode();
 
@@ -44,4 +44,4 @@ export const GLLights = () => {
       />
     </>
   );
-};
+});
