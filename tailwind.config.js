@@ -10,6 +10,7 @@ export default {
       },
       colors: {
         "gem-onyx": "#323234",
+        "gem-sapphire": "#495363",
       },
     },
   },
