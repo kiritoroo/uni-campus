@@ -1,8 +1,8 @@
-import qs from "query-string";
 import { z } from "zod";
 import axios, { AxiosError } from "axios";
 import { TBuildingSchema, buildingSchema } from "../schemas/building";
 import { setupInterceptorsTo } from "./axios-interceptors";
+import qs from "query-string";
 
 export const getBuildings = async (): Promise<TBuildingSchema[]> => {
   const query = qs.stringify({
