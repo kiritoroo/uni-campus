@@ -4,9 +4,10 @@ import { TBlockSchema } from "../schemas/block";
 import { TSpaceSchema } from "../schemas/space";
 
 type TState = {
-  showSidebar: boolean;
   blocksData: TBlockSchema[] | null;
   spacesData: TSpaceSchema[] | null;
+  showSidebar: boolean;
+  showOverview: boolean;
 };
 
 type TComputedState = {};
@@ -21,9 +22,10 @@ export interface IGlobalStore extends TState, TComputedState {
 }
 
 const initStore: TState & TComputedState = {
-  showSidebar: false,
   blocksData: null,
   spacesData: null,
+  showSidebar: false,
+  showOverview: false,
 };
 
 export const GlobalStore = () => {

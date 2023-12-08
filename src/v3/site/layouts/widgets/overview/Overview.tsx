@@ -10,6 +10,7 @@ const Overview = () => {
 
   const blocksData = globalStore.use.blocksData();
   const spacesData = globalStore.use.spacesData();
+  const showOverview = globalStore.use.showOverview();
   const spacePicked = overviewStore.use.spacePicked();
 
   const groupedBlocks = useMemo(() => {
@@ -34,7 +35,13 @@ const Overview = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 top-0 z-[999999999] overflow-hidden bg-white/50 pl-[350px] backdrop-blur-[5px]">
+    <div
+      className={cn(
+        "fixed bottom-0 left-0 right-0 top-0 z-[999999999] overflow-hidden bg-white/50 pl-[350px] backdrop-blur-[5px]",
+        { "pointer-events-none hidden select-none opacity-0": !showOverview },
+        { "pointer-events-auto visible select-auto opacity-100": showOverview },
+      )}
+    >
       <div className="px-12 py-20">
         <div className="flex items-center justify-start">
           {spacesData?.map((space) => {
