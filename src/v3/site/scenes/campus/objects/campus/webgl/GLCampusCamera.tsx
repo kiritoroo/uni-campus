@@ -1,6 +1,6 @@
 import { PerspectiveCamera, useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import * as THREE from "three";
 
@@ -21,6 +21,12 @@ const GLCampusCamera = () => {
       );
     }
   });
+
+  useEffect(() => {
+    if (cameraRef.current) {
+      campusSceneStore.setState({ campusCamera: cameraRef.current });
+    }
+  }, [cameraRef.current]);
 
   return (
     <group>

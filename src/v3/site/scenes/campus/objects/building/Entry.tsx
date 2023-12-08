@@ -1,6 +1,6 @@
 import { TBuildingSchema } from "@v3/site/schemas/building";
 import { useBuildingStore } from "./hooks/useBuildingStore";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Center } from "@react-three/drei";
 import GLBoundingBox from "./webgl/GLBoundingBox";
@@ -9,6 +9,7 @@ import GlBoundingAround from "./webgl/GLBoundingAround";
 import GLBlock from "../block/GLBlock";
 import GLBuildingMesh from "./webgl/GLBuildingMesh";
 import { useCampusStore } from "../campus/hooks/useCampusStore";
+import GLFocusCurve from "./webgl/GLFocusCurve";
 
 const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   const campusStore = useCampusStore();
@@ -18,6 +19,8 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const buildingActions = buildingStore.use.actions();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
+
+  const buildingRef = useRef<THREE.Group | any>(null);
 
   const objGroupMergeProperty = useMemo<{
     group: THREE.Group;
@@ -98,8 +101,15 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
     }
   }, [buildingPointerEnterNearest]);
 
+  useEffect(() => {
+    if (buildingRef.current) {
+      buildingStore.setState({ buildingObject: buildingRef.current });
+    }
+  }, [buildingRef]);
+
   return (
     <Center
+      ref={buildingRef}
       position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
       rotation={[buildingData.rotation.x, buildingData.rotation.y, buildingData.rotation.z]}
       scale={[buildingData.scale.x, buildingData.scale.y, buildingData.scale.z]}
@@ -136,6 +146,8 @@ const Entry = ({ buildingData }: { buildingData: TBuildingSchema }) => {
       {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
       {objBoundingEffectProperty && <GlBoundingEffect property={objBoundingEffectProperty} />}
       {objBoundingAroundProperty && <GlBoundingAround property={objBoundingAroundProperty} />}
+
+      <GLFocusCurve />
 
       {buildingData.blocks
         .filter((item) => item.is_publish)

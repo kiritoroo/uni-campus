@@ -103,7 +103,7 @@ const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
         >
           <div
             className={cn(
-              "relative z-[2] w-max  max-w-[400px] bg-[#454545] px-8 py-3 text-[#FFFFFF]",
+              "relative z-[2] w-max  max-w-[400px] rounded-md bg-[#495363] px-8 py-3 text-[#FFFFFF]",
               { "bg-[#7f99b4] transition-colors duration-100": isPointerEnterBlockNearest },
             )}
           >
@@ -111,7 +111,7 @@ const GLBlockMarker = ({ blockData }: { blockData: TBlockSchema }) => {
 
             <div
               className={cn(
-                "bottom absolute bottom-0 left-1/2 z-[2] h-3 w-3 origin-center translate-x-[-50%] translate-y-[calc(50%)] rotate-45 bg-[#363636]",
+                "bottom absolute bottom-0 left-1/2 z-[2] h-3 w-3 origin-center translate-x-[-50%] translate-y-[calc(50%)] rotate-45 bg-[#495363]",
                 { "bg-[#516274] transition-colors duration-100": isPointerEnterBlockNearest },
               )}
             />

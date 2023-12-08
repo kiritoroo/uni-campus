@@ -3,17 +3,18 @@ import { useCampusSceneStore } from "../hooks/useCampuseSceneStore";
 
 const GLOrbitControls = () => {
   const campusSceneStore = useCampusSceneStore();
-
   const campusMode = campusSceneStore.use.campusMode();
 
   return (
-    <OrbitControls
-      makeDefault={campusMode === "dev" ? true : false}
-      enableDamping
-      enablePan={true}
-      enableZoom={true}
-      enableRotate={true}
-    />
+    <group>
+      <OrbitControls
+        makeDefault
+        enableDamping
+        enablePan={campusMode === "dev" ? true : false}
+        enableZoom={campusMode === "dev" ? true : false}
+        enableRotate={campusMode === "dev" ? true : false}
+      />
+    </group>
   );
 };
 
