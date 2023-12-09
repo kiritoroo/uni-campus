@@ -34,6 +34,7 @@ const buildingSchema = z.object({
     length: z.number(),
     content_type: z.string(),
   }),
+  order: z.number(),
   blocks: z.array(
     z.object({
       id: z.string(),
@@ -61,6 +62,7 @@ const buildingSchema = z.object({
           content_type: z.string(),
         }),
       ),
+      order: z.number(),
       space: z
         .object({
           id: z.string(),

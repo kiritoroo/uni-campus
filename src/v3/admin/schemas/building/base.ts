@@ -18,6 +18,7 @@ const scaleField = z.object({
   y: z.coerce.number(),
   z: z.coerce.number(),
 });
+const orderField = z.number();
 const isPublishField = z.boolean();
 const createdAtField = z.string().transform((v) => new Date(v));
 const updatedAtField = z.string().transform((v) => new Date(v));
@@ -30,6 +31,7 @@ const buildingSchema = z.object({
   scale: scaleField,
   model_3d: fileInfoSchema,
   preview_img: fileInfoSchema,
+  order: orderField,
   is_publish: isPublishField,
   created_at: createdAtField,
   updated_at: updatedAtField,

@@ -28,6 +28,15 @@ const GLCampusCamera = () => {
     }
   }, [cameraRef.current]);
 
+  useFrame(() => {
+    if (!cameraRef.current) return;
+
+    const camera = cameraRef.current;
+    const cameraPosition = camera.getWorldPosition(new THREE.Vector3());
+    const distanceToOrigin = cameraPosition.distanceTo(new THREE.Vector3(0, 0, 0));
+    campusSceneStore.setState({ distanceFromCameraToOrigin: distanceToOrigin });
+  });
+
   return (
     <group>
       <mesh ref={cameraEyeRef} visible={campusMode === "dev" ? true : false}>

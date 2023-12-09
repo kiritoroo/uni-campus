@@ -6,18 +6,22 @@ import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import Content from "./Content";
 import Overview from "./widgets/overview/Overview";
+import { OVerviewStoreProvider } from "./widgets/overview/contexts/OverviewStoreContext";
 
 const Layout = () => {
   return (
     <Provider>
-      <main className={cn("text-gem-sapphire font-lora relative bg-white antialiased")}>
+      <main className={cn("relative bg-white font-lora text-gem-sapphire antialiased")}>
         <Header />
         <Outlet />
         <Footer />
 
         <Sidebar />
         <Content />
-        <Overview />
+
+        <OVerviewStoreProvider>
+          <Overview />
+        </OVerviewStoreProvider>
       </main>
     </Provider>
   );

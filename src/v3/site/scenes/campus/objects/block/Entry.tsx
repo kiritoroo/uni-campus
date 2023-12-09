@@ -4,13 +4,17 @@ import { memo, useEffect, useMemo } from "react";
 import { useBuildingStore } from "../building/hooks/useBuildingStore";
 import * as THREE from "three";
 import GLBoundingBox from "./webgl/GLBoundingBox";
-import GLBlockMarkerBySpace from "./webgl/GLBlockMarkerBySpace";
+import { useCampusSceneStore } from "../../hooks/useCampuseSceneStore";
+import { useFrame } from "@react-three/fiber";
 import GLBlockMarkerOverview from "./webgl/GLBlockMarkerOverview";
 
 const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
+  const campusSceneStore = useCampusSceneStore();
   const buildingStore = useBuildingStore();
   const blockStore = useBlockStore();
 
+  const campusCamera = campusSceneStore.use.campusCamera();
+  const buildingData = buildingStore.use.buildingData();
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const blockPointerEnterNearest = buildingStore.use.blockPointerEnterNearest();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
@@ -57,11 +61,26 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
     }
   }, [isPointerEnterBuildingNearest, blockPointerEnterNearest]);
 
+  useFrame(() => {
+    if (!campusCamera) return;
+    if (!buildingData) return;
+
+    const cameraPosition = campusCamera.getWorldPosition(new THREE.Vector3());
+    const distanceToBlock = cameraPosition.distanceTo(
+      new THREE.Vector3(
+        blockData.marker_position.x + buildingData?.position.x,
+        blockData.marker_position.y + buildingData?.position.y,
+        blockData.marker_position.z + buildingData?.position.z,
+      ),
+    );
+    blockStore.setState({ distanceFromCameraToBlock: distanceToBlock });
+  });
+
   return (
     <group>
       {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
       {/* {buildingModelScene && <GLBlockMarkerBySpace blockData={blockData} />} */}
-      {/* {buildingModelScene && <GLBlockMarkerOverview blockData={blockData} />} */}
+      {buildingModelScene && <GLBlockMarkerOverview blockData={blockData} />}
     </group>
   );
 });

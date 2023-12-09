@@ -55,6 +55,7 @@ const DetailForm = () => {
         y: 0,
         z: 0,
       },
+      order: -1,
     },
   });
 
@@ -93,6 +94,7 @@ const DetailForm = () => {
       setValue("position", buildingData.position);
       setValue("rotation", buildingData.rotation);
       setValue("scale", buildingData.scale);
+      setValue("order", buildingData.order);
     }
   }, [buildingData, enableEditDetail]);
 
@@ -281,6 +283,19 @@ const DetailForm = () => {
               </FlexRow>
             );
           }}
+        />
+        <DetailField
+          {...register("order")}
+          type="number"
+          required
+          disabled={!enableEditDetail}
+          label="Building Order"
+          desc="Ther order of building."
+          fieldKey={"order"}
+          editDesc="Make sure not empty field"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "order"}
         />
       </form>
     </FormProvider>
