@@ -32,8 +32,21 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
     return (
       <Html distanceFactor={200} position={[0, 0, 0]} center className="pointer-events-none">
         <div className="-translate-y-[50%]">
-          <div
-            className={cn("mb-5", {
+          <motion.div
+            // variants={{
+            //   show: {
+            //     y: 0,
+            //     scale: 1,
+            //     transition: { type: "spring", mass: 0.5, stiffness: 100, damping: 5 },
+            //   },
+            //   hide: {
+            //     y: -15,
+            //     scale: 0,
+            //     transition: { duration: 0.3, delay: 0.5, type: "tween" },
+            //   },
+            // }}
+            // animate={isBlockShowInfo ? "show" : "hide"}
+            className={cn("mb-5 transition-all duration-500", {
               "pointer-events-none select-none opacity-0": !isBlockShowInfo,
               "select-uto pointer-events-auto opacity-100": isBlockShowInfo,
             })}
@@ -53,7 +66,7 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -72,6 +85,7 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
                 className={cn(
                   "flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2 transition-all duration-200",
                   { "bg-[#96a5bc]": isBlockPointerEnterNearest },
+                  { "bg-[#96a5bc]": isBlockShowInfo },
                 )}
               >
                 <div className="h-5 w-5 text-center font-geist text-sm font-semibold text-white">
@@ -93,7 +107,7 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
         blockData.marker_position.z,
       ]}
     >
-      {isBlockNearCamera && renderedHtmlLabel}
+      {(isBlockNearCamera || isBlockShowInfo) && renderedHtmlLabel}
     </group>
   );
 });

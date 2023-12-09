@@ -24,6 +24,7 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
   const buildingData = buildingStore.use.buildingData()!;
   const buildingStoreActions = buildingStore.use.actions();
   const blockData = blockStore.use.blockData()!;
+  const isBlockShowInfo = blockStore.use.isBlockShowInfo();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
 
   const material = useRef<THREE.MeshBasicMaterial>(
@@ -54,17 +55,23 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
   const handleOnPointerClick = () => {
     if (!isPointerEnterBlockNearest) return;
 
+    document.body.style.cursor = "auto";
+
     if (true) {
-      document.body.style.cursor = "auto";
-      campusStore.setState({ buildingShowInfo: { buildingId: buildingData.id } });
-      buildingStore.setState({ isBuildingShowInfo: true });
-      buildingStore.setState({ blockShowInfo: { blockId: blockData.id } });
-      blockStore.setState({ isBlockShowInfo: true });
+      if (isBlockShowInfo) {
+        campusStore.setState({ buildingShowInfo: null });
+        buildingStore.setState({ isBuildingShowInfo: false });
+        buildingStore.setState({ blockShowInfo: null });
+        blockStore.setState({ isBlockShowInfo: false });
+      } else {
+        campusStore.setState({ buildingShowInfo: { buildingId: buildingData.id } });
+        buildingStore.setState({ isBuildingShowInfo: true });
+        buildingStore.setState({ blockShowInfo: { blockId: blockData.id } });
+        blockStore.setState({ isBlockShowInfo: true });
+      }
     }
 
     if (false) {
-      document.body.style.cursor = "auto";
-
       campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
       buildingStore.setState({ isBuildingPicked: true });
       buildingStore.setState({ blockPicked: { blockId: blockData.id } });
@@ -82,7 +89,6 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
       visible={campusMode === "dev" ? true : false}
       onPointerEnter={handleOnPointerEnterBoundingBox}
       onPointerLeave={handleOnPointerLeaveBoundingBox}
-      onPointerDown={handleOnPointerClick}
       onClick={handleOnPointerClick}
     />
   );
