@@ -12,6 +12,7 @@ const spaceSchema = z.object({
     length: z.number(),
     content_type: z.string(),
   }),
+  order: z.number(),
   is_publish: z.boolean(),
   created_at: z.string().transform((v) => new Date(v)),
   updated_at: z.string().transform((v) => new Date(v)),

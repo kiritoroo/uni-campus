@@ -35,3 +35,22 @@ export const randomRand = (min: number, max: number): number => {
   }
   return Math.random() * (max - min) + min;
 };
+
+export const sortArray = <T>(
+  arr: T[],
+  sortProperty: (item: T) => any,
+  sortOrder: "asc" | "desc" = "asc",
+): T[] => {
+  const compareFunction =
+    sortOrder === "asc" ? (a: any, b: any) => a - b : (a: any, b: any) => b - a;
+
+  return arr.slice().sort((a, b) => {
+    const valueA = sortProperty(a);
+    const valueB = sortProperty(b);
+
+    const dateA = valueA instanceof Date ? valueA.getTime() : valueA;
+    const dateB = valueB instanceof Date ? valueB.getTime() : valueB;
+
+    return compareFunction(dateA, dateB);
+  });
+};

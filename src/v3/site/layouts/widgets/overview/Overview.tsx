@@ -3,6 +3,7 @@ import _, { over } from "lodash";
 import { useEffect, useMemo } from "react";
 import { useOverviewStore } from "./hooks/useOverviewStore";
 import { cn } from "@Utils/common.utils";
+import { sortArray } from "@Utils/math.utils";
 
 const Overview = () => {
   const globalStore = useGlobalStore();
@@ -44,7 +45,7 @@ const Overview = () => {
     >
       <div className="px-8 py-12">
         <div className="flex items-center justify-start">
-          {spacesData?.map((space) => {
+          {sortArray(spacesData ?? [], (item) => item.order, "asc").map((space) => {
             return (
               <button
                 type="button"
@@ -69,7 +70,7 @@ const Overview = () => {
                     <div className="flex aspect-square items-center justify-center rounded-full bg-white/50 p-3 shadow-sm">
                       <div className="flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2">
                         <div className="h-5 w-5 text-center font-geist text-sm font-semibold text-white">
-                          {Math.ceil(Math.random() * 50)}
+                          {block.order}
                         </div>
                       </div>
                     </div>

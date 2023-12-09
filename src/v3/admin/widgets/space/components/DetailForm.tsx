@@ -34,6 +34,7 @@ const DetailForm = () => {
     defaultValues: {
       name: "",
       color: "",
+      order: -1,
     },
   });
 
@@ -69,6 +70,7 @@ const DetailForm = () => {
     if (spaceData && !enableEditDetail) {
       setValue("name", spaceData.name);
       setValue("color", spaceData.color);
+      setValue("order", spaceData.order);
     }
   }, [spaceData, enableEditDetail]);
 
@@ -131,6 +133,19 @@ const DetailForm = () => {
           enableEdit={enableEditDetail}
           onSave={onSubmitForm}
           loading={isLoading && updateKey === "icon_file"}
+        />
+        <DetailField
+          {...register("order")}
+          type="string"
+          required
+          disabled={!enableEditDetail}
+          label="Space Order"
+          desc="The order of space."
+          fieldKey={"order"}
+          editDesc="Make sure not empty field"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "order"}
         />
       </form>
     </FormProvider>

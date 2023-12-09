@@ -4,6 +4,7 @@ import { fileInfoSchema } from "../fileinfo-schema";
 const idField = z.string();
 const nameField = z.string();
 const colorField = z.string().min(4).max(9).regex(/^#/);
+const orderField = z.number();
 const isPublishField = z.boolean();
 const createdAtField = z.string().transform((v) => new Date(v));
 const updatedAtField = z.string().transform((v) => new Date(v));
@@ -13,6 +14,7 @@ const spaceSchema = z.object({
   name: nameField,
   color: colorField,
   icon: fileInfoSchema,
+  order: orderField,
   is_publish: isPublishField,
   created_at: createdAtField,
   updated_at: updatedAtField,
