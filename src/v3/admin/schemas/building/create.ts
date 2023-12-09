@@ -18,6 +18,7 @@ const scaleField = z.object({
 });
 const modelFileField = z.instanceof(File);
 const previewFileField = z.instanceof(File);
+const orderField = z.number();
 
 const buildingCreateSchema = z.object({
   name: nameField,
@@ -26,6 +27,7 @@ const buildingCreateSchema = z.object({
   scale: scaleField,
   model_file: modelFileField,
   preview_file: previewFileField,
+  order: orderField,
 });
 
 type TBuildingCreateSchema = z.infer<typeof buildingCreateSchema>;

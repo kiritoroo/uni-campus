@@ -30,6 +30,7 @@ const scaleField = z
   .nullable();
 const modelFileField = z.optional(z.instanceof(File).nullable());
 const previewFileField = z.optional(z.instanceof(File).nullable());
+const orderField = z.number().nullable();
 const isPublishField = z.optional(z.boolean()).nullable();
 
 const buildingUpdateSchema = z.object({
@@ -39,6 +40,7 @@ const buildingUpdateSchema = z.object({
   scale: scaleField,
   model_file: modelFileField,
   preview_file: previewFileField,
+  order: orderField,
   is_publish: isPublishField,
 });
 
