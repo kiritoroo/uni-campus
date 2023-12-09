@@ -14,7 +14,7 @@ const Header = () => {
     <>
       <div
         className={cn(
-          "fixed left-[100px] top-[40px] z-[99999] flex w-fit items-center justify-center",
+          "fixed left-[100px] top-[40px] z-[999999999999999] flex w-fit items-center justify-center",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
           { "pointer-events-none select-none opacity-0": showOverview },
         )}
@@ -29,7 +29,7 @@ const Header = () => {
 
       <header
         className={cn(
-          "fixed right-1/2 top-[30px] z-[99999] flex w-fit translate-x-1/2 items-center justify-center",
+          "fixed right-1/2 top-[30px] z-[999999999999999] flex w-fit translate-x-1/2 items-center justify-center",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
           { "pointer-events-none select-none opacity-0": showOverview },
         )}
@@ -54,7 +54,7 @@ const Header = () => {
 
       <div
         className={cn(
-          "fixed right-[100px] top-[35px] z-[99999] flex w-fit items-stretch justify-center space-x-5",
+          "fixed right-[100px] top-[35px] z-[999999999999999] flex w-fit items-stretch justify-center space-x-5",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
           { "pointer-events-none select-none opacity-0": showOverview },
         )}

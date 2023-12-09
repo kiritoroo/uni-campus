@@ -30,43 +30,38 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
 
   const renderedHtmlLabel = useMemo(() => {
     return (
-      <Html distanceFactor={200} position={[0, 0, 0]} center className="pointer-events-none">
+      <Html
+        distanceFactor={200}
+        position={[0, 0, 0]}
+        center
+        className={cn("pointer-events-none")}
+        zIndexRange={isBlockShowInfo ? [99999000, 99999999] : undefined}
+      >
         <div className="-translate-y-[50%]">
-          <motion.div
-            // variants={{
-            //   show: {
-            //     y: 0,
-            //     scale: 1,
-            //     transition: { type: "spring", mass: 0.5, stiffness: 100, damping: 5 },
-            //   },
-            //   hide: {
-            //     y: -15,
-            //     scale: 0,
-            //     transition: { duration: 0.3, delay: 0.5, type: "tween" },
-            //   },
-            // }}
-            // animate={isBlockShowInfo ? "show" : "hide"}
+          <div
             className={cn("mb-5 transition-all duration-500", {
               "pointer-events-none select-none opacity-0": !isBlockShowInfo,
               "select-uto pointer-events-auto opacity-100": isBlockShowInfo,
             })}
           >
             <div className="bg-white drop-shadow-md">
-              <div className="flex items-stretch justify-center gap-x-10">
+              <div className="flex items-stretch justify-center">
                 <div className="px-8 py-6">
                   <div className="whitespace-nowrap text-lg font-bold text-[#495363]">
                     {blockData.name}
                   </div>
-                  <div className="font-medium text-[#495363]/60">{blockData.uses}</div>
+                  <div className="min-w-[200px] font-medium text-[#495363]/60">
+                    {blockData.uses}
+                  </div>
                 </div>
                 <div className="flex items-center justify-center border-l border-[#495363]/30 px-8 py-6">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#495363]">
+                  <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#495363] transition-all duration-200 hover:scale-125">
                     <ChevronRightIcon className="stroke-white" />
-                  </div>
+                  </button>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0 }}
