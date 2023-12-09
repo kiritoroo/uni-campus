@@ -18,6 +18,7 @@ const markerPositionField = z.object({
   z: z.coerce.number(),
 });
 const galleryField = z.array(fileInfoSchema);
+const orderField = z.number().nullable();
 const isPublishField = z.boolean();
 const createdAtField = z.string().transform((v) => new Date(v));
 const updatedAtField = z.string().transform((v) => new Date(v));
@@ -33,6 +34,7 @@ const blockSchema = z.object({
   coordinate: coordinateField,
   marker_position: markerPositionField,
   gallery: galleryField,
+  order: orderField,
   is_publish: isPublishField,
   created_at: createdAtField,
   updated_at: updatedAtField,

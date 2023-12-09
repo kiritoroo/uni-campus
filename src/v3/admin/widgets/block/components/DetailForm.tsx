@@ -51,6 +51,7 @@ const DetailForm = () => {
         y: 0,
         z: 0,
       },
+      order: -1,
     },
   });
 
@@ -98,6 +99,7 @@ const DetailForm = () => {
       setValue("direction_url", blockData.direction_url);
       setValue("coordinate", blockData.coordinate);
       setValue("marker_position", blockData.marker_position);
+      setValue("order", blockData.order);
     }
   }, [blockData, enableEditDetail]);
 
@@ -292,6 +294,18 @@ const DetailForm = () => {
               </FlexRow>
             );
           }}
+        />
+        <DetailField
+          {...register("order")}
+          required
+          disabled={!enableEditDetail}
+          label="Block Order"
+          desc="A order of block."
+          fieldKey={"order"}
+          editDesc="Make sure not empty field"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "order"}
         />
       </form>
     </FormProvider>

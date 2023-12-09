@@ -62,6 +62,7 @@ const buildingSchema = z.object({
           content_type: z.string(),
         }),
       ),
+      order: z.number(),
       space: z
         .object({
           id: z.string(),

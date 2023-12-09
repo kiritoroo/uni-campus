@@ -18,6 +18,7 @@ const markerPositionField = z.optional(
   }),
 );
 const galleryField = z.optional(z.instanceof(File));
+const orderField = z.number();
 const isPublishField = z.optional(z.boolean()).nullable();
 
 const blockUpdateSchema = z.object({
@@ -28,6 +29,7 @@ const blockUpdateSchema = z.object({
   coordinate: coordinateField,
   marker_position: markerPositionField,
   gallery: galleryField,
+  order: orderField,
   is_publish: isPublishField,
 });
 

@@ -27,7 +27,7 @@ const Entry = () => {
   }, [buildingsData]);
   const blocksCount = useMemo<number>(() => {
     return blocksData?.length ?? 0;
-  }, [spacesData]);
+  }, [blocksData]);
   const spacesCount = useMemo<number>(() => {
     return spacesData?.length ?? 0;
   }, [spacesData]);
