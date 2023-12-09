@@ -15,6 +15,7 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
 
   const distanceFromCameraToOrigin = campusSceneStore.use.distanceFromCameraToOrigin();
   const distanceFromCameraToBuilding = buildingStore.use.distanceFromCameraToBuilding();
+  const isBlockShowInfo = blockStore.use.isBlockShowInfo();
   const distanceFromCameraToBlock = blockStore.use.distanceFromCameraToBlock();
   const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
 
@@ -30,31 +31,14 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
   const renderedHtmlLabel = useMemo(() => {
     return (
       <Html distanceFactor={200} position={[0, 0, 0]} center className="pointer-events-none">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="pointer-events-none relative cursor-pointer select-none text-center"
-        >
+        <div className="-translate-y-[50%]">
           <div
-            className={cn(
-              "flex aspect-square items-center justify-center rounded-full bg-white/50 p-3 shadow-sm transition-all duration-200",
-              { "scale-150 animate-[ripple_2s_infinite]": isBlockPointerEnterNearest },
-            )}
+            className={cn("mb-5", {
+              "pointer-events-none select-none opacity-0": !isBlockShowInfo,
+              "select-uto pointer-events-auto opacity-100": isBlockShowInfo,
+            })}
           >
-            <div
-              className={cn(
-                "flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2 transition-all duration-200",
-                { "bg-[#96a5bc]": isBlockPointerEnterNearest },
-              )}
-            >
-              <div className="h-5 w-5 text-center font-geist text-sm font-semibold text-white">
-                {blockData.order}
-              </div>
-            </div>
-          </div>
-
-          {/* <div className="bg-white drop-shadow-md">
+            <div className="bg-white drop-shadow-md">
               <div className="flex items-stretch justify-center gap-x-10">
                 <div className="px-8 py-6">
                   <div className="whitespace-nowrap text-lg font-bold text-[#495363]">
@@ -68,11 +52,38 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
                   </div>
                 </div>
               </div>
-            </div> */}
-        </motion.div>
+            </div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="pointer-events-none relative flex cursor-pointer select-none items-center justify-center text-center"
+          >
+            <div
+              className={cn(
+                "flex h-fit w-fit items-center justify-center rounded-full bg-white/50 p-3 shadow-sm transition-all duration-200",
+                { "scale-150 animate-[ripple_2s_infinite]": isBlockPointerEnterNearest },
+                { "scale-110 animate-[ripple_2s_infinite]": isBlockShowInfo },
+              )}
+            >
+              <div
+                className={cn(
+                  "flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2 transition-all duration-200",
+                  { "bg-[#96a5bc]": isBlockPointerEnterNearest },
+                )}
+              >
+                <div className="h-5 w-5 text-center font-geist text-sm font-semibold text-white">
+                  {blockData.order}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </Html>
     );
-  }, [isBlockPointerEnterNearest]);
+  }, [isBlockShowInfo, isBlockPointerEnterNearest]);
 
   return (
     <group

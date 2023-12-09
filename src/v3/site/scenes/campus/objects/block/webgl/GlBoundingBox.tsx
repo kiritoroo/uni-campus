@@ -53,12 +53,23 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
 
   const handleOnPointerClick = () => {
     if (!isPointerEnterBlockNearest) return;
-    document.body.style.cursor = "auto";
 
-    campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
-    buildingStore.setState({ isBuildingPicked: true });
-    buildingStore.setState({ blockPicked: { blockId: blockData.id } });
-    blockStore.setState({ isBlockPicked: true });
+    if (true) {
+      document.body.style.cursor = "auto";
+      campusStore.setState({ buildingShowInfo: { buildingId: buildingData.id } });
+      buildingStore.setState({ isBuildingShowInfo: true });
+      buildingStore.setState({ blockShowInfo: { blockId: blockData.id } });
+      blockStore.setState({ isBlockShowInfo: true });
+    }
+
+    if (false) {
+      document.body.style.cursor = "auto";
+
+      campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
+      buildingStore.setState({ isBuildingPicked: true });
+      buildingStore.setState({ blockPicked: { blockId: blockData.id } });
+      blockStore.setState({ isBlockPicked: true });
+    }
   };
 
   return (

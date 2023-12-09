@@ -6,6 +6,7 @@ type TState = {
   blockData: TBlockSchema | null;
   isPointerEnterBlockNearest: boolean;
   isBlockPicked: boolean;
+  isBlockShowInfo: boolean;
   distanceFromCameraToBlock: number;
 };
 
@@ -23,6 +24,7 @@ const initStore: TState & TComputedState = {
   blockData: null,
   isPointerEnterBlockNearest: false,
   isBlockPicked: false,
+  isBlockShowInfo: false,
   distanceFromCameraToBlock: 0,
 };
 

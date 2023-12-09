@@ -19,6 +19,7 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
   const buildingStore = useBuildingStore();
 
   const campusCamera = campusSceneStore.use.campusCamera();
+  const buildingShowInfo = campusStore.use.buildingShowInfo();
   const buildingPointerEnterNearest = campusStore.use.buildingPointerEnterNearest();
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const buildingActions = buildingStore.use.actions();
@@ -125,6 +126,13 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
     );
     buildingStore.setState({ distanceFromCameraToBuilding: distanceToBuilding });
   });
+
+  useEffect(() => {
+    if (buildingShowInfo?.buildingId === buildingData.id) return;
+
+    buildingStore.setState({ isBuildingShowInfo: false });
+    buildingStore.setState({ blockShowInfo: null });
+  }, [buildingShowInfo]);
 
   return (
     <Center

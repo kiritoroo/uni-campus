@@ -14,6 +14,7 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const blockStore = useBlockStore();
 
   const campusCamera = campusSceneStore.use.campusCamera();
+  const blockShowInfo = buildingStore.use.blockShowInfo();
   const buildingData = buildingStore.use.buildingData();
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const blockPointerEnterNearest = buildingStore.use.blockPointerEnterNearest();
@@ -75,6 +76,12 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
     );
     blockStore.setState({ distanceFromCameraToBlock: distanceToBlock });
   });
+
+  useEffect(() => {
+    if (blockShowInfo?.blockId === blockData.id) return;
+
+    blockStore.setState({ isBlockShowInfo: false });
+  }, [blockShowInfo]);
 
   return (
     <group>

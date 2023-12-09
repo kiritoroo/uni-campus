@@ -12,6 +12,8 @@ type TState = {
   buildingModelScene: THREE.Group | null;
   isPointerEnterBuildingNearest: boolean;
   isBuildingPicked: boolean;
+  isBuildingShowInfo: boolean;
+  distanceFromCameraToBuilding: number;
   blocksPointerEnter: {
     blockId: string;
     distance: number;
@@ -19,7 +21,9 @@ type TState = {
   blockPicked: {
     blockId: string;
   } | null;
-  distanceFromCameraToBuilding: number;
+  blockShowInfo: {
+    blockId: string;
+  } | null;
 };
 
 type TComputedState = {
@@ -45,9 +49,11 @@ const initStore: TState & TComputedState = {
   buildingModelScene: null,
   isPointerEnterBuildingNearest: false,
   isBuildingPicked: false,
+  isBuildingShowInfo: false,
   blocksPointerEnter: [],
   blockPointerEnterNearest: null,
   blockPicked: null,
+  blockShowInfo: null,
   focusPostion: new THREE.Vector3(0, 0, 0),
   distanceFromCameraToBuilding: 0,
 };
