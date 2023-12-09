@@ -10,11 +10,15 @@ import GLBlock from "../block/GLBlock";
 import GLBuildingMesh from "./webgl/GLBuildingMesh";
 import { useCampusStore } from "../campus/hooks/useCampusStore";
 import GLFocusCurve from "./webgl/GLFocusCurve";
+import { useCampusSceneStore } from "../../hooks/useCampuseSceneStore";
+import { useFrame } from "@react-three/fiber";
 
 const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
+  const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
 
+  const campusCamera = campusSceneStore.use.campusCamera();
   const buildingPointerEnterNearest = campusStore.use.buildingPointerEnterNearest();
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const buildingActions = buildingStore.use.actions();
@@ -106,6 +110,21 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
       buildingStore.setState({ buildingObject: buildingRef.current });
     }
   }, [buildingRef]);
+
+  useFrame(() => {
+    if (!campusCamera) return;
+    if (!buildingData) return;
+
+    const cameraPosition = campusCamera.getWorldPosition(new THREE.Vector3());
+    const distanceToBuilding = cameraPosition.distanceTo(
+      new THREE.Vector3(
+        buildingData?.position.x,
+        buildingData?.position.y,
+        buildingData?.position.z,
+      ),
+    );
+    buildingStore.setState({ distanceFromCameraToBuilding: distanceToBuilding });
+  });
 
   return (
     <Center

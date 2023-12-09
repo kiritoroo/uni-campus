@@ -5,17 +5,25 @@ import { useBlockStore } from "../hooks/useBlockStore";
 import { ChevronRightIcon } from "lucide-react";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "@Utils/common.utils";
+import { useBuildingStore } from "../../building/hooks/useBuildingStore";
 
 const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const campusSceneStore = useCampusSceneStore();
+  const buildingStore = useBuildingStore();
   const blockStore = useBlockStore();
 
   const distanceFromCameraToOrigin = campusSceneStore.use.distanceFromCameraToOrigin();
+  const distanceFromCameraToBuilding = buildingStore.use.distanceFromCameraToBuilding();
   const distanceFromCameraToBlock = blockStore.use.distanceFromCameraToBlock();
-  // const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
+  const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
 
   const isBlockNearCamera = useMemo(() => {
-    if (distanceFromCameraToBlock < distanceFromCameraToOrigin) return true;
+    if (
+      distanceFromCameraToBuilding < distanceFromCameraToOrigin &&
+      distanceFromCameraToBlock < distanceFromCameraToOrigin
+    )
+      return true;
     return false;
   }, [distanceFromCameraToOrigin, distanceFromCameraToBlock]);
 
@@ -28,8 +36,18 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
           transition={{ duration: 0.5 }}
           className="pointer-events-none relative cursor-pointer select-none text-center"
         >
-          <div className="flex aspect-square items-center justify-center rounded-full bg-white/50 p-3 shadow-sm">
-            <div className="flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2">
+          <div
+            className={cn(
+              "flex aspect-square items-center justify-center rounded-full bg-white/50 p-3 shadow-sm transition-all duration-200",
+              { "scale-150 animate-[ripple_2s_infinite]": isBlockPointerEnterNearest },
+            )}
+          >
+            <div
+              className={cn(
+                "flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2 transition-all duration-200",
+                { "bg-[#96a5bc]": isBlockPointerEnterNearest },
+              )}
+            >
               <div className="h-5 w-5 text-center font-geist text-sm font-semibold text-white">
                 {blockData.order}
               </div>
@@ -54,7 +72,7 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
         </motion.div>
       </Html>
     );
-  }, []);
+  }, [isBlockPointerEnterNearest]);
 
   return (
     <group

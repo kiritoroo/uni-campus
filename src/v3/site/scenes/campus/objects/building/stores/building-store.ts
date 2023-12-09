@@ -19,6 +19,7 @@ type TState = {
   blockPicked: {
     blockId: string;
   } | null;
+  distanceFromCameraToBuilding: number;
 };
 
 type TComputedState = {
@@ -48,6 +49,7 @@ const initStore: TState & TComputedState = {
   blockPointerEnterNearest: null,
   blockPicked: null,
   focusPostion: new THREE.Vector3(0, 0, 0),
+  distanceFromCameraToBuilding: 0,
 };
 
 const gltfLoader = initializeGLTFLoader();

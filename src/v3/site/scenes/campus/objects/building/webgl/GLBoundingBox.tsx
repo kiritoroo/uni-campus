@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
@@ -19,9 +19,17 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
   const buildingStore = useBuildingStore();
 
   const campusMode = campusSceneStore.use.campusMode();
+  const distanceFromCameraToOrigin = campusSceneStore.use.distanceFromCameraToOrigin();
   const buildingPicked = campusStore.use.buildingPicked();
   const campusStoreActions = campusStore.use.actions();
   const buildingData = buildingStore.use.buildingData()!;
+  const isPointerEnterNearestBuilding = buildingStore.use.isPointerEnterBuildingNearest();
+  const distanceFromCameraToBuilding = buildingStore.use.distanceFromCameraToBuilding();
+
+  const isBuildingNearCamera = useMemo(() => {
+    if (distanceFromCameraToBuilding < distanceFromCameraToOrigin) return true;
+    return false;
+  }, [distanceFromCameraToOrigin, distanceFromCameraToBuilding]);
 
   const material = useRef<THREE.MeshBasicMaterial>(
     new THREE.MeshBasicMaterial({
@@ -36,6 +44,7 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
   const handleOnPointerEnterBoundingBox = _.throttle(
     (e: ThreeEvent<PointerEvent>) => {
       if (buildingPicked) return;
+      if (!isBuildingNearCamera) return;
 
       document.body.style.cursor = "pointer";
       campusStoreActions.addBuildingPointerEnter({
@@ -56,9 +65,16 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
 
   const handleOnPointerMoveBoundingBox = () => {
     if (buildingPicked) return;
+    if (!isBuildingNearCamera) return;
 
     document.body.style.cursor = "pointer";
   };
+
+  useEffect(() => {
+    if (!isBuildingNearCamera && isPointerEnterNearestBuilding) {
+      campusStoreActions.removeBuildingPointerEnter(buildingData.id);
+    }
+  }, [isBuildingNearCamera]);
 
   return (
     <mesh
