@@ -39,14 +39,14 @@ const Header = () => {
             UTE Campus
           </div>
           <div className="flex items-center justify-center">
-            <div className="cursor-pointer bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100 hover:bg-gem-sapphire hover:text-white">
-              Projects
+            <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
+              <div className="strike cursor-pointer">Projects</div>
             </div>
-            <div className="cursor-pointer bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100 hover:bg-gem-sapphire hover:text-white">
-              Team
+            <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
+              <div className="strike cursor-pointer">Team</div>
             </div>
-            <div className="cursor-pointer bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100 hover:bg-gem-sapphire hover:text-white">
-              Contact
+            <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
+              <div className="strike cursor-pointer">Contact</div>
             </div>
           </div>
         </div>
