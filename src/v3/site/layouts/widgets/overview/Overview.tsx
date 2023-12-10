@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { useOverviewStore } from "./hooks/useOverviewStore";
 import { cn } from "@Utils/common.utils";
 import { sortArray } from "@Utils/math.utils";
+import { Link } from "react-router-dom";
 
 const Overview = () => {
   const globalStore = useGlobalStore();
@@ -39,7 +40,7 @@ const Overview = () => {
     <div className="relative z-[999999999]">
       <div
         className={cn(
-          "fixed bottom-0 left-0 right-0 top-0 overflow-hidden bg-white/50 pl-[350px] backdrop-blur-[5px]",
+          "fixed bottom-0 left-0 right-0 top-0 overflow-hidden bg-white/60 pl-[350px] backdrop-blur-[5px]",
           { "pointer-events-none hidden select-none opacity-0": !showOverview },
           { "pointer-events-auto visible select-auto opacity-100": showOverview },
         )}
@@ -56,7 +57,7 @@ const Overview = () => {
                   })}
                   onClick={() => handleClickSpace(space.id)}
                 >
-                  <div className={cn("text-2xl font-bold")}>{space.name}</div>
+                  <div className={cn("strike text-2xl font-bold")}>{space.name}</div>
                 </button>
               );
             })}
@@ -67,7 +68,11 @@ const Overview = () => {
               {groupedBlocks.map((group, groupIndex) => (
                 <div key={groupIndex} className="flex flex-col items-start justify-center gap-y-8">
                   {group.map((block, blockIndex) => (
-                    <div key={blockIndex} className="flex items-center justify-start gap-x-5">
+                    <Link
+                      to={`/${block.obj_name}`}
+                      key={blockIndex}
+                      className="flex items-center justify-start gap-x-5"
+                    >
                       <div className="flex aspect-square items-center justify-center rounded-full bg-white/50 p-3 shadow-sm">
                         <div className="flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2">
                           <div className="h-5 w-5 text-center font-geist text-sm font-semibold text-white">
@@ -75,8 +80,10 @@ const Overview = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="whitespace-nowrap text-lg font-medium">{block.name}</div>
-                    </div>
+                      <div className="strike whitespace-nowrap text-lg font-medium">
+                        {block.name}
+                      </div>
+                    </Link>
                   ))}
                 </div>
               ))}

@@ -7,6 +7,7 @@ import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@Utils/common.utils";
 import { useBuildingStore } from "../../building/hooks/useBuildingStore";
+import { Link, useNavigate } from "react-router-dom";
 
 const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const campusSceneStore = useCampusSceneStore();
@@ -19,6 +20,8 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
   const distanceFromCameraToBlock = blockStore.use.distanceFromCameraToBlock();
   const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
 
+  const navigate = useNavigate();
+
   const isBlockNearCamera = useMemo(() => {
     if (
       distanceFromCameraToBuilding < distanceFromCameraToOrigin &&
@@ -27,6 +30,10 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
       return true;
     return false;
   }, [distanceFromCameraToOrigin, distanceFromCameraToBlock]);
+
+  const handleOnClickDetail = () => {
+    navigate(`/${blockData.obj_name}`);
+  };
 
   const renderedHtmlLabel = useMemo(() => {
     return (
@@ -54,9 +61,12 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
                     {blockData.uses}
                   </div>
                 </div>
-                <div className="flex items-center justify-center border-l border-[#495363]/30 px-8 py-6">
-                  <button className="flex h-10 w-10 items-center justify-center rounded-full bg-[#495363] transition-all duration-200 hover:scale-125">
-                    <ChevronRightIcon className="stroke-white" />
+                <div className="flex items-center justify-center border-l border-[#495363]/30 px-6 py-4">
+                  <button
+                    onClick={handleOnClickDetail}
+                    className="flex items-center justify-center rounded-full bg-[#495363] p-3 transition-all duration-200 hover:scale-125"
+                  >
+                    <ChevronRightIcon className="h-8 w-8 stroke-white" />
                   </button>
                 </div>
               </div>

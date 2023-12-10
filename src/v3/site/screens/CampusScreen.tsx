@@ -4,7 +4,7 @@ import Entry from "../scenes/campus/Entry";
 
 const CampusScreen = memo(() => {
   return (
-    <CampusSceneStoreProvider mode="dev">
+    <CampusSceneStoreProvider mode="prod">
       <Entry />
     </CampusSceneStoreProvider>
   );
