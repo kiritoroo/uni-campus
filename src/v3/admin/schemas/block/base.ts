@@ -19,6 +19,7 @@ const markerPositionField = z.object({
 });
 const galleryField = z.array(fileInfoSchema);
 const orderField = z.number();
+const slugField = z.string();
 const isPublishField = z.boolean();
 const createdAtField = z.string().transform((v) => new Date(v));
 const updatedAtField = z.string().transform((v) => new Date(v));
@@ -35,6 +36,7 @@ const blockSchema = z.object({
   marker_position: markerPositionField,
   gallery: galleryField,
   order: orderField,
+  slug: slugField,
   is_publish: isPublishField,
   created_at: createdAtField,
   updated_at: updatedAtField,

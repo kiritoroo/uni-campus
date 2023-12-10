@@ -17,6 +17,7 @@ const markerPositionField = z.object({
 });
 const galleryField = z.array(z.instanceof(File)).nonempty();
 const orderField = z.number();
+const slugField = z.string();
 
 const blockCreateSchema = z.object({
   name: nameField,
@@ -29,6 +30,7 @@ const blockCreateSchema = z.object({
   marker_position: markerPositionField,
   gallery: galleryField,
   order: orderField,
+  slug: slugField,
 });
 
 type TBlockCreateSchema = z.infer<typeof blockCreateSchema>;

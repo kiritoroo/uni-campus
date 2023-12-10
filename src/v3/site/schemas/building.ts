@@ -63,6 +63,7 @@ const buildingSchema = z.object({
         }),
       ),
       order: z.number(),
+      slug: z.string(),
       space: z
         .object({
           id: z.string(),
