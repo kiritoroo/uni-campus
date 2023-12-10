@@ -2,13 +2,15 @@ import { Variants, motion, useAnimationControls } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useGlobalStore } from "../hooks/useGlobalStore";
 import Overview from "./widgets/overview/Overview";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 
 const Sidebar = () => {
   const globalStore = useGlobalStore();
   const showSidebar = globalStore.use.showSidebar();
   const showOverview = globalStore.use.showOverview();
+
+  const navigate = useNavigate();
 
   const controls = useAnimationControls();
   const variants = useRef<Variants>({
@@ -25,6 +27,7 @@ const Sidebar = () => {
   });
 
   const handleClickOverview = () => {
+    navigate("/");
     globalStore.setState({ showOverview: !showOverview });
   };
 

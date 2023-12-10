@@ -7,20 +7,27 @@ import GLBoundingBox from "./webgl/GLBoundingBox";
 import { useCampusSceneStore } from "../../hooks/useCampuseSceneStore";
 import { useFrame } from "@react-three/fiber";
 import GLBlockMarkerOverview from "./webgl/GLBlockMarkerOverview";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCampusStore } from "../campus/hooks/useCampusStore";
 
 const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const campusSceneStore = useCampusSceneStore();
+  const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
   const blockStore = useBlockStore();
 
   const campusCamera = campusSceneStore.use.campusCamera();
   const blockShowInfo = buildingStore.use.blockShowInfo();
-  const buildingData = buildingStore.use.buildingData();
+  const buildingObject = buildingStore.use.buildingObject();
+  const buildingData = buildingStore.use.buildingData()!;
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const blockPointerEnterNearest = buildingStore.use.blockPointerEnterNearest();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
   const blockStoreActions = blockStore.use.actions();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
+
+  const params = useParams();
+  const navigate = useNavigate();
 
   const objBoundingBoxProperty = useMemo<{
     geometry: THREE.BufferGeometry;
@@ -82,6 +89,22 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
 
     blockStore.setState({ isBlockShowInfo: false });
   }, [blockShowInfo]);
+
+  useEffect(() => {
+    if (!buildingData) return;
+    if (!blockData) return;
+    if (!campusCamera) return;
+    if (!buildingObject) return;
+
+    if (`/${params["*"]}` === blockData.slug) {
+      setTimeout(() => {
+        campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
+        buildingStore.setState({ isBuildingPicked: true });
+        buildingStore.setState({ blockPicked: { blockId: blockData.id } });
+        blockStore.setState({ isBlockPicked: true });
+      }, 200);
+    }
+  }, [buildingObject, campusCamera, buildingData, blockData, params]);
 
   return (
     <group>

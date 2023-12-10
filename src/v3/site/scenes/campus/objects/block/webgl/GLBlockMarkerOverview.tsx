@@ -9,17 +9,23 @@ import { cn } from "@Utils/common.utils";
 import { useBuildingStore } from "../../building/hooks/useBuildingStore";
 import { Link, useNavigate } from "react-router-dom";
 import * as THREE from "three";
+import { useCampusStore } from "../../campus/hooks/useCampusStore";
 
 const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const campusSceneStore = useCampusSceneStore();
+  const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
   const blockStore = useBlockStore();
 
   const distanceFromCameraToOrigin = campusSceneStore.use.distanceFromCameraToOrigin();
+  const buildingPicked = campusStore.use.buildingPicked();
+  const buildingData = buildingStore.use.buildingData()!;
   const distanceFromCameraToBuilding = buildingStore.use.distanceFromCameraToBuilding();
+  const blockPicked = buildingStore.use.blockPicked();
   const isBlockShowInfo = blockStore.use.isBlockShowInfo();
   const distanceFromCameraToBlock = blockStore.use.distanceFromCameraToBlock();
   const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
+  const isBlockPicked = blockStore.use.isBlockPicked();
 
   const navigate = useNavigate();
 
@@ -35,7 +41,12 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
   }, [distanceFromCameraToOrigin, distanceFromCameraToBlock]);
 
   const handleOnClickDetail = () => {
-    navigate(`/${blockData.obj_name}`);
+    navigate(`${blockData.slug}`);
+
+    campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
+    buildingStore.setState({ isBuildingPicked: true });
+    buildingStore.setState({ blockPicked: { blockId: blockData.id } });
+    blockStore.setState({ isBlockPicked: true });
   };
 
   const renderedHtmlLabel = useMemo(() => {
@@ -116,7 +127,10 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
         blockData.marker_position.z,
       ]}
     >
-      {(isBlockNearCamera || isBlockShowInfo) && renderedHtmlLabel}
+      {(isBlockNearCamera || isBlockShowInfo) &&
+        !blockPicked &&
+        !buildingPicked &&
+        renderedHtmlLabel}
     </group>
   );
 });

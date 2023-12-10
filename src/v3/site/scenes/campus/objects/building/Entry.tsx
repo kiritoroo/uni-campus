@@ -20,9 +20,11 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
 
   const campusCamera = campusSceneStore.use.campusCamera();
   const buildingShowInfo = campusStore.use.buildingShowInfo();
+  const buildingPicked = campusStore.use.buildingPicked();
   const buildingPointerEnterNearest = campusStore.use.buildingPointerEnterNearest();
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const buildingActions = buildingStore.use.actions();
+  const isBuildingPicked = buildingStore.use.isBuildingPicked();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
 
   const buildingRef = useRef<THREE.Group | any>(null);
@@ -133,6 +135,10 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
     buildingStore.setState({ isBuildingShowInfo: false });
     buildingStore.setState({ blockShowInfo: null });
   }, [buildingShowInfo]);
+
+  if (buildingPicked && !isBuildingPicked) {
+    return <group />;
+  }
 
   return (
     <Center

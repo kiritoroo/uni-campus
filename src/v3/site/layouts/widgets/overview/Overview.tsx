@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { useOverviewStore } from "./hooks/useOverviewStore";
 import { cn } from "@Utils/common.utils";
 import { sortArray } from "@Utils/math.utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Overview = () => {
   const globalStore = useGlobalStore();
@@ -14,6 +14,8 @@ const Overview = () => {
   const spacesData = globalStore.use.spacesData();
   const showOverview = globalStore.use.showOverview();
   const spacePicked = overviewStore.use.spacePicked();
+
+  const navigate = useNavigate();
 
   const groupedBlocks = useMemo(() => {
     return _.chunk(
@@ -34,6 +36,12 @@ const Overview = () => {
         spaceId: spaceId,
       },
     });
+  };
+
+  const handleClickBlock = (slug: string) => {
+    // navigate(slug);
+    globalStore.setState({ showOverview: false });
+    globalStore.setState({ showSidebar: false });
   };
 
   return (
@@ -69,9 +77,10 @@ const Overview = () => {
                 <div key={groupIndex} className="flex flex-col items-start justify-center gap-y-8">
                   {group.map((block, blockIndex) => (
                     <Link
-                      to={`/${block.obj_name}`}
+                      to={`${block.slug}`}
                       key={blockIndex}
                       className="flex items-center justify-start gap-x-5"
+                      onClick={handleClickBlock}
                     >
                       <div className="flex aspect-square items-center justify-center rounded-full bg-white/50 p-3 shadow-sm">
                         <div className="flex h-full w-full items-center justify-center rounded-full bg-[#495363] p-2">
