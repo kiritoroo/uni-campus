@@ -44,6 +44,7 @@ const GLCampusCamera = () => {
         <meshBasicMaterial color={new THREE.Color(0xf50359)} />
       </mesh>
       <PerspectiveCamera
+        position={[500, 1000, 500]}
         makeDefault={campusMode === "prod" ? true : false}
         ref={cameraRef}
         near={0.5}
