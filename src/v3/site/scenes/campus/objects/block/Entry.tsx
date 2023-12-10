@@ -25,6 +25,7 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
   const blockStoreActions = blockStore.use.actions();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
+  const isBlockPicked = blockStore.use.isBlockPicked();
 
   const params = useParams();
   const navigate = useNavigate();
@@ -102,9 +103,21 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
         buildingStore.setState({ isBuildingPicked: true });
         buildingStore.setState({ blockPicked: { blockId: blockData.id } });
         blockStore.setState({ isBlockPicked: true });
-      }, 200);
+      }, 500);
     }
   }, [buildingObject, campusCamera, buildingData, blockData, params]);
+
+  useEffect(() => {
+    if (!params["*"]) {
+      if (isBlockPicked) {
+        campusStore.setState({ buildingPicked: null });
+        buildingStore.setState({ isBuildingPicked: false });
+        buildingStore.setState({ blockPicked: null });
+        blockStore.setState({ isBlockPicked: false });
+        blockStore.setState({ isBlockShowInfo: false });
+      }
+    }
+  }, [params, isBlockPicked]);
 
   return (
     <group>

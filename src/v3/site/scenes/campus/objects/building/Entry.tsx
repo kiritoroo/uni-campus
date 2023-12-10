@@ -136,16 +136,13 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
     buildingStore.setState({ blockShowInfo: null });
   }, [buildingShowInfo]);
 
-  if (buildingPicked && !isBuildingPicked) {
-    return <group />;
-  }
-
   return (
     <Center
       ref={buildingRef}
       position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
       rotation={[buildingData.rotation.x, buildingData.rotation.y, buildingData.rotation.z]}
       scale={[buildingData.scale.x, buildingData.scale.y, buildingData.scale.z]}
+      visible={buildingPicked && !isBuildingPicked ? false : true}
     >
       {objGroupMergeProperty && (
         <group
