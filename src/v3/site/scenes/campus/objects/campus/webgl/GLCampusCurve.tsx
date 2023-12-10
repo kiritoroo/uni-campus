@@ -149,6 +149,7 @@ const GLCampusCurve = () => {
   };
 
   const handleOnMouseDownScene = (e: MouseEvent) => {
+    document.body.style.cursor = "grabbing";
     mouseState.current.isDown = true;
 
     mouseState.current.mouseLockData = {
@@ -158,6 +159,7 @@ const GLCampusCurve = () => {
   };
 
   const handleOnMouseUpScene = (e: MouseEvent) => {
+    document.body.style.cursor = "auto";
     mouseState.current.isDown = false;
   };
 
@@ -219,7 +221,6 @@ const GLCampusCurve = () => {
 
   useFrame((state, delta) => {
     if (buildingPicked) return;
-    console.log(mouseState.current.swipeDirection);
     handleUpdateCameraFollowCurve(delta);
   });
 

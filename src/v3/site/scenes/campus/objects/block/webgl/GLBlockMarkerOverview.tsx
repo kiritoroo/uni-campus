@@ -1,6 +1,6 @@
 import { Html } from "@react-three/drei";
 import { TBlockSchema } from "@v3/site/schemas/block";
-import { memo, useMemo } from "react";
+import { memo, useMemo, useRef } from "react";
 import { useBlockStore } from "../hooks/useBlockStore";
 import { ChevronRightIcon } from "lucide-react";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@Utils/common.utils";
 import { useBuildingStore } from "../../building/hooks/useBuildingStore";
 import { Link, useNavigate } from "react-router-dom";
+import * as THREE from "three";
 
 const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const campusSceneStore = useCampusSceneStore();
@@ -21,6 +22,8 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
   const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
 
   const navigate = useNavigate();
+
+  const groupRef = useRef<THREE.Group | null>(null);
 
   const isBlockNearCamera = useMemo(() => {
     if (
@@ -106,6 +109,7 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
 
   return (
     <group
+      ref={groupRef}
       position={[
         blockData.marker_position.x,
         blockData.marker_position.y - 10,
