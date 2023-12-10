@@ -7,19 +7,28 @@ import GLBoundingBox from "./webgl/GLBoundingBox";
 import { useCampusSceneStore } from "../../hooks/useCampuseSceneStore";
 import { useFrame } from "@react-three/fiber";
 import GLBlockMarkerOverview from "./webgl/GLBlockMarkerOverview";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCampusStore } from "../campus/hooks/useCampusStore";
 
 const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const campusSceneStore = useCampusSceneStore();
+  const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
   const blockStore = useBlockStore();
 
   const campusCamera = campusSceneStore.use.campusCamera();
-  const buildingData = buildingStore.use.buildingData();
+  const blockShowInfo = buildingStore.use.blockShowInfo();
+  const buildingObject = buildingStore.use.buildingObject();
+  const buildingData = buildingStore.use.buildingData()!;
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const blockPointerEnterNearest = buildingStore.use.blockPointerEnterNearest();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
   const blockStoreActions = blockStore.use.actions();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
+  const isBlockPicked = blockStore.use.isBlockPicked();
+
+  const params = useParams();
+  const navigate = useNavigate();
 
   const objBoundingBoxProperty = useMemo<{
     geometry: THREE.BufferGeometry;
@@ -75,6 +84,40 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
     );
     blockStore.setState({ distanceFromCameraToBlock: distanceToBlock });
   });
+
+  useEffect(() => {
+    if (blockShowInfo?.blockId === blockData.id) return;
+
+    blockStore.setState({ isBlockShowInfo: false });
+  }, [blockShowInfo]);
+
+  useEffect(() => {
+    if (!buildingData) return;
+    if (!blockData) return;
+    if (!campusCamera) return;
+    if (!buildingObject) return;
+
+    if (`/${params["*"]}` === blockData.slug) {
+      setTimeout(() => {
+        campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
+        buildingStore.setState({ isBuildingPicked: true });
+        buildingStore.setState({ blockPicked: { blockId: blockData.id } });
+        blockStore.setState({ isBlockPicked: true });
+      }, 500);
+    }
+  }, [buildingObject, campusCamera, buildingData, blockData, params]);
+
+  useEffect(() => {
+    if (!params["*"]) {
+      if (isBlockPicked) {
+        campusStore.setState({ buildingPicked: null });
+        buildingStore.setState({ isBuildingPicked: false });
+        buildingStore.setState({ blockPicked: null });
+        blockStore.setState({ isBlockPicked: false });
+        blockStore.setState({ isBlockShowInfo: false });
+      }
+    }
+  }, [params, isBlockPicked]);
 
   return (
     <group>

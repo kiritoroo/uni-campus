@@ -8,6 +8,7 @@ import { OrbitControls } from "three-stdlib";
 import { useBuildingStore } from "../hooks/useBuildingStore";
 import { Power2 } from "gsap";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
+import { useBlockStore } from "../../block/hooks/useBlockStore";
 
 const GLFocusCurve = memo(() => {
   const campusSceneStore = useCampusSceneStore();
@@ -17,6 +18,7 @@ const GLFocusCurve = memo(() => {
   const campusMode = campusSceneStore.use.campusMode();
   const campusCamera = campusSceneStore.use.campusCamera();
   const buildingPicked = campusStore.use.buildingPicked();
+  const buildingData = buildingStore.use.buildingData();
   const buildingObject = buildingStore.use.buildingObject();
   const focusPosition = buildingStore.use.focusPostion();
   const isBuildingPicked = buildingStore.use.isBuildingPicked();
@@ -130,6 +132,7 @@ const GLFocusCurve = memo(() => {
 
   const handleUpdateCameraFollowCurve = () => {
     if (!campusCamera) return;
+
     const tubeGeometry = new THREE.TubeGeometry(
       objFocusCurveProperty.cubicBezierCurve,
       200,
@@ -216,26 +219,26 @@ const GLFocusCurve = memo(() => {
   };
 
   const handleUpdateControlsFollowObject = () => {
-    if (buildingObject) {
-      boxTarget.current.makeEmpty();
-      boxTarget.current.expandByObject(buildingObject);
-      // boxTarget.current.getSize(sizeTarget.current);
-      boxTarget.current.getCenter(centerTarget.current);
+    if (!buildingObject) return;
 
-      animateControlsTimeline.clear();
-      animateControlsTimeline
-        .to((campusControls as any).target, {
-          x: centerTarget.current.x,
-          y: centerTarget.current.y,
-          z: centerTarget.current.z,
-          duration: 1,
-          ease: Power2.easeInOut,
-          onUpdate: () => {
-            (campusControls as any).update();
-          },
-        })
-        .play();
-    }
+    boxTarget.current.makeEmpty();
+    boxTarget.current.expandByObject(buildingObject);
+    // boxTarget.current.getSize(sizeTarget.current);
+    boxTarget.current.getCenter(centerTarget.current);
+
+    animateControlsTimeline.clear();
+    animateControlsTimeline
+      .to((campusControls as any).target, {
+        x: centerTarget.current.x,
+        y: centerTarget.current.y,
+        z: centerTarget.current.z,
+        duration: 1,
+        ease: Power2.easeInOut,
+        onUpdate: () => {
+          (campusControls as any).update();
+        },
+      })
+      .play();
   };
 
   useEffect(() => {
@@ -246,12 +249,24 @@ const GLFocusCurve = memo(() => {
   }, [campusCamera]);
 
   useEffect(() => {
+    if (!buildingData) return;
+    if (!campusCamera) return;
+    if (!buildingObject) return;
+    if (!objCubicBezierLine) return;
+    if (!campusControls) return;
     if (isBuildingPicked) {
       campusMode === "prod" && handleUpdateCurveFollowCamera();
       handleUpdateCameraFollowCurve();
       handleUpdateControlsFollowObject();
     }
-  }, [isBuildingPicked]);
+  }, [
+    buildingData,
+    campusControls,
+    objCubicBezierLine,
+    campusCamera,
+    buildingObject,
+    isBuildingPicked,
+  ]);
 
   useFrame(() => {
     campusMode === "dev" && handleUpdateCurveFollowCamera();

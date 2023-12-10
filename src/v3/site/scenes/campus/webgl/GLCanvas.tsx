@@ -8,8 +8,13 @@ import { GLSkydom } from "./GLSkydom";
 import GLCampus from "../objects/campus/GLCampus";
 import { GLCamera } from "./GLCamera";
 import { memo } from "react";
+import { Perf } from "r3f-perf";
+import { useCampusSceneStore } from "../hooks/useCampuseSceneStore";
 
 const GLCanvas = memo(() => {
+  const campuSceneStore = useCampusSceneStore();
+  const campusMode = campuSceneStore.use.campusMode();
+
   return (
     <Canvas
       shadows="soft"
@@ -24,6 +29,8 @@ const GLCanvas = memo(() => {
       }}
     >
       <GLCampus />
+
+      {campusMode === "dev" && <Perf position="bottom-right" />}
 
       <GLSkydom />
       <GLFog />

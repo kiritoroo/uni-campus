@@ -2,12 +2,13 @@ import { TGLTFReference } from "@Types/three.type";
 import { Line } from "@react-three/drei";
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { MODELS_ASSETS } from "@v3/site/assets/models";
-import { RefObject, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Line2 } from "three-stdlib";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { useCampusStore } from "../hooks/useCampusStore";
+import gsap, { Expo } from "gsap";
 
 const GLCampusCurve = () => {
   const campusSceneStore = useCampusSceneStore();
@@ -20,6 +21,25 @@ const GLCampusCurve = () => {
   const SCALE_FOLLOW_OFFSET = useRef<number>(1.5);
   const SCALE_LOOK_AT_OFFSET = useRef<number>(0.5);
 
+  const mouseState = useRef<{
+    timerIds: any;
+    animateTimeline: gsap.core.Timeline;
+    isDown: boolean;
+    isMove: boolean;
+    isSwipe: boolean;
+    swipeDirection: "left" | "right";
+    swipeAcceleration: number;
+    mouseLockData: { clientX: number; clientY: number };
+  }>({
+    timerIds: null,
+    animateTimeline: gsap.timeline(),
+    isDown: false,
+    isMove: false,
+    isSwipe: false,
+    swipeDirection: "left",
+    swipeAcceleration: 0,
+    mouseLockData: { clientX: 0, clientY: 0 },
+  });
   const acceleration = useRef({ v: 0.0002 });
   const progress = useRef({ v: 0.5 });
   const positionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
@@ -71,10 +91,15 @@ const GLCampusCurve = () => {
   const handleUpdateCameraFollowCurve = (delta: number) => {
     if (!objBoundingCurveProperty || !campusCamera) return;
 
-    progress.current.v += acceleration.current.v + delta / 120;
+    progress.current.v +=
+      acceleration.current.v + delta / 120 + mouseState.current.swipeAcceleration / 80;
 
     if (progress.current.v > 1) {
       progress.current.v = 0;
+    }
+
+    if (progress.current.v < 0) {
+      progress.current.v = 1;
     }
 
     objBoundingCurveProperty.tubeGeometry.parameters.path.getPointAt(
@@ -123,9 +148,79 @@ const GLCampusCurve = () => {
     }
   };
 
+  const handleOnMouseDownScene = (e: MouseEvent) => {
+    document.body.style.cursor = "grabbing";
+    mouseState.current.isDown = true;
+
+    mouseState.current.mouseLockData = {
+      clientX: e.clientX,
+      clientY: e.clientY,
+    };
+  };
+
+  const handleOnMouseUpScene = (e: MouseEvent) => {
+    document.body.style.cursor = "auto";
+    mouseState.current.isDown = false;
+  };
+
+  const handleOnMouseMoveScene = (e: MouseEvent) => {
+    clearTimeout(mouseState.current.timerIds);
+
+    mouseState.current.isMove = true;
+
+    if (mouseState.current.isDown) {
+      mouseState.current.isSwipe = true;
+      mouseState.current.swipeAcceleration =
+        (e.clientX - mouseState.current.mouseLockData.clientX) / document.body.offsetWidth;
+    }
+
+    if (mouseState.current.isDown) {
+      if (e.clientX - mouseState.current.mouseLockData.clientX > 0) {
+        mouseState.current.swipeDirection = "right";
+      } else if (e.clientX - mouseState.current.mouseLockData.clientX < 0) {
+        mouseState.current.swipeDirection = "left";
+      }
+    }
+
+    mouseState.current.timerIds = setTimeout(() => {
+      mouseState.current.isMove = false;
+      mouseState.current.isSwipe = false;
+
+      mouseState.current.mouseLockData = {
+        clientX: e.clientX,
+        clientY: e.clientY,
+      };
+    }, 50);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOnMouseDownScene);
+    document.addEventListener("mouseup", handleOnMouseUpScene);
+    document.addEventListener("mousemove", handleOnMouseMoveScene);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOnMouseDownScene);
+      document.removeEventListener("mouseup", handleOnMouseUpScene);
+      document.removeEventListener("mousemove", handleOnMouseMoveScene);
+    };
+  }, []);
+
+  useFrame(() => {
+    if (!mouseState.current.isSwipe || !mouseState.current.isDown) {
+      mouseState.current.animateTimeline
+        .to(mouseState.current, {
+          swipeAcceleration: 0,
+          duration: 0.5,
+          ease: Expo.easeInOut,
+        })
+        .play();
+    } else {
+      mouseState.current.animateTimeline.clear();
+    }
+  });
+
   useFrame((state, delta) => {
     if (buildingPicked) return;
-
     handleUpdateCameraFollowCurve(delta);
   });
 

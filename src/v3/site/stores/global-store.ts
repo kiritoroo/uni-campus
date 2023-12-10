@@ -8,6 +8,7 @@ type TState = {
   spacesData: TSpaceSchema[] | null;
   showSidebar: boolean;
   showOverview: boolean;
+  isInteractive: boolean;
 };
 
 type TComputedState = {};
@@ -26,6 +27,7 @@ const initStore: TState & TComputedState = {
   spacesData: null,
   showSidebar: false,
   showOverview: false,
+  isInteractive: false,
 };
 
 export const GlobalStore = () => {

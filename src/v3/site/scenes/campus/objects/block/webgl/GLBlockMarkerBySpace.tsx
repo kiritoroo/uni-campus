@@ -13,7 +13,7 @@ const GLBlockMarkerBySpace = memo(({ blockData }: { blockData: TBlockSchema }) =
 
   const buildingPicked = campusStore.use.buildingPicked();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
-  const isBlockPiced = blockStore.use.isBlockPicked();
+  const isBlockPicked = blockStore.use.isBlockPicked();
 
   const [markerRefForce, setMarkerRefForce] = useState<HTMLDivElement | null>(null);
   const [, animate] = useAnimate();

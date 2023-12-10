@@ -11,6 +11,9 @@ type TState = {
   buildingPicked: {
     buildingId: string;
   } | null;
+  buildingShowInfo: {
+    buildingId: string;
+  } | null;
 };
 
 type TComputedState = {
@@ -38,6 +41,7 @@ const initStore: TState & TComputedState = {
   buildingsPointerEnter: [],
   buildingPointerEnterNearest: null,
   buildingPicked: null,
+  buildingShowInfo: null,
 };
 
 export const CampusStore = () => {

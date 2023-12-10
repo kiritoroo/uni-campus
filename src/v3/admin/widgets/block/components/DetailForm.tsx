@@ -52,6 +52,7 @@ const DetailForm = () => {
         z: 0,
       },
       order: -1,
+      slug: "",
     },
   });
 
@@ -100,6 +101,7 @@ const DetailForm = () => {
       setValue("coordinate", blockData.coordinate);
       setValue("marker_position", blockData.marker_position);
       setValue("order", blockData.order);
+      setValue("slug", blockData.slug);
     }
   }, [blockData, enableEditDetail]);
 
@@ -113,6 +115,18 @@ const DetailForm = () => {
           label="Block ID"
           desc="A unique identifier for each block, serving to distinguish and identify it from other blocks."
           editable={false}
+        />
+        <DetailField
+          {...register("slug")}
+          required
+          disabled={!enableEditDetail}
+          label="Block Slug"
+          desc="A slug of block, provides a concise and unique identifier, typically used for URLs."
+          fieldKey={"slug"}
+          editDesc="Make sure not empty field"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "slug"}
         />
         <DetailField
           type="string"

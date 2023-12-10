@@ -10,14 +10,21 @@ import GLBlock from "../block/GLBlock";
 import GLBuildingMesh from "./webgl/GLBuildingMesh";
 import { useCampusStore } from "../campus/hooks/useCampusStore";
 import GLFocusCurve from "./webgl/GLFocusCurve";
+import { useCampusSceneStore } from "../../hooks/useCampuseSceneStore";
+import { useFrame } from "@react-three/fiber";
 
 const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
+  const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
 
+  const campusCamera = campusSceneStore.use.campusCamera();
+  const buildingShowInfo = campusStore.use.buildingShowInfo();
+  const buildingPicked = campusStore.use.buildingPicked();
   const buildingPointerEnterNearest = campusStore.use.buildingPointerEnterNearest();
   const buildingModelScene = buildingStore.use.buildingModelScene();
   const buildingActions = buildingStore.use.actions();
+  const isBuildingPicked = buildingStore.use.isBuildingPicked();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
 
   const buildingRef = useRef<THREE.Group | any>(null);
@@ -107,12 +114,35 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
     }
   }, [buildingRef]);
 
+  useFrame(() => {
+    if (!campusCamera) return;
+    if (!buildingData) return;
+
+    const cameraPosition = campusCamera.getWorldPosition(new THREE.Vector3());
+    const distanceToBuilding = cameraPosition.distanceTo(
+      new THREE.Vector3(
+        buildingData?.position.x,
+        buildingData?.position.y,
+        buildingData?.position.z,
+      ),
+    );
+    buildingStore.setState({ distanceFromCameraToBuilding: distanceToBuilding });
+  });
+
+  useEffect(() => {
+    if (buildingShowInfo?.buildingId === buildingData.id) return;
+
+    buildingStore.setState({ isBuildingShowInfo: false });
+    buildingStore.setState({ blockShowInfo: null });
+  }, [buildingShowInfo]);
+
   return (
     <Center
       ref={buildingRef}
       position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
       rotation={[buildingData.rotation.x, buildingData.rotation.y, buildingData.rotation.z]}
       scale={[buildingData.scale.x, buildingData.scale.y, buildingData.scale.z]}
+      visible={buildingPicked && !isBuildingPicked ? false : true}
     >
       {objGroupMergeProperty && (
         <group
