@@ -20,7 +20,7 @@ const GLCampusCurve = () => {
   const SCALE_FOLLOW_OFFSET = useRef<number>(1.5);
   const SCALE_LOOK_AT_OFFSET = useRef<number>(0.5);
 
-  const acceleration = useRef({ v: 0.0002 });
+  const acceleration = useRef({ v: 0.0001 });
   const progress = useRef({ v: 0.5 });
   const positionTarget = useRef<THREE.Vector3>(new THREE.Vector3());
   const binormalTarget = useRef<THREE.Vector3>(new THREE.Vector3());
