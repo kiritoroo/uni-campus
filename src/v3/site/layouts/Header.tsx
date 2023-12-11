@@ -1,14 +1,24 @@
 import { AlignJustify, Music } from "lucide-react";
 import { useGlobalStore } from "../hooks/useGlobalStore";
 import { cn } from "@Utils/common.utils";
+import { Link, useParams } from "react-router-dom";
 
 const Header = () => {
   const globalStore = useGlobalStore();
+
+  const startExploring = globalStore.use.startExploring();
+  const showSidebar = globalStore.use.showSidebar();
   const showOverview = globalStore.use.showOverview();
+
+  const params = useParams();
 
   const handleCLickMenu = () => {
     globalStore.setState({ showSidebar: true });
   };
+
+  if (!startExploring) {
+    return <></>;
+  }
 
   return (
     <>
@@ -16,7 +26,7 @@ const Header = () => {
         className={cn(
           "fixed left-[100px] top-[40px] z-[999999999999999] flex w-fit items-center justify-center",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
-          { "pointer-events-none select-none opacity-0": showOverview },
+          { "pointer-events-none select-none opacity-0": showOverview || showSidebar },
         )}
       >
         <div
@@ -42,8 +52,15 @@ const Header = () => {
             <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
               <div className="strike cursor-pointer">Projects</div>
             </div>
-            <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
-              <div className="strike cursor-pointer">Team</div>
+            <div
+              className={cn(
+                "bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-200",
+                { "bg-gem-sapphire text-white": params["*"] === "team" },
+              )}
+            >
+              <Link to={"/team"} className="strike cursor-pointer">
+                Team
+              </Link>
             </div>
             <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
               <div className="strike cursor-pointer">Contact</div>

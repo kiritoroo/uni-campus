@@ -8,13 +8,15 @@ import { OrbitControls } from "three-stdlib";
 import { useBuildingStore } from "../hooks/useBuildingStore";
 import { Power2 } from "gsap";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
-import { useBlockStore } from "../../block/hooks/useBlockStore";
+import { useGlobalStore } from "@v3/site/hooks/useGlobalStore";
 
 const GLFocusCurve = memo(() => {
+  const globalStore = useGlobalStore();
   const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
 
+  const startExploring = globalStore.use.startExploring();
   const campusMode = campusSceneStore.use.campusMode();
   const campusCamera = campusSceneStore.use.campusCamera();
   const buildingPicked = campusStore.use.buildingPicked();
@@ -249,6 +251,7 @@ const GLFocusCurve = memo(() => {
   }, [campusCamera]);
 
   useEffect(() => {
+    if (!startExploring) return;
     if (!buildingData) return;
     if (!campusCamera) return;
     if (!buildingObject) return;
@@ -260,6 +263,7 @@ const GLFocusCurve = memo(() => {
       handleUpdateControlsFollowObject();
     }
   }, [
+    startExploring,
     buildingData,
     campusControls,
     objCubicBezierLine,

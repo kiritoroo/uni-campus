@@ -18,6 +18,7 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
 
+  const campusSceneActions = campusSceneStore.use.actions();
   const campusCamera = campusSceneStore.use.campusCamera();
   const buildingShowInfo = campusStore.use.buildingShowInfo();
   const buildingPicked = campusStore.use.buildingPicked();
@@ -113,6 +114,18 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
       buildingStore.setState({ buildingObject: buildingRef.current });
     }
   }, [buildingRef]);
+
+  useEffect(() => {
+    campusSceneActions.addLoadingBuildingProgress({ id: buildingData.id, loaded: false });
+  }, []);
+
+  useEffect(() => {
+    if (!buildingRef.current) return;
+
+    setTimeout(() => {
+      campusSceneActions.updateLoadingBuildingProgress({ id: buildingData.id, loaded: true });
+    }, 200);
+  }, [buildingRef.current]);
 
   useFrame(() => {
     if (!campusCamera) return;

@@ -7,6 +7,7 @@ import Sidebar from "./Sidebar";
 import Content from "./Content";
 import Overview from "./widgets/overview/Overview";
 import { OVerviewStoreProvider } from "./widgets/overview/contexts/OverviewStoreContext";
+import Team from "./widgets/team/Team";
 
 const Layout = () => {
   return (
@@ -15,6 +16,8 @@ const Layout = () => {
         <Header />
         <Outlet />
         <Footer />
+
+        <Team />
 
         <Sidebar />
         <Content />

@@ -9,11 +9,14 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { useCampusStore } from "../hooks/useCampusStore";
 import gsap, { Expo } from "gsap";
+import { useGlobalStore } from "@v3/site/hooks/useGlobalStore";
 
 const GLCampusCurve = () => {
+  const globalStore = useGlobalStore();
   const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
 
+  const startExploring = globalStore.use.startExploring();
   const campusMode = campusSceneStore.use.campusMode();
   const campusCamera = campusSceneStore.use.campusCamera();
   const buildingPicked = campusStore.use.buildingPicked();
@@ -194,6 +197,8 @@ const GLCampusCurve = () => {
   };
 
   useEffect(() => {
+    if (!startExploring) return;
+
     document.addEventListener("mousedown", handleOnMouseDownScene);
     document.addEventListener("mouseup", handleOnMouseUpScene);
     document.addEventListener("mousemove", handleOnMouseMoveScene);
@@ -203,7 +208,7 @@ const GLCampusCurve = () => {
       document.removeEventListener("mouseup", handleOnMouseUpScene);
       document.removeEventListener("mousemove", handleOnMouseMoveScene);
     };
-  }, []);
+  }, [startExploring]);
 
   useFrame(() => {
     if (!mouseState.current.isSwipe || !mouseState.current.isDown) {
@@ -220,7 +225,9 @@ const GLCampusCurve = () => {
   });
 
   useFrame((state, delta) => {
+    if (!startExploring) return;
     if (buildingPicked) return;
+
     handleUpdateCameraFollowCurve(delta);
   });
 
