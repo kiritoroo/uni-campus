@@ -38,8 +38,7 @@ const Overview = () => {
     });
   };
 
-  const handleClickBlock = (slug: string) => {
-    // navigate(slug);
+  const handleClickBlock = () => {
     globalStore.setState({ showOverview: false });
     globalStore.setState({ showSidebar: false });
   };
@@ -65,7 +64,9 @@ const Overview = () => {
                   })}
                   onClick={() => handleClickSpace(space.id)}
                 >
-                  <div className={cn("strike text-2xl font-bold")}>{space.name}</div>
+                  <div className={cn("strike whitespace-nowrap text-2xl font-bold")}>
+                    {space.name}
+                  </div>
                 </button>
               );
             })}

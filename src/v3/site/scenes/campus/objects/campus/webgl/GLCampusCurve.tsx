@@ -9,11 +9,14 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { useCampusStore } from "../hooks/useCampusStore";
 import gsap, { Expo } from "gsap";
+import { useGlobalStore } from "@v3/site/hooks/useGlobalStore";
 
 const GLCampusCurve = () => {
+  const globalStore = useGlobalStore();
   const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
 
+  const startExploring = globalStore.use.startExploring();
   const campusMode = campusSceneStore.use.campusMode();
   const campusCamera = campusSceneStore.use.campusCamera();
   const buildingPicked = campusStore.use.buildingPicked();
@@ -149,6 +152,8 @@ const GLCampusCurve = () => {
   };
 
   const handleOnMouseDownScene = (e: MouseEvent) => {
+    if (!startExploring) return;
+
     document.body.style.cursor = "grabbing";
     mouseState.current.isDown = true;
 
@@ -159,11 +164,15 @@ const GLCampusCurve = () => {
   };
 
   const handleOnMouseUpScene = (e: MouseEvent) => {
+    if (!startExploring) return;
+
     document.body.style.cursor = "auto";
     mouseState.current.isDown = false;
   };
 
   const handleOnMouseMoveScene = (e: MouseEvent) => {
+    if (!startExploring) return;
+
     clearTimeout(mouseState.current.timerIds);
 
     mouseState.current.isMove = true;
@@ -220,7 +229,9 @@ const GLCampusCurve = () => {
   });
 
   useFrame((state, delta) => {
+    if (!startExploring) return;
     if (buildingPicked) return;
+
     handleUpdateCameraFollowCurve(delta);
   });
 

@@ -4,11 +4,18 @@ import { cn } from "@Utils/common.utils";
 
 const Header = () => {
   const globalStore = useGlobalStore();
+
+  const startExploring = globalStore.use.startExploring();
+  const showSidebar = globalStore.use.showSidebar();
   const showOverview = globalStore.use.showOverview();
 
   const handleCLickMenu = () => {
     globalStore.setState({ showSidebar: true });
   };
+
+  if (!startExploring) {
+    return <></>;
+  }
 
   return (
     <>
@@ -16,7 +23,7 @@ const Header = () => {
         className={cn(
           "fixed left-[100px] top-[40px] z-[999999999999999] flex w-fit items-center justify-center",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
-          { "pointer-events-none select-none opacity-0": showOverview },
+          { "pointer-events-none select-none opacity-0": showOverview || showSidebar },
         )}
       >
         <div

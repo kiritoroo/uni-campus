@@ -9,6 +9,7 @@ type TState = {
   showSidebar: boolean;
   showOverview: boolean;
   isInteractive: boolean;
+  startExploring: boolean;
 };
 
 type TComputedState = {};
@@ -28,6 +29,7 @@ const initStore: TState & TComputedState = {
   showSidebar: false,
   showOverview: false,
   isInteractive: false,
+  startExploring: false,
 };
 
 export const GlobalStore = () => {
