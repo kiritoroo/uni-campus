@@ -152,8 +152,6 @@ const GLCampusCurve = () => {
   };
 
   const handleOnMouseDownScene = (e: MouseEvent) => {
-    if (!startExploring) return;
-
     document.body.style.cursor = "grabbing";
     mouseState.current.isDown = true;
 
@@ -164,15 +162,11 @@ const GLCampusCurve = () => {
   };
 
   const handleOnMouseUpScene = (e: MouseEvent) => {
-    if (!startExploring) return;
-
     document.body.style.cursor = "auto";
     mouseState.current.isDown = false;
   };
 
   const handleOnMouseMoveScene = (e: MouseEvent) => {
-    if (!startExploring) return;
-
     clearTimeout(mouseState.current.timerIds);
 
     mouseState.current.isMove = true;
@@ -203,6 +197,8 @@ const GLCampusCurve = () => {
   };
 
   useEffect(() => {
+    if (!startExploring) return;
+
     document.addEventListener("mousedown", handleOnMouseDownScene);
     document.addEventListener("mouseup", handleOnMouseUpScene);
     document.addEventListener("mousemove", handleOnMouseMoveScene);
@@ -212,7 +208,7 @@ const GLCampusCurve = () => {
       document.removeEventListener("mouseup", handleOnMouseUpScene);
       document.removeEventListener("mousemove", handleOnMouseMoveScene);
     };
-  }, []);
+  }, [startExploring]);
 
   useFrame(() => {
     if (!mouseState.current.isSwipe || !mouseState.current.isDown) {
