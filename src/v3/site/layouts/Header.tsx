@@ -1,6 +1,7 @@
 import { AlignJustify, Music } from "lucide-react";
 import { useGlobalStore } from "../hooks/useGlobalStore";
 import { cn } from "@Utils/common.utils";
+import { Link, useParams } from "react-router-dom";
 
 const Header = () => {
   const globalStore = useGlobalStore();
@@ -8,6 +9,8 @@ const Header = () => {
   const startExploring = globalStore.use.startExploring();
   const showSidebar = globalStore.use.showSidebar();
   const showOverview = globalStore.use.showOverview();
+
+  const params = useParams();
 
   const handleCLickMenu = () => {
     globalStore.setState({ showSidebar: true });
@@ -49,8 +52,15 @@ const Header = () => {
             <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
               <div className="strike cursor-pointer">Projects</div>
             </div>
-            <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
-              <div className="strike cursor-pointer">Team</div>
+            <div
+              className={cn(
+                "bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-200",
+                { "bg-gem-sapphire text-white": params["*"] === "team" },
+              )}
+            >
+              <Link to={"/team"} className="strike cursor-pointer">
+                Team
+              </Link>
             </div>
             <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
               <div className="strike cursor-pointer">Contact</div>
