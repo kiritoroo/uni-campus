@@ -8,6 +8,7 @@ import Content from "./Content";
 import Overview from "./widgets/overview/Overview";
 import { OVerviewStoreProvider } from "./widgets/overview/contexts/OverviewStoreContext";
 import Team from "./widgets/team/Team";
+import Contact from "./widgets/contact/Contact";
 
 const Layout = () => {
   return (
@@ -18,6 +19,7 @@ const Layout = () => {
         <Footer />
 
         <Team />
+        <Contact />
 
         <Sidebar />
         <Content />

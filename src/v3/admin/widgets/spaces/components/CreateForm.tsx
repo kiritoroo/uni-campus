@@ -23,6 +23,7 @@ const CreateForm = () => {
     defaultValues: {
       name: "",
       color: "#FFFFFF",
+      order: 0,
     },
   });
 
@@ -73,6 +74,13 @@ const CreateForm = () => {
               render={({ field: { value, onChange } }) => (
                 <FormColorInput label="Color" initColor={value} onChange={onChange} />
               )}
+            />
+            <FormInput
+              {...register("order")}
+              className="bg-[#FAFAFA]"
+              label="Order"
+              type="number"
+              required
             />
           </div>
           <div className="col-span-2">

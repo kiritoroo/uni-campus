@@ -62,8 +62,15 @@ const Header = () => {
                 Team
               </Link>
             </div>
-            <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
-              <div className="strike cursor-pointer">Contact</div>
+            <div
+              className={cn(
+                "bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-200",
+                { "bg-gem-sapphire text-white": params["*"] === "contact" },
+              )}
+            >
+              <Link to={"/contact"} className="strike cursor-pointer">
+                Contact
+              </Link>
             </div>
           </div>
         </div>
