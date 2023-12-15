@@ -1,7 +1,7 @@
 import Provider from "./Provider";
 import { cn } from "@Utils/common.utils";
 import { Outlet } from "react-router-dom";
-import Header from "./Header";
+import Header from "./header/Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import Content from "./Content";
