@@ -1,4 +1,4 @@
-import { memo, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
 import { useBlockStore } from "../hooks/useBlockStore";
@@ -6,6 +6,7 @@ import { useBuildingStore } from "../../building/hooks/useBuildingStore";
 import { ThreeEvent } from "@react-three/fiber";
 import _ from "lodash";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
+import { useSoundFx } from "@v3/site/hooks/useSoundFx";
 
 interface GLBoundingBoxProps {
   property: {
@@ -26,6 +27,8 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
   const blockData = blockStore.use.blockData()!;
   const isBlockShowInfo = blockStore.use.isBlockShowInfo();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
+
+  const playSoundFx = useSoundFx();
 
   const material = useRef<THREE.MeshBasicMaterial>(
     new THREE.MeshBasicMaterial({
@@ -56,6 +59,7 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
     if (!isPointerEnterBlockNearest) return;
 
     document.body.style.cursor = "auto";
+    playSoundFx.mouseclick();
 
     if (true) {
       if (isBlockShowInfo) {
@@ -78,6 +82,11 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
       blockStore.setState({ isBlockPicked: true });
     }
   };
+
+  useEffect(() => {
+    if (!isPointerEnterBlockNearest) return;
+    playSoundFx.mouseover();
+  }, [isPointerEnterBlockNearest]);
 
   return (
     <mesh

@@ -9,6 +9,7 @@ import { useBuildingStore } from "../hooks/useBuildingStore";
 import { Power2 } from "gsap";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
 import { useGlobalStore } from "@v3/site/hooks/useGlobalStore";
+import { useSoundFx } from "@v3/site/hooks/useSoundFx";
 
 const GLFocusCurve = memo(() => {
   const globalStore = useGlobalStore();
@@ -24,6 +25,8 @@ const GLFocusCurve = memo(() => {
   const buildingObject = buildingStore.use.buildingObject();
   const focusPosition = buildingStore.use.focusPostion();
   const isBuildingPicked = buildingStore.use.isBuildingPicked();
+
+  const playSoundFx = useSoundFx();
 
   const { scene, controls: campusControls } = useThree();
 
@@ -257,7 +260,9 @@ const GLFocusCurve = memo(() => {
     if (!buildingObject) return;
     if (!objCubicBezierLine) return;
     if (!campusControls) return;
+
     if (isBuildingPicked) {
+      playSoundFx.whoosh();
       campusMode === "prod" && handleUpdateCurveFollowCamera();
       handleUpdateCameraFollowCurve();
       handleUpdateControlsFollowObject();
