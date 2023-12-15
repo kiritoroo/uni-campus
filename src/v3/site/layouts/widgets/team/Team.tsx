@@ -62,6 +62,9 @@ const Team = () => {
 
               <div className="pt-3">
                 <div className="text-center text-lg font-bold text-gem-sapphire">Kien Trung</div>
+                <div className="mb-4 text-center text-sm font-bold text-gem-sapphire/60">
+                  @kiritoroo
+                </div>
                 <div className="text-center text-sm font-medium text-gem-sapphire/60">
                   3D Designer
                 </div>
@@ -79,6 +82,9 @@ const Team = () => {
 
               <div className="pt-3">
                 <div className="text-center text-lg font-bold text-gem-sapphire">Kien Trung</div>
+                <div className="mb-4 text-center text-sm font-bold text-gem-sapphire/60">
+                  @kiritoroo
+                </div>
                 <div className="text-center text-sm font-medium text-gem-sapphire/60">
                   Project Manager
                 </div>
@@ -96,6 +102,9 @@ const Team = () => {
 
               <div className="pt-3">
                 <div className="text-center text-lg font-bold text-gem-sapphire">Kien Trung</div>
+                <div className="mb-4 text-center text-sm font-bold text-gem-sapphire/60">
+                  @kiritoroo
+                </div>
                 <div className="text-center text-sm font-medium text-gem-sapphire/60">
                   Developer
                 </div>
