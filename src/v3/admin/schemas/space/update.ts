@@ -3,7 +3,7 @@ import z from "zod";
 const nameField = z.optional(z.string()).nullable();
 const colorField = z.optional(z.string().min(4).max(9).regex(/^#/)).nullable();
 const iconFileField = z.optional(z.instanceof(File).nullable());
-const orderField = z.optional(z.number()).nullable();
+const orderField = z.optional(z.coerce.number()).nullable();
 const slugField = z.optional(z.string()).nullable();
 const isPublishField = z.optional(z.boolean()).nullable();
 

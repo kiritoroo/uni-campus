@@ -31,7 +31,7 @@ const Spaces = () => {
     >
       <div className="fixed -top-20 bottom-0 left-20 flex items-center justify-center">
         <div className="relative bg-white/60 px-8 py-5 backdrop-blur-[5px] md:px-16 md:py-12">
-          <div className="py-5 pb-8 text-center font-geist text-3xl font-semibold uppercase">
+          <div className="py-5 pb-8 text-center font-geist text-3xl font-bold uppercase">
             Spaces
           </div>
 
@@ -45,7 +45,7 @@ const Spaces = () => {
                   />
                 </div>
                 <div className="grow px-4 py-3 pr-20 transition-colors duration-100 group-hover:bg-gem-sapphire group-hover:text-white">
-                  <div className="text-lg font-medium">{space.name}</div>
+                  <div className="text-base font-semibold">{space.name}</div>
                 </div>
               </div>
             ))}

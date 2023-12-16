@@ -4,7 +4,7 @@ import { fileInfoSchema } from "../fileinfo-schema";
 const idField = z.string();
 const nameField = z.string();
 const colorField = z.string().min(4).max(9).regex(/^#/);
-const orderField = z.number();
+const orderField = z.coerce.number();
 const slugField = z.string();
 const isPublishField = z.boolean();
 const createdAtField = z.string().transform((v) => new Date(v));

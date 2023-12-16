@@ -30,7 +30,7 @@ const scaleField = z
   .nullable();
 const modelFileField = z.optional(z.instanceof(File).nullable());
 const previewFileField = z.optional(z.instanceof(File).nullable());
-const orderField = z.optional(z.number()).nullable();
+const orderField = z.optional(z.coerce.number()).nullable();
 const isPublishField = z.optional(z.boolean()).nullable();
 
 const buildingUpdateSchema = z.object({

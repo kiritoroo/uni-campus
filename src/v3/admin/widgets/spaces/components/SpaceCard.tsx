@@ -56,13 +56,13 @@ const SpaceCard = ({ id, color, name, icon, is_publish }: TSpaceSchema) => {
       button: (
         <button
           type="button"
-          className="flex items-center justify-around gap-2 bg-gray-200 px-5 py-3"
+          className="group flex items-center justify-around gap-2 rounded-lg border border-gem-onyx bg-gem-onyx px-4 py-3 text-white transition-colors duration-200 hover:bg-white hover:text-gem-onyx active:bg-gem-onyx/20"
           onClick={() => {
             mutate();
           }}
         >
           <div className="text-sm font-medium">Delete</div>{" "}
-          <Trash className="h-4 w-4 stroke-gray-700" />
+          <Trash className="h-4 w-4 stroke-white transition-colors duration-200 group-hover:stroke-gem-onyx" />
         </button>
       ),
     });
