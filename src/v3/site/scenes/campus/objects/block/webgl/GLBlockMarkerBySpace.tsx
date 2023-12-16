@@ -6,11 +6,14 @@ import { memo, useEffect, useState } from "react";
 import { motion, useAnimate } from "framer-motion";
 import { randomRand } from "@Utils/math.utils";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
+import { useSpacesStore } from "@v3/site/layouts/widgets/spaces/hooks/useSpacesStore";
 
 const GLBlockMarkerBySpace = memo(({ blockData }: { blockData: TBlockSchema }) => {
+  const spacesStore = useSpacesStore();
   const campusStore = useCampusStore();
   const blockStore = useBlockStore();
 
+  const spacePicked = spacesStore.use.spacePicked();
   const buildingPicked = campusStore.use.buildingPicked();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
   const isBlockPicked = blockStore.use.isBlockPicked();
@@ -64,18 +67,22 @@ const GLBlockMarkerBySpace = memo(({ blockData }: { blockData: TBlockSchema }) =
     if (!markerRefForce) return;
     if (!buildingPicked) return;
 
-    if (isBlockPiced) {
+    if (isBlockPicked) {
       animate(markerRefForce, { y: 0, scale: 0 }, { duration: 0.3, delay: 0.5, type: "tween" });
     }
 
-    if (!isBlockPiced) {
+    if (!isBlockPicked) {
       animate(
         markerRefForce,
         { scale: 0 },
         { type: "spring", mass: 0.5, stiffness: randomRand(50, 100), damping: 10 },
       );
     }
-  }, [buildingPicked, isBlockPiced]);
+  }, [buildingPicked, isBlockPicked]);
+
+  if (spacePicked && blockData.space?.id !== spacePicked.spaceId) {
+    return null;
+  }
 
   return (
     <group
@@ -102,12 +109,19 @@ const GLBlockMarkerBySpace = memo(({ blockData }: { blockData: TBlockSchema }) =
           className="pointer-events-none relative cursor-pointer select-none text-center drop-shadow-lg"
         >
           <div
-            className={cn(
-              "relative z-[2] w-max  max-w-[400px] bg-[#495363] px-8 py-3 text-[#FFFFFF]",
-              { "bg-[#7f99b4] transition-colors duration-100": isPointerEnterBlockNearest },
-            )}
+            className={cn("relative z-[2] w-max  max-w-[400px] bg-[#495363] text-[#FFFFFF]", {
+              "bg-[#7f99b4] transition-colors duration-100": isPointerEnterBlockNearest,
+            })}
           >
-            <div className="text-[14px] font-bold uppercase">{blockData.name}</div>
+            <div className="flex items-stretch justify-center">
+              <div className="flex items-center justify-center bg-white px-3 py-3">
+                <img
+                  className="h-6 w-6"
+                  src={`${process.env.UNI_CAMPUS_API_URL}/${blockData.space?.icon.url}`}
+                />
+              </div>
+              <div className="px-8 py-3 text-[14px] font-bold uppercase">{blockData.name}</div>
+            </div>
 
             <div
               className={cn(

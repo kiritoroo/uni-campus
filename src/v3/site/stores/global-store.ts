@@ -6,8 +6,10 @@ import { TSpaceSchema } from "../schemas/space";
 type TState = {
   blocksData: TBlockSchema[] | null;
   spacesData: TSpaceSchema[] | null;
+  showHeader: boolean;
   showSidebar: boolean;
   showOverview: boolean;
+  showSpaces: boolean;
   isInteractive: boolean;
   startExploring: boolean;
   enableSound: boolean;
@@ -25,10 +27,12 @@ export interface IGlobalStore extends TState, TComputedState {
 }
 
 const initStore: TState & TComputedState = {
+  showHeader: true,
   blocksData: null,
   spacesData: null,
   showSidebar: false,
   showOverview: false,
+  showSpaces: false,
   isInteractive: false,
   startExploring: false,
   enableSound: true,

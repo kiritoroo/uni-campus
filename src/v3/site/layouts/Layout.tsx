@@ -6,9 +6,10 @@ import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import Content from "./Content";
 import Overview from "./widgets/overview/Overview";
-import { OVerviewStoreProvider } from "./widgets/overview/contexts/OverviewStoreContext";
+import { OverviewStoreProvider } from "./widgets/overview/contexts/OverviewStoreContext";
 import Team from "./widgets/team/Team";
 import Contact from "./widgets/contact/Contact";
+import Spaces from "./widgets/spaces/Spaces";
 
 const Layout = () => {
   return (
@@ -24,9 +25,11 @@ const Layout = () => {
         <Sidebar />
         <Content />
 
-        <OVerviewStoreProvider>
+        <OverviewStoreProvider>
           <Overview />
-        </OVerviewStoreProvider>
+        </OverviewStoreProvider>
+
+        <Spaces />
       </main>
     </Provider>
   );

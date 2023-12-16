@@ -51,6 +51,8 @@ const CreateForm = () => {
         y: 0,
         z: 0,
       },
+      slug: "",
+      order: 0,
     },
   });
 
@@ -144,6 +146,22 @@ const CreateForm = () => {
               className="bg-[#FAFAFA]"
               label="Map Direction"
               type="text"
+              required
+              autoComplete={"on"}
+            />
+            <FormInput
+              {...register("slug")}
+              className="bg-[#FAFAFA]"
+              label="Block Slug"
+              type="text"
+              required
+              autoComplete={"on"}
+            />
+            <FormInput
+              {...register("order")}
+              className="bg-[#FAFAFA]"
+              label="Block Order"
+              type="number"
               required
               autoComplete={"on"}
             />

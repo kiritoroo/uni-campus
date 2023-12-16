@@ -7,8 +7,8 @@ const spaceIdField = z.string().nullable();
 const usesField = z.string();
 const directionUrl = z.string();
 const coordinateField = z.object({
-  latitude: z.number(),
-  longitude: z.number(),
+  latitude: z.coerce.number(),
+  longitude: z.coerce.number(),
 });
 const markerPositionField = z.object({
   x: z.coerce.number(),
@@ -16,7 +16,7 @@ const markerPositionField = z.object({
   z: z.coerce.number(),
 });
 const galleryField = z.array(z.instanceof(File)).nonempty();
-const orderField = z.number();
+const orderField = z.coerce.number();
 const slugField = z.string();
 
 const blockCreateSchema = z.object({

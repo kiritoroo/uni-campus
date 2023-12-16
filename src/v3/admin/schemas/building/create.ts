@@ -18,7 +18,7 @@ const scaleField = z.object({
 });
 const modelFileField = z.instanceof(File);
 const previewFileField = z.instanceof(File);
-const orderField = z.number();
+const orderField = z.coerce.number();
 
 const buildingCreateSchema = z.object({
   name: nameField,

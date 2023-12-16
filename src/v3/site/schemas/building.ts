@@ -78,6 +78,7 @@ const buildingSchema = z.object({
             content_type: z.string(),
           }),
           order: z.number(),
+          slug: z.string(),
           is_publish: z.boolean(),
           created_at: z.string().transform((v) => new Date(v)),
           updated_at: z.string().transform((v) => new Date(v)),

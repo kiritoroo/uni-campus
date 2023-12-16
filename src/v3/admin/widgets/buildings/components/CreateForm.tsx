@@ -41,6 +41,7 @@ const CreateForm = () => {
         y: 0,
         z: 0,
       },
+      order: 0,
     },
   });
 
@@ -209,6 +210,16 @@ const CreateForm = () => {
                   autoComplete={"on"}
                 />
               </div>
+            </div>
+            <div className="w-full space-y-2">
+              <FormInput
+                {...register("order")}
+                className="bg-[#FAFAFA]"
+                label="Building Order"
+                type="number"
+                required
+                autoComplete={"on"}
+              />
             </div>
           </div>
           <div className="col-span-3 h-full w-full grow">

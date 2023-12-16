@@ -21,6 +21,7 @@ const CreateForm = () => {
   const formMethod = useForm<TSpaceCreateSchema>({
     resolver: zodResolver(spaceCreateSchema),
     defaultValues: {
+      slug: "",
       name: "",
       color: "#FFFFFF",
       order: 0,
@@ -60,6 +61,14 @@ const CreateForm = () => {
       <form onSubmit={handleSubmit(onSubmitForm)} className="py-4">
         <div className="grid h-full w-full grid-cols-5 gap-8">
           <div className="col-span-3 space-y-2">
+            <FormInput
+              {...register("slug")}
+              className="bg-[#FAFAFA]"
+              label="Space Slug"
+              type="text"
+              required
+              autoComplete={"on"}
+            />
             <FormInput
               {...register("name")}
               className="bg-[#FAFAFA]"

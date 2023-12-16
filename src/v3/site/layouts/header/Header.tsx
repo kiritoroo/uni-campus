@@ -1,20 +1,25 @@
-import { AlignJustify, Music } from "lucide-react";
+import { AlignJustify } from "lucide-react";
 import { useGlobalStore } from "../../hooks/useGlobalStore";
 import { cn } from "@Utils/common.utils";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AudioControl from "./AudioControl";
 
 const Header = () => {
   const globalStore = useGlobalStore();
 
   const startExploring = globalStore.use.startExploring();
+  const showHeader = globalStore.use.showHeader();
   const showSidebar = globalStore.use.showSidebar();
   const showOverview = globalStore.use.showOverview();
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const handleCLickMenu = () => {
     globalStore.setState({ showSidebar: true });
+    globalStore.setState({ showOverview: false });
+    globalStore.setState({ showSpaces: false });
+    navigate("/");
   };
 
   if (!startExploring) {
@@ -27,7 +32,9 @@ const Header = () => {
         className={cn(
           "fixed left-[100px] top-[40px] z-[999999999999999] flex w-fit items-center justify-center",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
-          { "pointer-events-none select-none opacity-0": showOverview || showSidebar },
+          {
+            "pointer-events-none select-none opacity-0": showOverview || showSidebar,
+          },
         )}
       >
         <div
@@ -42,7 +49,7 @@ const Header = () => {
         className={cn(
           "fixed right-1/2 top-[30px] z-[999999999999999] flex w-fit translate-x-1/2 items-center justify-center",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
-          { "pointer-events-none select-none opacity-0": showOverview },
+          { "pointer-events-none select-none opacity-0": showOverview || !showHeader },
         )}
       >
         <div className="flex items-center justify-center bg-gem-crystal px-10 py-2 drop-shadow-sm">

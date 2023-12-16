@@ -6,8 +6,8 @@ const usesField = z.optional(z.string());
 const directionUrl = z.optional(z.string());
 const coordinateField = z.optional(
   z.object({
-    latitude: z.number(),
-    longitude: z.number(),
+    latitude: z.coerce.number(),
+    longitude: z.coerce.number(),
   }),
 );
 const markerPositionField = z.optional(
@@ -18,7 +18,7 @@ const markerPositionField = z.optional(
   }),
 );
 const galleryField = z.optional(z.instanceof(File));
-const orderField = z.optional(z.number()).nullable();
+const orderField = z.optional(z.coerce.number()).nullable();
 const slugField = z.optional(z.string()).nullable();
 const isPublishField = z.optional(z.boolean()).nullable();
 
