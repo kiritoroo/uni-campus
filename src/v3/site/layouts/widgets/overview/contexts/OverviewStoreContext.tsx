@@ -6,7 +6,7 @@ export interface IOverviewStoreContext extends StoreApi<IOverviewStore> {}
 
 export const OverviewStoreContext = createContext<IOverviewStoreContext | undefined>(undefined);
 
-export const OVerviewStoreProvider = ({ children }: { children: React.ReactNode }) => {
+export const OverviewStoreProvider = ({ children }: { children: React.ReactNode }) => {
   const storeRef = useRef<IOverviewStoreContext>();
   if (!storeRef.current) {
     storeRef.current = OVerviewStore();

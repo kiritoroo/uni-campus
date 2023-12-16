@@ -1,8 +1,7 @@
 import { Variants, motion, useAnimationControls } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useGlobalStore } from "../hooks/useGlobalStore";
-import Overview from "./widgets/overview/Overview";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 
 const Sidebar = () => {
@@ -29,6 +28,12 @@ const Sidebar = () => {
   const handleClickOverview = () => {
     navigate("/");
     globalStore.setState({ showOverview: !showOverview });
+  };
+
+  const handleClickSpaces = () => {
+    navigate("/space");
+    globalStore.setState({ showSpaces: true });
+    globalStore.setState({ showSidebar: false });
   };
 
   const handleOnClickClose = () => {
@@ -73,7 +78,9 @@ const Sidebar = () => {
                     <div className="">Search</div>
                   </li>
                   <li className="p-2 font-semibold">
-                    <div className="">Spaces</div>
+                    <button type="button" className="" onClick={handleClickSpaces}>
+                      Spaces
+                    </button>
                   </li>
                   <li className="p-2 font-semibold">
                     <button type="button" className="" onClick={handleClickOverview}>

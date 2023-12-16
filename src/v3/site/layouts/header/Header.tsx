@@ -15,6 +15,8 @@ const Header = () => {
 
   const handleCLickMenu = () => {
     globalStore.setState({ showSidebar: true });
+    globalStore.setState({ showOverview: false });
+    globalStore.setState({ showSpaces: false });
   };
 
   if (!startExploring) {

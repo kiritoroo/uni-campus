@@ -8,6 +8,7 @@ type TState = {
   spacesData: TSpaceSchema[] | null;
   showSidebar: boolean;
   showOverview: boolean;
+  showSpaces: boolean;
   isInteractive: boolean;
   startExploring: boolean;
   enableSound: boolean;
@@ -29,6 +30,7 @@ const initStore: TState & TComputedState = {
   spacesData: null,
   showSidebar: false,
   showOverview: false,
+  showSpaces: false,
   isInteractive: false,
   startExploring: false,
   enableSound: true,
