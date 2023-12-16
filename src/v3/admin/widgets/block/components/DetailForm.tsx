@@ -38,6 +38,7 @@ const DetailForm = () => {
   const formMethod = useForm<TBlockUpdateSchema>({
     resolver: zodResolver(blockUpdateSchema),
     defaultValues: {
+      slug: "",
       name: "",
       space_id: "",
       uses: "",
@@ -52,7 +53,6 @@ const DetailForm = () => {
         z: 0,
       },
       order: -1,
-      slug: "",
     },
   });
 
@@ -94,6 +94,7 @@ const DetailForm = () => {
 
   useEffect(() => {
     if (blockData && !enableEditDetail) {
+      setValue("slug", blockData.slug);
       setValue("name", blockData.name);
       blockData.space_id && setValue("space_id", blockData.space_id);
       setValue("uses", blockData.uses);
@@ -101,7 +102,6 @@ const DetailForm = () => {
       setValue("coordinate", blockData.coordinate);
       setValue("marker_position", blockData.marker_position);
       setValue("order", blockData.order);
-      setValue("slug", blockData.slug);
     }
   }, [blockData, enableEditDetail]);
 

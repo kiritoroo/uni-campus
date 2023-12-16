@@ -32,6 +32,7 @@ const DetailForm = () => {
   const formMethod = useForm<TSpaceUpdateSchema>({
     resolver: zodResolver(spaceUpdateSchema),
     defaultValues: {
+      slug: "",
       name: "",
       color: "",
       order: -1,
@@ -68,6 +69,7 @@ const DetailForm = () => {
 
   useEffect(() => {
     if (spaceData && !enableEditDetail) {
+      setValue("slug", spaceData.slug);
       setValue("name", spaceData.name);
       setValue("color", spaceData.color);
       setValue("order", spaceData.order);
@@ -97,6 +99,19 @@ const DetailForm = () => {
           enableEdit={enableEditDetail}
           onSave={onSubmitForm}
           loading={isLoading && updateKey === "name"}
+        />
+        <DetailField
+          {...register("slug")}
+          type="string"
+          required
+          disabled={!enableEditDetail}
+          label="Space Slug"
+          desc="A slug of space, provides a concise and unique identifier, typically used for URLs."
+          fieldKey={"slug"}
+          editDesc="Make sure not empty field"
+          enableEdit={enableEditDetail}
+          onSave={onSubmitForm}
+          loading={isLoading && updateKey === "slug"}
         />
         <DetailField
           label="Space Color"

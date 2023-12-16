@@ -5,6 +5,7 @@ const idField = z.string();
 const nameField = z.string();
 const colorField = z.string().min(4).max(9).regex(/^#/);
 const orderField = z.number();
+const slugField = z.string();
 const isPublishField = z.boolean();
 const createdAtField = z.string().transform((v) => new Date(v));
 const updatedAtField = z.string().transform((v) => new Date(v));
@@ -15,6 +16,7 @@ const spaceSchema = z.object({
   color: colorField,
   icon: fileInfoSchema,
   order: orderField,
+  slug: slugField,
   is_publish: isPublishField,
   created_at: createdAtField,
   updated_at: updatedAtField,
