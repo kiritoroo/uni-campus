@@ -64,9 +64,7 @@ const Overview = () => {
                   })}
                   onClick={() => handleClickSpace(space.id)}
                 >
-                  <div className={cn("strike whitespace-nowrap text-2xl font-bold")}>
-                    {space.name}
-                  </div>
+                  <div className={cn("whitespace-nowrap text-2xl font-bold")}>{space.name}</div>
                 </button>
               );
             })}
@@ -90,9 +88,7 @@ const Overview = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="strike whitespace-nowrap text-lg font-medium">
-                        {block.name}
-                      </div>
+                      <div className="whitespace-nowrap text-lg font-medium">{block.name}</div>
                     </Link>
                   ))}
                 </div>

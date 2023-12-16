@@ -10,6 +10,7 @@ type TState = {
   showOverview: boolean;
   isInteractive: boolean;
   startExploring: boolean;
+  enableSound: boolean;
 };
 
 type TComputedState = {};
@@ -30,6 +31,7 @@ const initStore: TState & TComputedState = {
   showOverview: false,
   isInteractive: false,
   startExploring: false,
+  enableSound: true,
 };
 
 export const GlobalStore = () => {

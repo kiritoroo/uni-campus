@@ -21,9 +21,14 @@ export const soundsEffectData: TSoundsEffectData[] = [
     volume: 1,
     file_url: SOUND_ASSETS.mouseClick,
   },
+  {
+    name: "whoosh",
+    volume: 0.5,
+    file_url: SOUND_ASSETS.whoosh,
+  },
 ];
 
-type TSoundFxNames = "mouseover" | "mouseclick";
+type TSoundFxNames = "mouseover" | "mouseclick" | "whoosh";
 
 type TSoundFx = {
   [key in TSoundFxNames]: PlayFunction;

@@ -1,7 +1,8 @@
 import { AlignJustify, Music } from "lucide-react";
-import { useGlobalStore } from "../hooks/useGlobalStore";
+import { useGlobalStore } from "../../hooks/useGlobalStore";
 import { cn } from "@Utils/common.utils";
 import { Link, useParams } from "react-router-dom";
+import AudioControl from "./AudioControl";
 
 const Header = () => {
   const globalStore = useGlobalStore();
@@ -50,7 +51,7 @@ const Header = () => {
           </div>
           <div className="flex items-center justify-center">
             <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
-              <div className="strike cursor-pointer">Projects</div>
+              <div className="cursor-pointer">Projects</div>
             </div>
             <div
               className={cn(
@@ -58,12 +59,19 @@ const Header = () => {
                 { "bg-gem-sapphire text-white": params["*"] === "team" },
               )}
             >
-              <Link to={"/team"} className="strike cursor-pointer">
+              <Link to={"/team"} className="cursor-pointer">
                 Team
               </Link>
             </div>
-            <div className="bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-100">
-              <div className="strike cursor-pointer">Contact</div>
+            <div
+              className={cn(
+                "bg-transparent px-8 py-2 font-medium text-gem-sapphire transition-colors duration-200",
+                { "bg-gem-sapphire text-white": params["*"] === "contact" },
+              )}
+            >
+              <Link to={"/contact"} className="cursor-pointer">
+                Contact
+              </Link>
             </div>
           </div>
         </div>
@@ -76,9 +84,7 @@ const Header = () => {
           { "pointer-events-none select-none opacity-0": showOverview },
         )}
       >
-        <div className="group cursor-pointer bg-transparent p-3 transition-colors duration-100 hover:bg-gem-sapphire">
-          <Music className="h-5 w-5 stroke-gem-sapphire transition-all duration-200 group-hover:stroke-white" />
-        </div>
+        <AudioControl />
         <div className="group cursor-pointer bg-transparent p-3 transition-colors duration-100 hover:bg-gem-sapphire">
           <div className="font-medium text-gem-sapphire transition-colors duration-200 group-hover:text-white">
             EN
