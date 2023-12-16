@@ -1,9 +1,10 @@
 import { cn } from "@Utils/common.utils";
 import { useGlobalStore } from "@v3/site/hooks/useGlobalStore";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSpacesStore } from "./hooks/useSpacesStore";
 import { sortArray } from "@Utils/math.utils";
+import { X } from "lucide-react";
 
 const Spaces = () => {
   const globalStore = useGlobalStore();
@@ -14,7 +15,14 @@ const Spaces = () => {
   const showSpaces = globalStore.use.showSpaces();
   const spacePicked = spaceStore.use.spacePicked();
 
+  const navigate = useNavigate();
   const params = useParams();
+
+  const handleOnClose = () => {
+    globalStore.setState({ showSpaces: false });
+    spaceStore.setState({ spacePicked: null });
+    navigate("/");
+  };
 
   useEffect(() => {
     if (!startExploring) return;
@@ -57,6 +65,12 @@ const Spaces = () => {
     >
       <div className="fixed -top-20 bottom-0 left-20 flex items-center justify-center">
         <div className="relative bg-white/60 px-8 py-5 backdrop-blur-[5px] md:px-16 md:py-12">
+          <div className="absolute right-5 top-5">
+            <button className="rounded-full bg-gem-sapphire p-2" onClick={handleOnClose}>
+              <X className="h-4 w-4 stroke-white stroke-[2px]" />
+            </button>
+          </div>
+
           <div className="py-5 pb-8 text-center font-geist text-3xl font-bold uppercase">
             Spaces
           </div>
