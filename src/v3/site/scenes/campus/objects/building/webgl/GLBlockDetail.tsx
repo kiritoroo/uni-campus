@@ -102,7 +102,7 @@ const GLBlockDetail = () => {
 
             <div
               className={cn(
-                "group absolute left-5 top-5 z-[2] flex cursor-pointer items-center justify-center bg-white p-2 shadow-lg transition-colors duration-100",
+                "group absolute left-5 top-5 z-[2] flex h-[45px] cursor-pointer items-center justify-center bg-white p-2 shadow-lg transition-colors duration-100",
               )}
             >
               <img
