@@ -5,6 +5,7 @@ import { createStore } from "zustand";
 import { computed } from "zustand-computed";
 import * as THREE from "three";
 import { TBuildingSchema } from "@v3/site/schemas/building";
+import { TBlockSchema } from "@v3/site/schemas/block";
 
 type TState = {
   buildingData: TBuildingSchema | null;
@@ -20,6 +21,7 @@ type TState = {
   }[];
   blockPicked: {
     blockId: string;
+    blockData: TBlockSchema;
   } | null;
   blockShowInfo: {
     blockId: string;

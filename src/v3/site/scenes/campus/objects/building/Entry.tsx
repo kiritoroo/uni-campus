@@ -12,8 +12,12 @@ import { useCampusStore } from "../campus/hooks/useCampusStore";
 import GLFocusCurve from "./webgl/GLFocusCurve";
 import { useCampusSceneStore } from "../../hooks/useCampuseSceneStore";
 import { useFrame } from "@react-three/fiber";
+import GLBlockDetail from "./webgl/GLBlockDetail";
+import { useGlobalStore } from "@v3/site/hooks/useGlobalStore";
+import { AnimatePresence } from "framer-motion";
 
 const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
+  const globalStore = useGlobalStore();
   const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
@@ -27,6 +31,7 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
   const buildingActions = buildingStore.use.actions();
   const isBuildingPicked = buildingStore.use.isBuildingPicked();
   const isPointerEnterBuildingNearest = buildingStore.use.isPointerEnterBuildingNearest();
+  const blockPicked = buildingStore.use.blockPicked();
 
   const buildingRef = useRef<THREE.Group | any>(null);
 
@@ -149,55 +154,68 @@ const Entry = memo(({ buildingData }: { buildingData: TBuildingSchema }) => {
     buildingStore.setState({ blockShowInfo: null });
   }, [buildingShowInfo]);
 
+  useEffect(() => {
+    if (blockPicked) {
+      globalStore.setState({ showSidebar: false });
+      globalStore.setState({ showHeader: false });
+    } else {
+      globalStore.setState({ showHeader: true });
+    }
+  }, [blockPicked]);
+
   return (
-    <Center
-      ref={buildingRef}
-      position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
-      rotation={[buildingData.rotation.x, buildingData.rotation.y, buildingData.rotation.z]}
-      scale={[buildingData.scale.x, buildingData.scale.y, buildingData.scale.z]}
-      visible={buildingPicked && !isBuildingPicked ? false : true}
-    >
-      {objGroupMergeProperty && (
-        <group
-          position={objGroupMergeProperty.group.position}
-          rotation={objGroupMergeProperty.group.rotation}
-          scale={objGroupMergeProperty.group.scale}
-        >
-          {objGroupMergeProperty.group.children.map((obj) => {
-            const objBuildingMeshProperty: {
-              geometry: THREE.BufferGeometry;
-              material: THREE.MeshStandardMaterial;
-              position: THREE.Vector3;
-            } | null = (() => {
-              if (!obj || !(obj instanceof THREE.Mesh)) return null;
+    <>
+      <Center
+        ref={buildingRef}
+        position={[buildingData.position.x, buildingData.position.y, buildingData.position.z]}
+        rotation={[buildingData.rotation.x, buildingData.rotation.y, buildingData.rotation.z]}
+        scale={[buildingData.scale.x, buildingData.scale.y, buildingData.scale.z]}
+        visible={buildingPicked && !isBuildingPicked ? false : true}
+      >
+        {objGroupMergeProperty && (
+          <group
+            position={objGroupMergeProperty.group.position}
+            rotation={objGroupMergeProperty.group.rotation}
+            scale={objGroupMergeProperty.group.scale}
+          >
+            {objGroupMergeProperty.group.children.map((obj) => {
+              const objBuildingMeshProperty: {
+                geometry: THREE.BufferGeometry;
+                material: THREE.MeshStandardMaterial;
+                position: THREE.Vector3;
+              } | null = (() => {
+                if (!obj || !(obj instanceof THREE.Mesh)) return null;
 
-              return {
-                geometry: obj.geometry,
-                position: obj.position,
-                material: obj.material,
-              };
-            })();
+                return {
+                  geometry: obj.geometry,
+                  position: obj.position,
+                  material: obj.material,
+                };
+              })();
 
-            return (
-              <group key={obj.id}>
-                {objBuildingMeshProperty && <GLBuildingMesh property={objBuildingMeshProperty} />}
-              </group>
-            );
-          })}
-        </group>
-      )}
-      {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
-      {objBoundingEffectProperty && <GlBoundingEffect property={objBoundingEffectProperty} />}
-      {objBoundingAroundProperty && <GlBoundingAround property={objBoundingAroundProperty} />}
+              return (
+                <group key={obj.id}>
+                  {objBuildingMeshProperty && <GLBuildingMesh property={objBuildingMeshProperty} />}
+                </group>
+              );
+            })}
+          </group>
+        )}
+        {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
+        {objBoundingEffectProperty && <GlBoundingEffect property={objBoundingEffectProperty} />}
+        {objBoundingAroundProperty && <GlBoundingAround property={objBoundingAroundProperty} />}
 
-      <GLFocusCurve />
+        <GLFocusCurve />
 
-      {buildingData.blocks
-        .filter((item) => item.is_publish)
-        .map((item) => (
-          <GLBlock key={item.id} blockData={item} />
-        ))}
-    </Center>
+        {buildingData.blocks
+          .filter((item) => item.is_publish)
+          .map((item) => (
+            <GLBlock key={item.id} blockData={item} />
+          ))}
+      </Center>
+
+      {isBuildingPicked && blockPicked && <GLBlockDetail />}
+    </>
   );
 });
 

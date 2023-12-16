@@ -104,7 +104,7 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
       setTimeout(() => {
         campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
         buildingStore.setState({ isBuildingPicked: true });
-        buildingStore.setState({ blockPicked: { blockId: blockData.id } });
+        buildingStore.setState({ blockPicked: { blockId: blockData.id, blockData: blockData } });
         blockStore.setState({ isBlockPicked: true });
       }, 500);
     }

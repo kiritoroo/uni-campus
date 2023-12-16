@@ -8,6 +8,7 @@ const Header = () => {
   const globalStore = useGlobalStore();
 
   const startExploring = globalStore.use.startExploring();
+  const showHeader = globalStore.use.showHeader();
   const showSidebar = globalStore.use.showSidebar();
   const showOverview = globalStore.use.showOverview();
 
@@ -31,7 +32,9 @@ const Header = () => {
         className={cn(
           "fixed left-[100px] top-[40px] z-[999999999999999] flex w-fit items-center justify-center",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
-          { "pointer-events-none select-none opacity-0": showOverview || showSidebar },
+          {
+            "pointer-events-none select-none opacity-0": showOverview || showSidebar,
+          },
         )}
       >
         <div
@@ -46,7 +49,7 @@ const Header = () => {
         className={cn(
           "fixed right-1/2 top-[30px] z-[999999999999999] flex w-fit translate-x-1/2 items-center justify-center",
           { "pointer-events-auto select-auto opacity-100": !showOverview },
-          { "pointer-events-none select-none opacity-0": showOverview },
+          { "pointer-events-none select-none opacity-0": showOverview || !showHeader },
         )}
       >
         <div className="flex items-center justify-center bg-gem-crystal px-10 py-2 drop-shadow-sm">

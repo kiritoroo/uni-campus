@@ -63,7 +63,7 @@ const Spaces = () => {
         { "pointer-events-auto visible select-auto opacity-100": showSpaces },
       )}
     >
-      <div className="fixed -top-20 bottom-0 left-20 flex items-center justify-center">
+      <div className="fixed bottom-0 left-20 top-0 flex items-center justify-center">
         <div className="relative bg-white/60 px-8 py-5 backdrop-blur-[5px] md:px-16 md:py-12">
           <div className="absolute right-5 top-5">
             <button className="rounded-full bg-gem-sapphire p-2" onClick={handleOnClose}>
@@ -82,7 +82,7 @@ const Spaces = () => {
                 to={space.slug}
                 className="group flex w-full cursor-pointer items-stretch justify-start bg-white transition-colors duration-100"
               >
-                <div className="flex items-center justify-center border-r border-r-gem-sapphire/50 px-3">
+                <div className="flex items-center justify-center border-r border-r-gem-sapphire/20 px-3">
                   <img
                     className="aspect-square h-6 w-6"
                     src={`${process.env.UNI_CAMPUS_API_URL}/${space.icon.url}`}
