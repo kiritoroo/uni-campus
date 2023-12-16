@@ -14,6 +14,8 @@ type TState = {
   buildingsData: TBuildingSchema[] | null;
   campusCamera: THREE.PerspectiveCamera | null;
   distanceFromCameraToOrigin: number;
+  blockMode: boolean;
+  spaceMode: boolean;
 };
 
 type TComputedState = {};
@@ -34,6 +36,8 @@ const initStore: TState & TComputedState = {
   campusCamera: null,
   distanceFromCameraToOrigin: 0,
   loadingBuildingsProgress: null,
+  blockMode: true,
+  spaceMode: false,
 };
 
 export const CampusSceneStore = ({ mode }: { mode: "dev" | "prod" }) => {

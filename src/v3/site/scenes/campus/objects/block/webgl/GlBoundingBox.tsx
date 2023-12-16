@@ -7,6 +7,8 @@ import { ThreeEvent } from "@react-three/fiber";
 import _ from "lodash";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
 import { useSoundFx } from "@v3/site/hooks/useSoundFx";
+import { useSpacesStore } from "@v3/site/layouts/widgets/spaces/hooks/useSpacesStore";
+import { useNavigate } from "react-router-dom";
 
 interface GLBoundingBoxProps {
   property: {
@@ -16,18 +18,23 @@ interface GLBoundingBoxProps {
 }
 
 const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
+  const spacesStore = useSpacesStore();
   const campusSceneStore = useCampusSceneStore();
   const campusStore = useCampusStore();
   const buildingStore = useBuildingStore();
   const blockStore = useBlockStore();
 
+  const spacePicked = spacesStore.use.spacePicked();
   const campusMode = campusSceneStore.use.campusMode();
+  const blockMode = campusSceneStore.use.blockMode();
+  const spaceMode = campusSceneStore.use.spaceMode();
   const buildingData = buildingStore.use.buildingData()!;
   const buildingStoreActions = buildingStore.use.actions();
   const blockData = blockStore.use.blockData()!;
   const isBlockShowInfo = blockStore.use.isBlockShowInfo();
   const isPointerEnterBlockNearest = blockStore.use.isPointerEnterBlockNearest();
 
+  const navigate = useNavigate();
   const playSoundFx = useSoundFx();
 
   const material = useRef<THREE.MeshBasicMaterial>(
@@ -42,6 +49,10 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
 
   const handleOnPointerEnterBoundingBox = _.throttle(
     (e: ThreeEvent<PointerEvent>) => {
+      if (spacePicked && blockData.space?.id !== spacePicked.spaceId) {
+        return;
+      }
+
       buildingStoreActions.addBlockPointerEnter({
         blockId: blockData.id,
         distance: e.distance,
@@ -61,7 +72,7 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
     document.body.style.cursor = "auto";
     playSoundFx.mouseclick();
 
-    if (true) {
+    if (blockMode) {
       if (isBlockShowInfo) {
         campusStore.setState({ buildingShowInfo: null });
         buildingStore.setState({ isBuildingShowInfo: false });
@@ -75,7 +86,9 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
       }
     }
 
-    if (false) {
+    if (spaceMode) {
+      navigate(`${blockData.slug}`);
+
       campusStore.setState({ buildingPicked: { buildingId: buildingData.id } });
       buildingStore.setState({ isBuildingPicked: true });
       buildingStore.setState({ blockPicked: { blockId: blockData.id } });

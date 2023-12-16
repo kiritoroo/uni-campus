@@ -3,12 +3,13 @@ import { useBlockStore } from "./hooks/useBlockStore";
 import { memo, useEffect, useMemo } from "react";
 import { useBuildingStore } from "../building/hooks/useBuildingStore";
 import * as THREE from "three";
-import GLBoundingBox from "./webgl/GLBoundingBox";
 import { useCampusSceneStore } from "../../hooks/useCampuseSceneStore";
 import { useFrame } from "@react-three/fiber";
 import GLBlockMarkerOverview from "./webgl/GLBlockMarkerOverview";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCampusStore } from "../campus/hooks/useCampusStore";
+import GLBoundingBox from "./webgl/GlBoundingBox";
+import GLBlockMarkerBySpace from "./webgl/GLBlockMarkerBySpace";
 
 const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const campusSceneStore = useCampusSceneStore();
@@ -17,6 +18,8 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
   const blockStore = useBlockStore();
 
   const campusCamera = campusSceneStore.use.campusCamera();
+  const blockMode = campusSceneStore.use.blockMode();
+  const spaceMode = campusSceneStore.use.spaceMode();
   const blockShowInfo = buildingStore.use.blockShowInfo();
   const buildingObject = buildingStore.use.buildingObject();
   const buildingData = buildingStore.use.buildingData()!;
@@ -123,7 +126,8 @@ const Entry = memo(({ blockData }: { blockData: TBlockSchema }) => {
     <group>
       {objBoundingBoxProperty && <GLBoundingBox property={objBoundingBoxProperty} />}
       {/* {buildingModelScene && <GLBlockMarkerBySpace blockData={blockData} />} */}
-      {buildingModelScene && <GLBlockMarkerOverview blockData={blockData} />}
+      {buildingModelScene && blockMode && <GLBlockMarkerOverview blockData={blockData} />}
+      {buildingModelScene && spaceMode && <GLBlockMarkerBySpace blockData={blockData} />}
     </group>
   );
 });

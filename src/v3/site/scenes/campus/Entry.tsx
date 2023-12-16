@@ -5,12 +5,15 @@ import { memo, useEffect } from "react";
 import ThemeAudio from "./components/ThemeAudio";
 import { useGlobalStore } from "@v3/site/hooks/useGlobalStore";
 import LoadingScreen from "./components/LoadingScreen";
+import { useSpacesStore } from "@v3/site/layouts/widgets/spaces/hooks/useSpacesStore";
 
 const Entry = memo(() => {
   const globalStore = useGlobalStore();
+  const spaceStore = useSpacesStore();
   const campusSceneStore = useCampusSceneStore();
 
   const startExploring = globalStore.use.startExploring();
+  const spacePicked = spaceStore.use.spacePicked();
   const campusSceneActions = campusSceneStore.use.actions();
 
   const { listBuildings } = useBuildingServices();
@@ -23,6 +26,18 @@ const Entry = memo(() => {
       });
     }
   }, [data]);
+
+  useEffect(() => {
+    if (spacePicked) {
+      campusSceneStore.setState({ blockMode: false });
+      campusSceneStore.setState({ spaceMode: true });
+    }
+
+    if (!spacePicked) {
+      campusSceneStore.setState({ blockMode: true });
+      campusSceneStore.setState({ spaceMode: false });
+    }
+  }, [spacePicked]);
 
   if (isLoading) {
     return <></>;

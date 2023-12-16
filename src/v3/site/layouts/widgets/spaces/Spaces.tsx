@@ -1,14 +1,18 @@
 import { cn } from "@Utils/common.utils";
 import { useGlobalStore } from "@v3/site/hooks/useGlobalStore";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useSpacesStore } from "./hooks/useSpacesStore";
+import { sortArray } from "@Utils/math.utils";
 
 const Spaces = () => {
   const globalStore = useGlobalStore();
+  const spaceStore = useSpacesStore();
 
   const startExploring = globalStore.use.startExploring();
   const spacesData = globalStore.use.spacesData();
   const showSpaces = globalStore.use.showSpaces();
+  const spacePicked = spaceStore.use.spacePicked();
 
   const params = useParams();
 
@@ -17,8 +21,30 @@ const Spaces = () => {
 
     if (params["*"]?.includes("space")) {
       globalStore.setState({ showSidebar: false });
+      globalStore.setState({ showOverview: false });
       globalStore.setState({ showSpaces: true });
+    } else {
+      globalStore.setState({ showSpaces: false });
     }
+  }, [startExploring, params]);
+
+  useEffect(() => {
+    if (!startExploring) return;
+
+    if (!params["*"]?.includes("space")) {
+      spaceStore.setState({ spacePicked: null });
+      return;
+    }
+
+    const spaceSlug = params["*"];
+    const spaceDataBySlug = spacesData?.find((item) => item.slug === `/${spaceSlug}`);
+
+    if (!spaceDataBySlug) {
+      spaceStore.setState({ spacePicked: null });
+      return;
+    }
+
+    spaceStore.setState({ spacePicked: { spaceId: spaceDataBySlug.id } });
   }, [startExploring, params]);
 
   return (
@@ -36,18 +62,27 @@ const Spaces = () => {
           </div>
 
           <div className="flex flex-col items-start justify-center gap-y-3">
-            {spacesData?.map((space) => (
-              <div className="group flex w-full cursor-pointer items-stretch justify-start bg-white transition-colors duration-100">
+            {sortArray(spacesData ?? [], (item) => item.order, "asc").map((space) => (
+              <Link
+                key={space.id}
+                to={space.slug}
+                className="group flex w-full cursor-pointer items-stretch justify-start bg-white transition-colors duration-100"
+              >
                 <div className="flex items-center justify-center border-r border-r-gem-sapphire/50 px-3">
                   <img
                     className="aspect-square h-6 w-6"
                     src={`${process.env.UNI_CAMPUS_API_URL}/${space.icon.url}`}
                   />
                 </div>
-                <div className="grow px-4 py-3 pr-20 transition-colors duration-100 group-hover:bg-gem-sapphire group-hover:text-white">
+                <div
+                  className={cn(
+                    "grow px-4 py-3 pr-20 transition-colors duration-100 group-hover:bg-gem-sapphire group-hover:text-white",
+                    { "bg-gem-sapphire text-white": spacePicked?.spaceId === space.id },
+                  )}
+                >
                   <div className="text-base font-semibold">{space.name}</div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

@@ -20,11 +20,14 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
 
   const campusMode = campusSceneStore.use.campusMode();
   const distanceFromCameraToOrigin = campusSceneStore.use.distanceFromCameraToOrigin();
+  const blockMode = campusSceneStore.use.blockMode();
+  const spaceMode = campusSceneStore.use.spaceMode();
   const buildingPicked = campusStore.use.buildingPicked();
   const campusStoreActions = campusStore.use.actions();
   const buildingData = buildingStore.use.buildingData()!;
   const isPointerEnterNearestBuilding = buildingStore.use.isPointerEnterBuildingNearest();
   const distanceFromCameraToBuilding = buildingStore.use.distanceFromCameraToBuilding();
+  const blockPicked = buildingStore.use.blockPicked();
 
   const isBuildingNearCamera = useMemo(() => {
     if (distanceFromCameraToBuilding < distanceFromCameraToOrigin) return true;
@@ -44,7 +47,9 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
   const handleOnPointerEnterBoundingBox = _.throttle(
     (e: ThreeEvent<PointerEvent>) => {
       if (buildingPicked) return;
-      if (!isBuildingNearCamera) return;
+      if (blockPicked) return;
+
+      if (blockMode && !isBuildingNearCamera) return;
 
       document.body.style.cursor = "pointer";
       campusStoreActions.addBuildingPointerEnter({
@@ -58,6 +63,7 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
 
   const handleOnPointerLeaveBoundingBox = () => {
     if (buildingPicked) return;
+    if (blockPicked) return;
 
     document.body.style.cursor = "auto";
     campusStoreActions.removeBuildingPointerEnter(buildingData.id);
@@ -65,13 +71,14 @@ const GLBoundingBox = memo(({ property }: GLBoundingBoxProps) => {
 
   const handleOnPointerMoveBoundingBox = () => {
     if (buildingPicked) return;
-    if (!isBuildingNearCamera) return;
+    if (blockPicked) return;
+    if (blockMode && !isBuildingNearCamera) return;
 
     document.body.style.cursor = "pointer";
   };
 
   useEffect(() => {
-    if (!isBuildingNearCamera && isPointerEnterNearestBuilding) {
+    if (blockMode && !isBuildingNearCamera && isPointerEnterNearestBuilding) {
       campusStoreActions.removeBuildingPointerEnter(buildingData.id);
     }
   }, [isBuildingNearCamera]);

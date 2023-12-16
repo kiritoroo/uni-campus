@@ -1,7 +1,7 @@
-import { AlignJustify, Music } from "lucide-react";
+import { AlignJustify } from "lucide-react";
 import { useGlobalStore } from "../../hooks/useGlobalStore";
 import { cn } from "@Utils/common.utils";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AudioControl from "./AudioControl";
 
 const Header = () => {
@@ -12,11 +12,13 @@ const Header = () => {
   const showOverview = globalStore.use.showOverview();
 
   const params = useParams();
+  const navigate = useNavigate();
 
   const handleCLickMenu = () => {
     globalStore.setState({ showSidebar: true });
     globalStore.setState({ showOverview: false });
     globalStore.setState({ showSpaces: false });
+    navigate("/");
   };
 
   if (!startExploring) {
