@@ -9,7 +9,7 @@ export const useClickOutside = (
 ) => {
   const handleClick = (e: any) => {
     if (ref.current && !ref.current.contains(e.target)) {
-      if (options && options.exclude.every((id) => e.target.id !== id)) {
+      if ((options && options.exclude.every((id) => e.target.id !== id)) || !options) {
         callback();
       }
     }

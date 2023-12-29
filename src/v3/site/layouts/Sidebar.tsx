@@ -75,9 +75,6 @@ const Sidebar = () => {
               <div className="py-12">
                 <ul className="space-y-2 pb-16">
                   <li className="p-2 font-semibold">
-                    <div className="">Search</div>
-                  </li>
-                  <li className="p-2 font-semibold">
                     <button type="button" className="" onClick={handleClickSpaces}>
                       Spaces
                     </button>
