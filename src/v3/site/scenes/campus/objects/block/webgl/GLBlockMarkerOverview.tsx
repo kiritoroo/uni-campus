@@ -4,10 +4,10 @@ import { memo, useMemo, useRef } from "react";
 import { useBlockStore } from "../hooks/useBlockStore";
 import { ChevronRightIcon } from "lucide-react";
 import { useCampusSceneStore } from "../../../hooks/useCampuseSceneStore";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@Utils/common.utils";
 import { useBuildingStore } from "../../building/hooks/useBuildingStore";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as THREE from "three";
 import { useCampusStore } from "../../campus/hooks/useCampusStore";
 
@@ -25,7 +25,6 @@ const GLBlockMarkerOverview = memo(({ blockData }: { blockData: TBlockSchema }) 
   const isBlockShowInfo = blockStore.use.isBlockShowInfo();
   const distanceFromCameraToBlock = blockStore.use.distanceFromCameraToBlock();
   const isBlockPointerEnterNearest = blockStore.use.isPointerEnterBlockNearest();
-  const isBlockPicked = blockStore.use.isBlockPicked();
 
   const navigate = useNavigate();
 
